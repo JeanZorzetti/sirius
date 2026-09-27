@@ -52,7 +52,8 @@ type ConexaoPublica = {
      do segredo, `instanciaChave`, `avisoVersao` e o estado `CONNECTING`.
   10. **Aviso**: o adaptador chama `ligarAviso()` com o endereço do segredo. Se falhar, a conexão vai para `FAILED`
       com o motivo, e a resposta é `502`.
-  11. **Estado**: o adaptador chama `estado()`. Já pareada: `CONNECTED`, com o número.
+  11. **Estado**: o adaptador chama `estado()`. Já pareada: `CONNECTED`, com o número, depois de
+      `numeroJaConectado()` (FR-008). Número já conectado na conta: `FAILED` com o motivo, e o aviso é desligado.
 - **201**: `ConexaoPublica`. Com o estado `CONNECTING`, a tela busca o QR.
 
 ## `GET /api/whatsapp/connections/[id]/qr-code`
@@ -86,14 +87,15 @@ As duas rotas deixam de responder `410` e passam a enviar pelo integrador. A API
 - **Ordem**:
   1. O contato e a conexão precisam ser da conta; senão, `404`.
   2. O `connectionId` precisa ser a conexão da conversa (FR-018). Se não for: `409`, "esta conversa chegou por outro
-     número".
+     número". Contato que nunca mandou mensagem não tem conexão de conversa, e qualquer conexão da conta serve.
   3. A conexão precisa estar em `CONNECTED` e a conta num plano pago. Senão: `409`, com o estado e o motivo.
   4. As travas da seção 6.5 rodam com a origem `'inbox'` e um destinatário. Recusa: `409`, com o motivo.
   5. A mídia é conferida antes de sair. Fora do tamanho ou do tipo: `413` ou `415`, com o limite escrito.
   6. A mensagem é gravada como `PENDING`, o adaptador envia, e o id devolvido é gravado com o estado `SENT`.
 - **201**: a mensagem gravada, no formato que o chat já usa.
 - **Falha no integrador**: a mensagem fica gravada como `FAILED`, com o `erro`, e a resposta é `502` com a mensagem e o
-  motivo. O chat mostra a bolha "não enviada · <motivo>" em vez de apagar o texto.
+  motivo. O chat mostra a bolha "não enviada · <motivo>" em vez de apagar o texto. Se a falha é `RecusaIntegrador`
+  (credencial trocada ou revogada), a conexão também vai para `FAILED` por `mudarEstado`, sem esperar o cron.
 
 ## `POST /api/webhooks/whatsapp-integrador/[segredo]`
 
@@ -101,10 +103,11 @@ As duas rotas deixam de responder `410` e passam a enviar pelo integrador. A API
   - Não achou, ou a conexão não tem `provider`: `404`, e nada é gravado nem lido de outra conta.
 - **Corpo inválido**: `400`.
 - **Descarte com 200**:
-  - conta sem plano pago ou conexão `SUSPENDED`: `200` e nada gravado;
+  - conta sem plano pago, conexão `SUSPENDED` ou `FAILED`: `200` e nada gravado;
   - grupo, status e canal: `200` e nada gravado (FR-013).
 - **Resposta**: `200` logo depois de validar. O processamento roda em `after()` (FR-011):
-  - **mensagem**: `registrarEntrada()` (`lib/whatsapp/entrada.ts`);
+  - **mensagem**: `registrarEntrada()` (`lib/whatsapp/entrada.ts`). Em `DISCONNECTED`, a mensagem também leva a conexão
+    para `CONNECTED`, porque só chega mensagem de sessão viva;
   - **estado de entrega**: `avancarStatus()`;
   - **conexão**: `mudarEstado()`.
 - **Nunca registra o corpo cru**: a uazapi e a Evolution mandam a credencial da instância dentro dele.

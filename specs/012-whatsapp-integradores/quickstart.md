@@ -53,6 +53,9 @@ npx vitest run
 | `conexoes.test.ts` | sem aceite dá `400` sem gravar; vendedor dá `403`; Free dá `403`; endereço interno ou `http://` é recusado antes de qualquer chamada; a resposta nunca contém credencial; a mesma instância em outra conta dá `409` |
 | `estado.test.ts` | aviso e cron concorrentes na mesma queda geram uma notificação; a volta registra o tempo fora |
 | `status-entrega.test.ts` | `READ` seguido de `DELIVERED` fica `READ`; `FAILED` não passa por cima de `DELIVERED` |
+| `envio.test.ts` | contato ou conexão de outra conta dá `404`; conexão diferente da conversa dá `409`; contato que nunca escreveu sai por qualquer conexão da conta; recusa do integrador grava `FAILED`; mídia fora do limite dá `413`/`415` antes de qualquer chamada |
+| `entrada.test.ts` | contato gravado noutro formato não duplica; DDD diferente cria outro; LID reusa o contato do mesmo `remoteJid` ou cria um com `source: 'whatsapp_lid'`; `fromMe` não dispara webhook; mídia gravada pela chave, nunca pela URL do integrador |
+| `webhook-oficial.test.ts` | na rota da API oficial: o mesmo `wamid` três vezes dá uma mensagem; `read` seguido de `delivered` fica `READ`; o `200` sai antes do processamento; o agente de IA continua disparando |
 
 A guarda estática da 011 (`__tests__/isolamento/guarda-estatica.test.ts`) continua em 0 pontos com o código novo.
 
@@ -109,3 +112,13 @@ Uma instância de teste de cada integrador, com um chip de teste. Nunca use o n�
    ```
 
    Esperado: zero ocorrências que afirmem "WhatsApp só no Business" ou WhatsApp oficial no Starter ou no Pro.
+
+9. **SC-003, depois de 7 dias**: `WhatsAppMessage` não tem hora de gravação (o `sentAt` é a hora do WhatsApp), então a
+   medida sai do log da rota do aviso, que registra `atrasoMs` (fim da gravação menos `enviadaEm`) em cada mensagem.
+   Exporte o log do serviço no EasyPanel para `log.txt` e calcule o p95:
+
+   ```bash
+   grep -o 'atrasoMs=[0-9]*' log.txt | cut -d= -f2 | sort -n | awk '{a[NR]=$1} END {print a[int(NR*0.95)]}'
+   ```
+
+   Esperado: até 10000.

@@ -34,7 +34,7 @@ Mudanças na linha de conexão que já existe:
 | `apiKey` | `String?` `@db.Text` | já existe | As credenciais, num JSON cifrado com `encrypt()` (`lib/encryption.ts`). Nunca aparecem em resposta, log nem exportação. Viram nulo quando o dono desconecta. |
 | `webhookSegredoHash` | `String?` `@unique` | sim | O SHA-256 hex do segredo do endereço do aviso. O segredo em si só existe na hora de ligar o aviso. Vira nulo quando o dono desconecta. |
 | `instanciaChave` | `String?` `@unique` | sim | `provider:instanceName` enquanto a conexão tem credencial, e nulo depois. Impede a mesma instância em duas conexões ativas, em qualquer conta (FR-008). |
-| `phoneNumber` | `String?` | já existe | O número pareado, só dígitos, lido do integrador. Quando a conta tem API oficial, o número é comparado com o `display_phone_number` que `getPhoneNumberInfo()` devolve, pela chave do telefone (research R6). Número igual deixa a conexão em `FAILED`, com o motivo "número já conectado pela API oficial", e desliga o aviso (FR-008). A conferência acontece no pareamento, que é quando o número aparece. |
+| `phoneNumber` | `String?` | já existe | O número pareado, só dígitos, lido do integrador. No pareamento, que é quando o número aparece, `numeroJaConectado()` compara o número pela chave do telefone (research R6) com o `display_phone_number` da API oficial, quando a conta tem, e com as outras conexões da conta que têm credencial. Número igual deixa a conexão em `FAILED`, com o motivo "número já conectado pela API oficial" ou "este número já está conectado nesta conta", e desliga o aviso (FR-008). |
 | `status` | `WhatsAppStatus` | já existe | Ver a máquina de estados. |
 | `statusMotivo` | `String?` | sim | A frase que a tela mostra: "sessão encerrada no celular", "credenciais recusadas", "plano sem WhatsApp", "voltou depois de 12 min fora". |
 | `statusMudouEm` | `DateTime?` | sim | A hora da última mudança de estado. A tela mostra "desconectado desde 03:12". |
@@ -64,7 +64,7 @@ cron. O PostgreSQL aceita vários nulos num `unique`, então as linhas antigas n
 | **O contato já mandou mensagem para esta conexão** (FR-021) | existe `WhatsAppMessage` de entrada com a conta, o contato e a conexão |
 | **O contato pediu para parar** (FR-022) | a última mensagem de entrada do contato naquela conexão, normalizada, é `sair`, `parar` ou `stop` |
 | **Envios no último minuto** (FR-023) | a contagem de mensagens de saída da conexão com `sentAt` nos últimos 60 s |
-| **Conexão da conversa** (FR-018) | o `connectionId` da última mensagem de entrada do contato |
+| **Conexão da conversa** (FR-018) | a última mensagem de entrada do contato: `connectionId` nulo é a API oficial, preenchido é o integrador. Sem mensagem de entrada, a conversa não tem conexão, e qualquer conexão da conta serve |
 | **Limite de conexões** (FR-009) | `PLAN_LIMITS[plano efetivo].maxWhatsAppInstances` mais os add-ons `WHATSAPP_EXTRA_INSTANCE` ativos, contra as linhas com `provider` e `apiKey` preenchidos |
 | **Aceite registrado** (FR-003, SC-002) | a linha `AuditLog` com `acao = ACEITE_INTEGRADOR`, gravada antes da ativação por `registrarAceiteIntegrador()`, que já existe |
 
@@ -95,7 +95,11 @@ Qualquer estado ── dono desconecta ──► DISCONNECTED, com apiKey, webho
 - **Envio e recebimento**:
   - envia só em `CONNECTED`;
   - recebe em `CONNECTING` e `CONNECTED`, porque o aviso de pareamento chega antes do estado mudar;
-  - em `SUSPENDED` e nas conexões sem `provider`, o aviso é aceito com `200` e descartado sem gravar (FR-027).
+  - recebe também em `DISCONNECTED`: só chega mensagem de sessão viva, então a mensagem é gravada e leva a conexão
+    para `CONNECTED` por `mudarEstado`;
+  - em `FAILED` e `SUSPENDED`, o aviso é aceito com `200` e descartado sem gravar (FR-027). Em `FAILED` o dono já foi
+    notificado para reconectar;
+  - conexão sem `provider` não tem `webhookSegredoHash`, então o aviso dá `404`.
 
 ## Contato (banco CRM, sem mudança de schema)
 

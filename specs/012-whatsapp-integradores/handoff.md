@@ -5,8 +5,16 @@
 - The spec is written and pushed: `spec.md` in `b20a93a`, with a quality checklist in which every item passes.
 - The plan is done: `plan.md`, `research.md`, `data-model.md`, `contracts/rotas.md`, `contracts/adaptador.md` and
   `quickstart.md`. There is no code yet.
-- `tasks.md` is done: 78 tasks in 8 phases (27/09). The next command is `speckit-analyze`, then `speckit-implement`
-  starting at the gate T005.
+- `tasks.md` is done: 84 tasks in 8 phases (27/09). `speckit-analyze` ran the same day. Its fixes are in the spec,
+  plan, research, data-model, contract, quickstart and tasks:
+  - replies go out through the conversation's connection in the UI too;
+  - a contact who never wrote can be reached through any connection of the account;
+  - one number fits in only one connection per account, in both directions;
+  - a message that arrives on a `DISCONNECTED` connection is kept and brings the connection back;
+  - new tests for contact matching and for the official webhook route;
+  - an integrations card for the integrator path and the SC-003 measurement.
+
+  The next command is `speckit-implement`, starting at the gate T005.
 - The project's `speckit-*` skills live in `.claude/skills/`. A session opened in the `ROI Labs` root does not list
   them, so read their `SKILL.md` and follow it by hand.
 

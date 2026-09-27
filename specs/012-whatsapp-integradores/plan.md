@@ -63,8 +63,8 @@ no start do container.
 - o banco WA não é acessível da máquina local (o gate do quickstart §0 roda no console do container);
 - credencial de integrador nunca em resposta, log ou exportação.
 
-**Scale/Scope**: 3 integradores, 8 operações por adaptador, 6 rotas (4 reescritas e 2 novas), 1 cron, 5 componentes de
-chat e ~21 arquivos de texto público.
+**Scale/Scope**: 3 integradores, 8 operações por adaptador, 9 rotas (7 alteradas e 2 novas), 1 cron, 8 componentes de
+tela e ~24 arquivos de texto público.
 
 ## Constitution Check
 
@@ -104,12 +104,15 @@ package.json · Dockerfile · playwright.config.ts         # caminho novo do sch
 lib/whatsapp/integradores/{index,tipos,zapi,uazapi,evolution}.ts   # NOVOS: adaptadores (contracts/adaptador.md)
 lib/whatsapp/integradores/travas.ts                      # NOVO: seção 6.5, função pura
 lib/whatsapp/integradores/estado.ts                      # NOVO: mudarEstado() e notificação única
-lib/whatsapp/integradores/conexao.ts                     # NOVO: carregar a conexão com credenciais decifradas, ConexaoPublica
+lib/whatsapp/integradores/conexao.ts                     # NOVO: carregar a conexão com credenciais decifradas, ConexaoPublica,
+                                                         #   conexão da conversa, numeroJaConectado()
 lib/whatsapp/telefone.ts                                 # NOVO: chave do telefone, JID, grupo/status/canal
 lib/whatsapp/entrada.ts                                  # NOVO: registrarEntrada(), avancarStatus(), mídia, whatsapp.message.in
 lib/entitlements.ts                                      # chat no Starter e no Pro, 1/2/5 conexões, limite = plano + add-on
 app/[locale]/dashboard/chat/page.tsx                     # plano efetivo; escopo inclui conexões de integrador em qualquer estado
 app/[locale]/dashboard/page.tsx                          # hasWhatsApp conta conexão por integrador
+app/[locale]/dashboard/settings/integrations/page.tsx    # cartão "WhatsApp por integrador"; o oficial indica Business
+lib/chat/queries.ts                                      # a última mensagem traz o connectionId da conversa
 
 app/api/whatsapp/connections/route.ts                    # GET seguro, POST conectar
 app/api/whatsapp/connections/[id]/route.ts               # GET, DELETE desconectar
@@ -118,14 +121,16 @@ app/api/whatsapp/connections/[id]/{status,sync,disconnect}/   # APAGADAS (gatewa
 app/api/whatsapp/send-message/route.ts · send-media/route.ts  # envio pelo integrador
 app/api/webhooks/whatsapp-integrador/[segredo]/route.ts  # NOVA
 app/api/webhooks/whatsapp-official/route.ts              # passa a usar entrada.ts e after()
+app/api/integrations/whatsapp-official/settings/route.ts  # recusa número que já está numa conexão por integrador
 app/api/cron/whatsapp-integradores/route.ts              # NOVA
 
 components/chat/new-connection-dialog.tsx                # escolha do integrador, credenciais, <AceiteIntegrador>
 components/chat/qr-code-dialog.tsx                       # consulta a cada 3 s em vez do SSE
 components/chat/connection-manager.tsx                   # estado, motivo, reconectar, desconectar, só leitura
 components/chat/chat-interface.tsx                       # aviso de queda no topo; sai a chamada a /sync
-components/chat/message-area/use-send-message.ts         # a falha fica na tela como "não enviada"
-components/chat/message-area/*                           # bolha com erro; trava "SAIR" na conversa
+components/chat/message-area/use-send-message.ts         # rota pela conexão da conversa; a falha fica como "não enviada"
+components/chat/message-area/*                           # bolha com erro; trava "SAIR" na conversa; escolha do número
+components/chat/contact-sidebar.tsx · components/contacts/contact-profile-modal.tsx   # "completar cadastro" do LID
 scripts/dead-code-allowlist.json                         # sai AceiteIntegrador
 
 messages/pt-BR/marketing.json · lib/help-articles.ts · lib/faq-schema.ts · lib/blog/posts/*   # FR-030

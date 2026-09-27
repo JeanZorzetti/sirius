@@ -197,8 +197,8 @@ WhatsApp oficial no Starter ou no Pro.
 
 **Acceptance Scenarios**:
 
-1. **Given** uma conta Pro, **When** o dono abre o menu de WhatsApp, **Then** vê "Conectar por integrador" liberado e
-   "API oficial" indicado como recurso do Business.
+1. **Given** uma conta Pro, **When** o dono abre a tela de Integrações ou a tela de conexão do chat, **Then** vê
+   "Conectar por integrador" liberado e "API oficial" indicado como recurso do Business.
 2. **Given** uma conta que cai para o Gratuito ou tem o teste vencido, **When** isso acontece, **Then** a conexão por
    integrador fica suspensa: não envia nem recebe. O dono vê o motivo, e a conexão volta quando a conta voltar a um
    plano pago.
@@ -210,7 +210,13 @@ WhatsApp oficial no Starter ou no Pro.
 - **A mesma instância do integrador em duas conexões**, na mesma conta ou em outra: a segunda ativação é recusada com
   "esta instância já está conectada no Sirius", sem dizer em qual conta.
 - **O mesmo número pela API oficial e pelo integrador na mesma conta:** a conexão por integrador é recusada, porque o
-  número já está conectado pela API oficial.
+  número já está conectado pela API oficial. No sentido contrário, ativar a API oficial com um número que já está numa
+  conexão por integrador também é recusado, até o dono desconectar o integrador.
+- **O mesmo número em duas instâncias de integrador na mesma conta:** a segunda conexão vai para "Reconectar", com o
+  motivo "este número já está conectado nesta conta". O WhatsApp aceita vários aparelhos no mesmo número, então as
+  duas instâncias podem parear.
+- **O vendedor escreve primeiro para um contato que nunca mandou mensagem:** o envio sai por uma conexão da conta,
+  porque é uma pessoa digitando para um destinatário (US4-3). Com mais de um número, o vendedor escolhe por qual.
 - **O cliente só tem identificador oculto (LID) e nenhum telefone visível:** a mensagem entra na conversa de quem já
   usou aquele identificador. Se ninguém usou, cria um contato sem telefone, marcado para completar o cadastro. Nunca
   cria um contato por mensagem.
@@ -249,7 +255,7 @@ WhatsApp oficial no Starter ou no Pro.
 - **FR-007**: Quando a instância não está pareada, o sistema MUST mostrar o QR Code do integrador e atualizar o estado
   sozinho depois do pareamento.
 - **FR-008**: Uma instância de integrador MUST estar ativa em no máximo uma conexão do Sirius, e um número MUST estar
-  conectado por no máximo um caminho na mesma conta.
+  em no máximo uma conexão na mesma conta, pela API oficial ou por integrador.
 - **FR-009**: O número de conexões por integrador MUST respeitar o limite do plano: 1 no Starter, 2 no Pro e 5 no
   Business, mais as conexões extras compradas como add-on. Ao chegar no limite, a tela mostra o limite e o caminho do
   add-on ou do plano seguinte. (Decisão do dono, 27/09/2026.)
@@ -274,8 +280,9 @@ WhatsApp oficial no Starter ou no Pro.
   guardado como definitivo.
 - **FR-018**: A resposta a uma conversa MUST sair pela mesma conexão em que a conversa chegou, seja API oficial ou
   integrador.
-- **FR-019**: O inbox, as notificações de mensagem nova e os webhooks de saída que o cliente já configurou
-  (`whatsapp.message.in`) MUST tratar a mensagem por integrador igual à da API oficial.
+- **FR-019**: O inbox e os webhooks de saída que o cliente já configurou (`whatsapp.message.in`) MUST tratar a
+  mensagem por integrador igual à da API oficial. Nos dois caminhos, a mensagem nova aparece como não lida no inbox, e
+  nenhum dos dois gera notificação por mensagem.
 
 **Regras da seção 6.5**
 
@@ -317,8 +324,7 @@ WhatsApp oficial no Starter ou no Pro.
 - **Aceite do aviso de integrador**: o registro de auditoria que já existe (`ACEITE_INTEGRADOR`). Guarda quem, quando,
   de qual IP, o integrador e a versão do aviso. O dono consulta em Configurações → Auditoria.
 - **Mensagem de WhatsApp**: a mensagem que já existe no inbox, agora ligada à conexão por onde entrou ou saiu. Tem o
-  identificador do integrador, o sentido, o estado de entrega, a mídia guardada e a origem do envio (pessoa ou
-  automático).
+  identificador do integrador, o sentido, o estado de entrega e a mídia guardada.
 - **Contato**: o contato que já existe, casado pelo telefone normalizado ou pelo identificador oculto (LID). Ganha a
   trava de envio por integrador depois de "SAIR".
 - **Notificação de conexão**: o aviso ao dono e aos gerentes quando uma conexão cai, uma vez por queda.

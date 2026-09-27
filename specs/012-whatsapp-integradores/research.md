@@ -268,6 +268,11 @@ push.
 - **Resposta pela mesma conexão (FR-018)**: o servidor decide o caminho. A conexão da conversa é a da última mensagem
   de entrada do contato: `connectionId` nulo é a API oficial, preenchido é o integrador. O cliente manda o
   `connectionId` que a conversa mostra, e a rota confere que ele é da conta e bate com a conversa.
+  - **Contato que nunca escreveu**: não tem conexão de conversa (`via: 'nenhuma'`), e qualquer conexão da conta serve,
+    porque é uma pessoa digitando para um destinatário (US4-3). Tratar esse caso como "API oficial" recusaria o
+    primeiro contato pelo integrador.
+  - **Na tela**: a rota de envio sai da conversa (`connectionId` da última mensagem), não do `wabaEnabled` da conta
+    nem da primeira conexão ativa.
 
 ## R12. Textos públicos (FR-030)
 
