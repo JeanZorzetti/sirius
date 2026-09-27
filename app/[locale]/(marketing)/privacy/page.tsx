@@ -164,6 +164,7 @@ export default async function PrivacyPage(
                     <li><strong className="text-foreground">{t('s6.meta')}</strong> {t('s6.metaText')}</li>
                     <li><strong className="text-foreground">{t('s6.integrators')}</strong> {t('s6.integratorsText')}</li>
                   </ul>
+                  <p className="text-base leading-7"><strong className="text-foreground">{t('s6.transfer')}</strong> {t('s6.transferText')}</p>
                   <p className="text-base leading-7 font-semibold text-foreground">{t('s6.dpa')}</p>
                 </div>
               </div>
