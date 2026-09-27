@@ -50,7 +50,9 @@ export default async function GoogleCalendarIntegrationPage({
       case 'invalid_request':
         return 'Solicitação inválida. Tente novamente.'
       case 'invalid_state':
-        return 'Erro de segurança. Por favor, tente conectar novamente.'
+        return 'O pedido de conexão expirou ou não pôde ser confirmado. Clique em Conectar com Google de novo.'
+      case 'forbidden':
+        return 'Só o dono e o gerente da conta podem conectar o Google Calendar. Peça a um deles.'
       case 'connection_failed':
         return 'Falha ao conectar com Google Calendar. Verifique as configurações e tente novamente.'
       default:

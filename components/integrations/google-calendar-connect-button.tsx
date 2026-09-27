@@ -49,9 +49,10 @@ export function GoogleCalendarConnectButton({
         })
         router.refresh()
       } else {
+        const data = await response.json().catch(() => ({}))
         toast({
           title: 'Erro',
-          description: 'Falha ao desconectar Google Calendar.',
+          description: data.error || 'Falha ao desconectar Google Calendar.',
           variant: 'destructive'
         })
       }

@@ -5,7 +5,8 @@ import {
   GoogleCalendarClient,
   logGoogleCalendarActivity
 } from '@/lib/integrations/google-calendar-client'
-import { encrypt } from '@/lib/encryption'
+import { encrypt, decrypt } from '@/lib/encryption'
+import { podeVerTudo } from '@/lib/visibilidade'
 import logger from '@/lib/logger'
 
 /**
@@ -33,15 +34,24 @@ export async function GET(request: Request) {
       return redirectTo('/dashboard/settings/integrations/google-calendar?error=invalid_request')
     }
 
+    // /auth encrypts the state (AES-GCM): one made by hand, or older than 10 minutes, is refused
     let organizationId: string
     let userId: string
     try {
-      const decoded = JSON.parse(Buffer.from(state, 'base64').toString('utf-8'))
+      const decoded = JSON.parse(decrypt(state))
+      if (!(decoded.exp > Date.now())) throw new Error('expired')
       organizationId = decoded.organizationId
       userId = decoded.userId
     } catch {
-      logger.error({ state }, 'Invalid state parameter')
+      logger.warn('Google Calendar OAuth: invalid or expired state')
       return redirectTo('/dashboard/settings/integrations/google-calendar?error=invalid_state')
+    }
+
+    // Whoever started the flow must still be an owner or manager of that account when Google sends them back
+    // isolamento: the user named by the state this server encrypted, checked against the account in the same state
+    const quem = await prisma.user.findUnique({ where: { id: userId }, select: { organizationId: true, orgRole: true } })
+    if (!quem || quem.organizationId !== organizationId || !podeVerTudo(quem)) {
+      return redirectTo('/dashboard/settings/integrations/google-calendar?error=forbidden')
     }
 
     const { refreshToken } = await exchangeCodeForTokens(code)

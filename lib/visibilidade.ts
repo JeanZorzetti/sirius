@@ -1,4 +1,5 @@
 import type { OrgRole, Prisma } from '@prisma/client'
+import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import { apiError } from '@/lib/api-error'
@@ -38,6 +39,21 @@ export async function carregarAcesso(quem: { id: string } | { email: string }): 
 /** Owner and manager see everything in the organization and may export it. */
 export const podeVerTudo = (a: Pick<Acesso, 'orgRole'>) => ['OWNER', 'GERENTE'].includes(normalizeRole(a.orgRole))
 export const podeExportar = podeVerTudo
+
+/**
+ * Account-wide settings (integrations and their credentials) are for the owner and the manager, like exports.
+ * Returns the caller's access, or the response to send back.
+ */
+export async function autorizarConfiguracao(): Promise<Acesso | Response> {
+  const session = await getSession()
+  if (!session?.user?.email) return apiError(ERR.UNAUTHORIZED, 401)
+  const acesso = await carregarAcesso({ email: session.user.email })
+  if (!acesso) return apiError(ERR.USER_NOT_FOUND, 404)
+  if (!podeVerTudo(acesso)) {
+    return NextResponse.json({ error: 'Só o dono e o gerente da conta podem mudar integrações. Peça a um deles.' }, { status: 403 })
+  }
+  return acesso
+}
 
 export function escopoPipeline(a: Acesso): Prisma.PipelineWhereInput {
   return a.pipelineRestricted

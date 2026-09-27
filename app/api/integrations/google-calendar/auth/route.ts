@@ -5,6 +5,8 @@ import { getGoogleCalendarAuthUrl } from '@/lib/integrations/google-calendar-cli
 import logger from '@/lib/logger'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
+import { encrypt } from '@/lib/encryption'
+import { podeVerTudo } from '@/lib/visibilidade'
 
 /**
  * Initiate Google Calendar OAuth 2.0 flow
@@ -30,14 +32,19 @@ export async function GET(request: Request) {
       )
     }
 
-    // Create state parameter with organization ID
-    // This will be returned in the callback to identify the user
-    const state = Buffer.from(
+    // The account's calendar is an account-wide setting: owner and manager only
+    if (!podeVerTudo(user)) {
+      return NextResponse.redirect(new URL('/dashboard/settings/integrations/google-calendar?error=forbidden', request.url))
+    }
+
+    // Encrypted with AES-GCM so the callback can trust it: a hand-made state fails to decrypt, and it expires in 10 minutes
+    const state = encrypt(
       JSON.stringify({
         organizationId: user.organizationId,
-        userId: user.id
+        userId: user.id,
+        exp: Date.now() + 10 * 60_000
       })
-    ).toString('base64')
+    )
 
     // Generate authorization URL
     const authUrl = getGoogleCalendarAuthUrl(state)

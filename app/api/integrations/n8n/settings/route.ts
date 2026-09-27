@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
+import { autorizarConfiguracao } from '@/lib/visibilidade'
 import { prisma } from '@/lib/prisma'
 import { encrypt } from '@/lib/encryption'
 import logger from '@/lib/logger'
@@ -8,6 +9,9 @@ import { ERR } from '@/lib/error-messages'
 
 export async function POST(request: Request) {
     try {
+        const quem = await autorizarConfiguracao()
+        if (quem instanceof Response) return quem
+
         // Authenticate user
         const session = await getSession()
         if (!session || !session.user || !session.user.email) {

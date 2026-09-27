@@ -5,6 +5,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
+import { autorizarConfiguracao } from '@/lib/visibilidade'
 import { prisma } from '@/lib/prisma'
 import { listarClientes } from '@/lib/integrations/omie'
 import { apiError } from '@/lib/api-error'
@@ -28,6 +29,9 @@ export async function GET() {
 }
 
 export async function PATCH(request: NextRequest) {
+  const quem = await autorizarConfiguracao()
+  if (quem instanceof Response) return quem
+
   const session = await getSession()
   if (!session?.user?.email) return await apiError(ERR.UNAUTHORIZED, 401, { req: request })
 

@@ -5,9 +5,13 @@ import { encrypt } from '@/lib/encryption'
 import logger from '@/lib/logger'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
+import { autorizarConfiguracao } from '@/lib/visibilidade'
 
 export async function POST(request: Request) {
   try {
+    const quem = await autorizarConfiguracao()
+    if (quem instanceof Response) return quem
+
     const session = await getSession()
     if (!session?.user?.email) {
       return await apiError(ERR.UNAUTHORIZED, 401)
@@ -22,9 +26,10 @@ export async function POST(request: Request) {
       return await apiError(ERR.USER_NOT_FOUND, 404)
     }
 
-    if (!['PRO', 'BUSINESS'].includes(user.organization.tier)) {
+    // Same rule as the settings page: Business, or an account that had access before the Business-only gate
+    if (user.organization.tier !== 'BUSINESS' && !user.organization.wabaGrandfathered) {
       return NextResponse.json(
-        { error: 'Integração WhatsApp Oficial disponível apenas no plano PRO' },
+        { error: 'Integração WhatsApp Oficial disponível apenas no plano Business' },
         { status: 403 }
       )
     }
