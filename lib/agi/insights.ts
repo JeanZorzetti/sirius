@@ -35,6 +35,7 @@ export interface DealInsight {
  * Create a new insight
  */
 export async function createInsight(params: CreateInsightParams): Promise<string> {
+    // isolamento: dealId/pipelineId are soft references (no FK) and every read filters by organizationId
     const insight = await prisma.agiInsight.create({
         data: {
             organizationId: params.organizationId,
@@ -117,9 +118,9 @@ export async function getRecentInsights(
 /**
  * Mark insight as applied
  */
-export async function markInsightAsApplied(insightId: string): Promise<void> {
-    await prisma.agiInsight.update({
-        where: { id: insightId },
+export async function markInsightAsApplied(insightId: string, organizationId: string): Promise<void> {
+    await prisma.agiInsight.updateMany({
+        where: { id: insightId, organizationId },
         data: { applied: true },
     });
 }
@@ -127,9 +128,9 @@ export async function markInsightAsApplied(insightId: string): Promise<void> {
 /**
  * Dismiss an insight
  */
-export async function dismissInsight(insightId: string): Promise<void> {
-    await prisma.agiInsight.update({
-        where: { id: insightId },
+export async function dismissInsight(insightId: string, organizationId: string): Promise<void> {
+    await prisma.agiInsight.updateMany({
+        where: { id: insightId, organizationId },
         data: { dismissed: true },
     });
 }

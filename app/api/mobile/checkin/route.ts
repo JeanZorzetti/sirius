@@ -27,6 +27,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Latitude e longitude são obrigatórios' }, { status: 400 })
     }
 
+    if (contactId) {
+      const contato = await prisma.contact.findFirst({ where: { id: contactId, organizationId: user.organizationId }, select: { id: true } })
+      if (!contato) return await apiError(ERR.CONTACT_NOT_FOUND, 404, { req: request })
+    }
+
     const visitLog = await prisma.visitLog.create({
       data: {
         organizationId: user.organizationId,

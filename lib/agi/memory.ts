@@ -55,6 +55,7 @@ export async function saveConversation(params: SaveConversationParams): Promise<
         }
     }
 
+    // isolamento: dealId/pipelineId are soft references (no FK) and every read filters by organizationId
     const conversation = await prisma.agiConversation.create({
         data: {
             organizationId,
@@ -69,25 +70,6 @@ export async function saveConversation(params: SaveConversationParams): Promise<
     });
 
     return conversation.id;
-}
-
-/**
- * Get conversation by ID
- */
-export async function getConversation(conversationId: string): Promise<{
-    messages: Message[];
-    tokensUsed: number;
-} | null> {
-    const conversation = await prisma.agiConversation.findUnique({
-        where: { id: conversationId },
-    });
-
-    if (!conversation) return null;
-
-    return {
-        messages: conversation.messages as unknown as Message[],
-        tokensUsed: conversation.tokensUsed,
-    };
 }
 
 /**

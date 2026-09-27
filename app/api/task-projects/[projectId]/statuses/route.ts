@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { getSession } from '@/lib/auth'
+import { projetoDoPedido } from '@/lib/visibilidade'
 import { checkTaskStatusLimit } from '@/lib/entitlements'
 import logger from '@/lib/logger'
 import { apiError } from '@/lib/api-error'
@@ -12,11 +12,9 @@ export async function GET(
   { params }: { params: Promise<{ projectId: string }> }
 ) {
   try {
-    const { projectId } = await params
-    const session = await getSession()
-    if (!session?.user?.email) {
-      return await apiError(ERR.UNAUTHORIZED, 401)
-    }
+    const pedido = await projetoDoPedido((await params).projectId)
+    if (pedido instanceof Response) return pedido
+    const { projectId } = pedido
 
     const statuses = await prisma.taskStatus.findMany({
       where: { projectId },
@@ -37,11 +35,9 @@ export async function POST(
   { params }: { params: Promise<{ projectId: string }> }
 ) {
   try {
-    const { projectId } = await params
-    const session = await getSession()
-    if (!session?.user?.email) {
-      return await apiError(ERR.UNAUTHORIZED, 401)
-    }
+    const pedido = await projetoDoPedido((await params).projectId)
+    if (pedido instanceof Response) return pedido
+    const { projectId } = pedido
 
     // Verificar limite
     try {
@@ -92,11 +88,9 @@ export async function PATCH(
   { params }: { params: Promise<{ projectId: string }> }
 ) {
   try {
-    const { projectId } = await params
-    const session = await getSession()
-    if (!session?.user?.email) {
-      return await apiError(ERR.UNAUTHORIZED, 401)
-    }
+    const pedido = await projetoDoPedido((await params).projectId)
+    if (pedido instanceof Response) return pedido
+    const { projectId, acesso } = pedido
 
     const body = await request.json()
     const { orderedIds } = body as { orderedIds: string[] }
@@ -105,11 +99,20 @@ export async function PATCH(
       return NextResponse.json({ error: 'orderedIds é obrigatório' }, { status: 400 })
     }
 
+    // Every status in the list must be a column of this project, or nothing is reordered
+    const ids = [...new Set(orderedIds)]
+    const doProjeto = await prisma.taskStatus.count({
+      where: { id: { in: ids }, projectId, project: { organizationId: acesso.organizationId } },
+    })
+    if (doProjeto !== ids.length) {
+      return await apiError(ERR.NOT_FOUND, 404)
+    }
+
     // Atualizar order em batch
     await prisma.$transaction(
       orderedIds.map((id, index) =>
-        prisma.taskStatus.update({
-          where: { id },
+        prisma.taskStatus.updateMany({
+          where: { id, projectId, project: { organizationId: acesso.organizationId } },
           data: { order: index },
         })
       )

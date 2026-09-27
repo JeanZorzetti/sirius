@@ -73,6 +73,7 @@ export async function executeDealAutomations(
 
         if (!conditionsMet) {
           // Log skipped execution
+          // isolamento: dealId/contactId/userId come from executeDealAutomations, only called with a deal loaded inside its organization (API v1 scoped routes, deal-idle cron)
           await prisma.automationExecution.create({
             data: {
               automationId: automation.id,
@@ -93,6 +94,7 @@ export async function executeDealAutomations(
         const errorMessage = errors.length > 0 ? errors.join('; ') : undefined
 
         // Record execution
+        // isolamento: dealId/contactId/userId come from executeDealAutomations, only called with a deal loaded inside its organization (API v1 scoped routes, deal-idle cron)
         await prisma.automationExecution.create({
           data: {
             automationId: automation.id,
@@ -136,6 +138,7 @@ export async function executeDealAutomations(
         )
 
         // Try to record the failure
+        // isolamento: dealId/contactId/userId come from executeDealAutomations, only called with a deal loaded inside its organization (API v1 scoped routes, deal-idle cron)
         await prisma.automationExecution.create({
           data: {
             automationId: automation.id,

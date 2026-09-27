@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { getSession } from '@/lib/auth'
+import { projetoDoPedido } from '@/lib/visibilidade'
 import logger from '@/lib/logger'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
@@ -11,11 +11,9 @@ export async function GET(
   { params }: { params: Promise<{ projectId: string }> }
 ) {
   try {
-    const { projectId } = await params
-    const session = await getSession()
-    if (!session?.user?.email) {
-      return await apiError(ERR.UNAUTHORIZED, 401)
-    }
+    const pedido = await projetoDoPedido((await params).projectId)
+    if (pedido instanceof Response) return pedido
+    const { projectId } = pedido
 
     const labels = await prisma.taskLabel.findMany({
       where: { projectId },
@@ -35,11 +33,9 @@ export async function POST(
   { params }: { params: Promise<{ projectId: string }> }
 ) {
   try {
-    const { projectId } = await params
-    const session = await getSession()
-    if (!session?.user?.email) {
-      return await apiError(ERR.UNAUTHORIZED, 401)
-    }
+    const pedido = await projetoDoPedido((await params).projectId)
+    if (pedido instanceof Response) return pedido
+    const { projectId } = pedido
 
     const body = await request.json()
     const { name, color } = body

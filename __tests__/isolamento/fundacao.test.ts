@@ -5,7 +5,7 @@ import type { AddressInfo } from 'net'
 import { describe, it, expect, afterAll, beforeAll } from 'vitest'
 import { assinaturaMetaValida } from '@/lib/meta-assinatura'
 import { ipPublico, garantirUrlPublica, fetchPublico } from '@/lib/url-publica'
-import { escopoNegocio, escopoPipeline, escopoTarefa, podeExportar, pipelinesPermitidos, type Acesso } from '@/lib/visibilidade'
+import { escopoNegocio, escopoPipeline, escopoProjeto, escopoTarefa, podeExportar, pipelinesPermitidos, type Acesso } from '@/lib/visibilidade'
 
 const assinar = (corpo: string, segredo: string) => 'sha256=' + createHmac('sha256', segredo).update(corpo).digest('hex')
 
@@ -79,7 +79,7 @@ describe('fetchPublico', () => {
 })
 
 describe('visibilidade', () => {
-  const base: Acesso = { userId: 'u1', organizationId: 'org', orgRole: 'VENDEDOR', pipelineRestricted: false, allowedPipelineIds: [] }
+  const base: Acesso = { userId: 'u1', nome: null, organizationId: 'org', orgRole: 'VENDEDOR', pipelineRestricted: false, allowedPipelineIds: [] }
   const restrita: Acesso = { ...base, pipelineRestricted: true, allowedPipelineIds: ['p1'] }
 
   it('negócios e pipelines: conta sempre; pipelines permitidos quando restrito (lista vazia = nenhum)', () => {
@@ -103,7 +103,19 @@ describe('visibilidade', () => {
         { visibility: 'PUBLIC' },
         { visibility: 'PRIVATE', OR: [{ assigneeId: 'u1' }, { creatorId: 'u1' }] },
       ])
+      // and only in projects open to every role or to theirs (legacy MEMBER counts as VENDEDOR)
+      const papeis = (w.project as any).OR[1].allowedRoles.hasSome
+      expect((w.project as any).OR[0]).toEqual({ allowedRoles: { isEmpty: true } })
+      expect(papeis).toContain(orgRole === 'MEMBER' ? 'VENDEDOR' : orgRole)
     }
+  })
+
+  it('projetos: dono e gerente veem todos; os demais só os abertos ao papel deles', () => {
+    expect(escopoProjeto({ ...base, orgRole: 'GERENTE' })).toEqual({ organizationId: 'org' })
+    expect(escopoProjeto(base)).toEqual({
+      organizationId: 'org',
+      OR: [{ allowedRoles: { isEmpty: true } }, { allowedRoles: { hasSome: ['VENDEDOR'] } }],
+    })
   })
 
   it('exportar: só dono e gerente', () => {

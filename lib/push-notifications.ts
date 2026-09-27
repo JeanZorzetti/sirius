@@ -141,6 +141,7 @@ async function sendNotificationToSubscriptions(
         )
 
         // Update lastUsedAt
+        // isolamento: subscription ids come from rows the caller read from the database for this user
         await prisma.pushSubscription.update({
           where: { id: subscription.id },
           data: { lastUsedAt: new Date() },
@@ -171,6 +172,7 @@ async function sendNotificationToSubscriptions(
 
   // Deactivate failed subscriptions
   if (failedSubscriptionIds.length > 0) {
+    // isolamento: ids collected from the subscriptions read above, never from the request
     await prisma.pushSubscription.updateMany({
       where: {
         id: { in: failedSubscriptionIds },

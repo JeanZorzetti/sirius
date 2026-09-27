@@ -157,6 +157,7 @@ export async function POST(request: Request) {
             // Cria Deal na primeira stage do pipeline
             const { pipelineId, stageId, userId } = await getDefaultPipelineStage(org.id)
             if (pipelineId && stageId && userId) {
+              // isolamento: pipeline and stage from getDefaultPipelineStage(org.id); the contact was created just above for this organization
               await prisma.deal.create({
                 data: {
                   title:          `Lead Facebook — ${leadData.name ?? 'Novo Lead'}`,

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { getSession } from '@/lib/auth'
+import { tarefaDoPedido } from '@/lib/visibilidade'
 import logger from '@/lib/logger'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
@@ -11,14 +11,11 @@ export async function GET(
   { params }: { params: Promise<{ taskId: string }> }
 ) {
   try {
-    const { taskId } = await params
-    const session = await getSession()
-    if (!session?.user?.email) {
-      return await apiError(ERR.UNAUTHORIZED, 401)
-    }
+    const pedido = await tarefaDoPedido((await params).taskId)
+    if (pedido instanceof Response) return pedido
 
     const checklists = await prisma.taskChecklist.findMany({
-      where: { taskId },
+      where: { taskId: pedido.taskId },
       include: { items: { orderBy: { order: 'asc' } } },
       orderBy: { order: 'asc' },
     })
@@ -36,11 +33,9 @@ export async function POST(
   { params }: { params: Promise<{ taskId: string }> }
 ) {
   try {
-    const { taskId } = await params
-    const session = await getSession()
-    if (!session?.user?.email) {
-      return await apiError(ERR.UNAUTHORIZED, 401)
-    }
+    const pedido = await tarefaDoPedido((await params).taskId)
+    if (pedido instanceof Response) return pedido
+    const { taskId } = pedido
 
     const body = await request.json()
     const { title, items } = body
@@ -84,23 +79,18 @@ export async function PATCH(
   { params }: { params: Promise<{ taskId: string }> }
 ) {
   try {
-    await params
-    const session = await getSession()
-    if (!session?.user?.email) {
-      return await apiError(ERR.UNAUTHORIZED, 401)
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
-      select: { id: true },
-    })
+    const pedido = await tarefaDoPedido((await params).taskId)
+    if (pedido instanceof Response) return pedido
+    const { taskId, acesso } = pedido
+    const organizationId = acesso.organizationId
 
     const body = await request.json()
     const { action, itemId, checklistId, title } = body
 
+    // Items and checklists are only reachable through the task in the URL
     if (action === 'toggle' && itemId) {
-      const item = await prisma.taskChecklistItem.findUnique({
-        where: { id: itemId },
+      const item = await prisma.taskChecklistItem.findFirst({
+        where: { id: itemId, checklist: { taskId, task: { organizationId } } },
       })
 
       if (!item) {
@@ -119,6 +109,14 @@ export async function PATCH(
     }
 
     if (action === 'addItem' && checklistId && title) {
+      const checklist = await prisma.taskChecklist.findFirst({
+        where: { id: checklistId, taskId, task: { organizationId } },
+        select: { id: true },
+      })
+      if (!checklist) {
+        return NextResponse.json({ error: 'Checklist não encontrado' }, { status: 404 })
+      }
+
       const maxOrder = await prisma.taskChecklistItem.aggregate({
         where: { checklistId },
         _max: { order: true },
@@ -136,12 +134,18 @@ export async function PATCH(
     }
 
     if (action === 'deleteItem' && itemId) {
-      await prisma.taskChecklistItem.delete({ where: { id: itemId } })
+      const apagados = await prisma.taskChecklistItem.deleteMany({
+        where: { id: itemId, checklist: { taskId, task: { organizationId } } },
+      })
+      if (apagados.count === 0) return NextResponse.json({ error: 'Item não encontrado' }, { status: 404 })
       return NextResponse.json({ success: true })
     }
 
     if (action === 'deleteChecklist' && checklistId) {
-      await prisma.taskChecklist.delete({ where: { id: checklistId } })
+      const apagados = await prisma.taskChecklist.deleteMany({
+        where: { id: checklistId, taskId, task: { organizationId } },
+      })
+      if (apagados.count === 0) return NextResponse.json({ error: 'Checklist não encontrado' }, { status: 404 })
       return NextResponse.json({ success: true })
     }
 

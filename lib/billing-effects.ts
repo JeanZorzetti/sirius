@@ -83,6 +83,7 @@ async function getOrgOwner(organizationId: string) {
  */
 async function processReferralReward(referredOrgId: string) {
   try {
+    // isolamento: referredOrgId comes from a payment provider webhook whose signature was checked
     const referral = await prisma.referral.findFirst({
       where: { referredOrgId, status: { in: ['PENDING', 'ACTIVE'] }, rewardGiven: false },
       include: {
@@ -97,6 +98,7 @@ async function processReferralReward(referredOrgId: string) {
     const basePrice = referral.referredOrg.customPricing ?? null
     if (!basePrice) {
       // Buscar o tier atual para calcular base price
+      // isolamento: referredOrgId comes from a payment provider webhook whose signature was checked
       const org = await prisma.organization.findUnique({
         where: { id: referredOrgId },
         select: { tier: true },
@@ -104,6 +106,7 @@ async function processReferralReward(referredOrgId: string) {
       if (org && org.tier !== 'FREE') {
         const prices: Record<string, number> = { STARTER: 67, PRO: 147, BUSINESS: 397 }
         const discountedPrice = (prices[org.tier] || 67) * 0.80
+        // isolamento: referredOrgId comes from a payment provider webhook whose signature was checked
         await prisma.organization.update({
           where: { id: referredOrgId },
           data: {

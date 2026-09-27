@@ -306,6 +306,7 @@ Responda APENAS em JSON válido com esta estrutura:
   // A suggested meeting becomes another proposal for approval, never an automatic message
   const proxima = String(q.nextAction ?? '').toLowerCase()
   if (contato.phone && (proxima.includes('reuni') || proxima.includes('agendar'))) {
+    // isolamento: contato was loaded by (id, organizationId) in carregarAlvo
     await prisma.agentAction.create({
       data: {
         organizationId,
@@ -380,6 +381,7 @@ Responda APENAS em JSON válido:
   if (targetStage && targetStage.id !== deal.stageId) {
     const autor = action.userId || (await donoDaConta(prisma, organizationId, ctx.contato))
     await prisma.$transaction([
+      // isolamento: targetStage is one of this deal's pipeline stages; the deal was loaded by (id, organizationId) in carregarAlvo
       prisma.deal.update({ where: { id: deal.id, organizationId }, data: { stageId: targetStage.id } }),
       prisma.activity.create({
         data: {

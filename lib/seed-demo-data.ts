@@ -111,6 +111,7 @@ export async function seedDemoData(userId: string, organizationId: string) {
       demoDeals.map(async (deal, index) => {
         const stage = stages[deal.stageIndex]
 
+        // isolamento: pipeline, stage and contacts were all created just above for this organization
         const createdDeal = await prisma.deal.create({
           data: {
             title: deal.title,

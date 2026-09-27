@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
+import { carregarAcesso, escopoTarefa } from '@/lib/visibilidade'
+import { chaveDeTarefaForaDaConta } from '@/lib/tasks/chaves'
 import { checkTaskLimit } from '@/lib/entitlements'
 import { notifyTaskAssigned } from '@/lib/task-notifications'
 import { triggerTaskEvent } from '@/lib/tasks/realtime'
@@ -17,14 +19,11 @@ export async function GET(request: Request) {
       return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
-    const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
-      select: { id: true, organizationId: true, orgRole: true },
-    })
-
-    if (!user?.organizationId) {
+    const acesso = await carregarAcesso({ email: session.user.email })
+    if (!acesso) {
       return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
+    const user = { id: acesso.userId }
 
     const { searchParams } = new URL(request.url)
     const projectId = searchParams.get('projectId')
@@ -37,30 +36,10 @@ export async function GET(request: Request) {
     const dealId = searchParams.get('dealId')
     const contactId = searchParams.get('contactId')
 
+    // Organization and visibility (admins-only / private tasks) come from the one shared rule
     const where: any = {
-      organizationId: user.organizationId,
+      ...escopoTarefa(acesso),
       archived: false,
-    }
-
-    // Filtro de visibilidade:
-    // ADMINS_ONLY: só OWNER vê (MEMBER não vê)
-    // PRIVATE: só criador e assignee veem (se não for OWNER)
-    if (user.orgRole === 'MEMBER') {
-      where.AND = [
-        {
-          OR: [
-            { visibility: 'PUBLIC' },
-            // PRIVATE: é o criador ou assignee
-            { AND: [{ visibility: 'PRIVATE' }, { OR: [{ assigneeId: user.id }, { creatorId: user.id }] }] },
-            // ADMINS_ONLY: não visível para MEMBER
-          ],
-        },
-        // MEMBER só vê tasks atribuídas ou criadas por ele em PUBLIC
-        // (mantém comportamento anterior para tarefas PUBLIC)
-      ]
-    } else {
-      // OWNER/ADMIN: bloco ADMINS_ONLY visível normalmente
-      // Sem filtro extra — vê tudo
     }
 
     if (projectId) where.projectId = projectId
@@ -110,14 +89,11 @@ export async function POST(request: Request) {
       return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
-    const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
-      select: { id: true, name: true, organizationId: true },
-    })
-
-    if (!user?.organizationId) {
+    const acesso = await carregarAcesso({ email: session.user.email })
+    if (!acesso) {
       return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
+    const user = { id: acesso.userId, name: acesso.nome, organizationId: acesso.organizationId }
 
     // Verificar limite
     try {
@@ -147,12 +123,26 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Projeto e status são obrigatórios' }, { status: 400 })
     }
 
+    // The project must be in this organization, and everything else the task points to too
+    const projeto = await prisma.taskProject.findFirst({
+      where: { id: projectId, organizationId: user.organizationId },
+      select: { id: true },
+    })
+    const foraDaConta = projeto
+      ? await chaveDeTarefaForaDaConta(user.organizationId, projeto.id, { statusId, assigneeId, dealId, contactId, parentId, labelIds })
+      : 'projectId'
+    if (foraDaConta) {
+      return NextResponse.json({ error: `${foraDaConta} não encontrado` }, { status: 404 })
+    }
+
     // Obter o maior order para a coluna
+    // isolamento: project checked by the scoped lookup and statusId by chaveDeTarefaForaDaConta above
     const maxOrder = await prisma.task.aggregate({
       where: { projectId, statusId },
       _max: { order: true },
     })
 
+    // isolamento: project, status, assignee, parent, deal, contact and labels checked by chaveDeTarefaForaDaConta above
     const task = await prisma.task.create({
       data: {
         title: title.trim(),

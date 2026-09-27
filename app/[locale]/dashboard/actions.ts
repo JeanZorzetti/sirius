@@ -8,6 +8,7 @@ import { sendDealCreatedEmail, sendDealStageChangedEmail, sendUpgradeNudgeEmail,
 import { dispatchWebhookAsync } from '@/lib/webhooks/dispatcher'
 import { WEBHOOK_EVENTS } from '@/lib/webhooks/events'
 import { canCreateDeal } from '@/lib/entitlements'
+import { chaveDeNegocioForaDaConta } from '@/lib/pipeline/chaves'
 import { ERR } from '@/lib/error-messages'
 
 async function getAuthenticatedUser() {
@@ -159,7 +160,12 @@ export async function createDeal(formData: FormData) {
       return { success: false, error: 'Invalid stage' }
     }
 
+    if (await chaveDeNegocioForaDaConta(user.organizationId, stage.pipelineId, { contactId })) {
+      return { success: false, error: 'Invalid contact' }
+    }
+
     // Create deal
+    // isolamento: stage checked above; contactId checked by chaveDeNegocioForaDaConta
     const deal = await prisma.deal.create({
       data: {
         title,
@@ -275,6 +281,12 @@ export async function updateDeal(formData: FormData) {
       return { success: false, error: 'Unauthorized' }
     }
 
+    // The stage must be in the deal's pipeline, and the contact and product in the organization
+    const foraDaConta = await chaveDeNegocioForaDaConta(user.organizationId, existingDeal.pipelineId, { stageId, contactId, productId })
+    if (foraDaConta) {
+      return { success: false, error: `Invalid ${foraDaConta}` }
+    }
+
     const value = valueStr ? parseFloat(valueStr) : null
     const closeDate = closeDateStr ? new Date(closeDateStr) : null
     const dueDate = dueDateStr ? new Date(dueDateStr) : null
@@ -286,6 +298,7 @@ export async function updateDeal(formData: FormData) {
     const valueChanged = oldValue !== value
     const oldStageName = existingDeal.stage.name
 
+    // isolamento: stageId, contactId and productId checked by chaveDeNegocioForaDaConta above
     const updatedDeal = await prisma.deal.update({
       where: { id: dealId },
       data: {

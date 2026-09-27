@@ -772,6 +772,7 @@ export async function checkTaskLimit(
 export async function checkTaskStatusLimit(
   projectId: string
 ): Promise<void> {
+  // isolamento: the route checks the project with projetoDoPedido (organization + role) before asking the limit
   const project = await prisma.taskProject.findUnique({
     where: { id: projectId },
     select: {
@@ -790,6 +791,7 @@ export async function checkTaskStatusLimit(
     return
   }
 
+  // isolamento: projectId already checked by the route (projetoDoPedido)
   const statusCount = await prisma.taskStatus.count({
     where: { projectId },
   })

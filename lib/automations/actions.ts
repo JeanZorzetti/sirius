@@ -218,6 +218,7 @@ async function handleCreateTask(
       _max: { order: true },
     })
 
+    // isolamento: dealId/contactId/userId come from executeDealAutomations, only called with a deal loaded inside its organization (API v1 scoped routes, deal-idle cron)
     await prisma.task.create({
       data: {
         title: taskTitle,
@@ -242,6 +243,7 @@ async function handleCreateTask(
     throw new Error('No dealId in context for legacy CREATE_TASK action (and no taskProjectId configured)')
   }
 
+  // isolamento: dealId/contactId/userId come from executeDealAutomations, only called with a deal loaded inside its organization (API v1 scoped routes, deal-idle cron)
   await prisma.note.create({
     data: {
       content: `[TAREFA] ${taskTitle}`,
@@ -271,10 +273,13 @@ async function handleAddTag(
   }
 
   // Fetch the deal to find the contactId
-  const deal = await prisma.deal.findUnique({
-    where: { id: dealId },
+  const deal = await prisma.deal.findFirst({
+    where: { id: dealId, organizationId },
     select: { contactId: true }
   })
+  if (!deal) {
+    throw new Error('Deal not found in organization for ADD_TAG action')
+  }
 
   // Upsert the tag (find or create by name within org)
   const tag = await prisma.tag.upsert({

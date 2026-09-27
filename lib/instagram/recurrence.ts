@@ -1,9 +1,11 @@
 import { prisma } from '@/lib/prisma'
 
 export async function createNextRecurrenceChild(parentId: string): Promise<void> {
+  // isolamento: parentId comes from the instagram-poster cron, read from the database; children copy the parent's organizationId
   const parent = await prisma.instagramPost.findUnique({ where: { id: parentId } })
   if (!parent || !parent.recurrenceRule) return
 
+  // isolamento: parentId comes from the instagram-poster cron, read from the database
   const childrenCount = await prisma.instagramPost.count({ where: { recurrenceParentId: parentId } })
   if (childrenCount >= 100) return
 
@@ -18,6 +20,7 @@ export async function createNextRecurrenceChild(parentId: string): Promise<void>
 
   if (parent.recurrenceEndDate && next > parent.recurrenceEndDate) return
 
+  // isolamento: the child copies organizationId from the parent read above
   await prisma.instagramPost.create({
     data: {
       organizationId: parent.organizationId,

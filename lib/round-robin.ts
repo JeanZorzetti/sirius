@@ -149,8 +149,9 @@ export async function distributeLead(
     })
 
     // Atribuir lead ao usuário
+    // isolamento: assignedUserId is one of this organization's round-robin users; the contact is scoped by organizationId
     await prisma.contact.update({
-      where: { id: leadId },
+      where: { id: leadId, organizationId },
       data: { assignedToId: assignedUserId },
     })
 

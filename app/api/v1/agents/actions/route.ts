@@ -68,13 +68,14 @@ export async function POST(request: NextRequest) {
       // Determine status based on confidence threshold
       const actionStatus = status || (confidence >= 0.7 ? 'SUCCESS' : 'NEEDS_APPROVAL')
 
+      // isolamento: entidadeDaConta was loaded above by (id, organizationId) — Deal or Contact
       const action = await prisma.agentAction.create({
         data: {
           organizationId: context.organizationId,
           agentName,
           actionType,
           entityType,
-          entityId,
+          entityId: entidadeDaConta.id,
           reasoning,
           confidence,
           input,

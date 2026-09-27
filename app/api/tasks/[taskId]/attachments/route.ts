@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { getSession } from '@/lib/auth'
+import { tarefaDoPedido } from '@/lib/visibilidade'
 import { apiError } from '@/lib/api-error'
 import { ERR } from '@/lib/error-messages'
 import { S3Client, PutObjectCommand, DeleteObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3'
@@ -34,11 +34,9 @@ export async function GET(
   _request: Request,
   { params }: { params: Promise<{ taskId: string }> }
 ) {
-  const { taskId } = await params
-  const session = await getSession()
-  if (!session?.user?.email) {
-    return await apiError(ERR.UNAUTHORIZED, 401)
-  }
+  const pedido = await tarefaDoPedido((await params).taskId)
+  if (pedido instanceof Response) return pedido
+  const { taskId } = pedido
 
   const attachments = await prisma.taskAttachment.findMany({
     where: { taskId },
@@ -66,17 +64,9 @@ export async function POST(
   request: Request,
   { params }: { params: Promise<{ taskId: string }> }
 ) {
-  const { taskId } = await params
-  const session = await getSession()
-  if (!session?.user?.email) {
-    return await apiError(ERR.UNAUTHORIZED, 401)
-  }
-
-  const user = await prisma.user.findUnique({ where: { email: session.user.email } })
-  if (!user) return await apiError(ERR.USER_NOT_FOUND, 404)
-
-  const task = await prisma.task.findUnique({ where: { id: taskId } })
-  if (!task) return await apiError(ERR.NOT_FOUND, 404)
+  const pedido = await tarefaDoPedido((await params).taskId)
+  if (pedido instanceof Response) return pedido
+  const { taskId, acesso } = pedido
 
   const formData = await request.formData()
   const file = formData.get('file') as File | null
@@ -87,7 +77,7 @@ export async function POST(
 
   const buffer = Buffer.from(await file.arrayBuffer())
   const ext = file.name.split('.').pop() || 'bin'
-  const storageKey = `tasks/${task.organizationId}/${taskId}/${randomUUID()}.${ext}`
+  const storageKey = `tasks/${acesso.organizationId}/${taskId}/${randomUUID()}.${ext}`
 
   const client = getS3Client()
   await client.send(
@@ -107,7 +97,7 @@ export async function POST(
       mimeType: file.type || 'application/octet-stream',
       storageKey,
       taskId,
-      uploadedById: user.id,
+      uploadedById: acesso.userId,
     },
     include: { uploadedBy: { select: { id: true, name: true, email: true } } },
   })
@@ -126,11 +116,9 @@ export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ taskId: string }> }
 ) {
-  const { taskId } = await params
-  const session = await getSession()
-  if (!session?.user?.email) {
-    return await apiError(ERR.UNAUTHORIZED, 401)
-  }
+  const pedido = await tarefaDoPedido((await params).taskId)
+  if (pedido instanceof Response) return pedido
+  const { taskId } = pedido
 
   const { searchParams } = new URL(request.url)
   const id = searchParams.get('id')
@@ -141,7 +129,7 @@ export async function DELETE(
 
   const client = getS3Client()
   await client.send(new DeleteObjectCommand({ Bucket: BUCKET, Key: attachment.storageKey }))
-  await prisma.taskAttachment.delete({ where: { id } })
+  await prisma.taskAttachment.delete({ where: { id: attachment.id } })
 
   return NextResponse.json({ ok: true })
 }

@@ -101,7 +101,7 @@ export async function GET() {
         orderBy: { updatedAt: 'desc' },
       }),
       prisma.chatConversation.findMany({
-        where: { contactId: { in: contactIds } },
+        where: { contactId: { in: contactIds }, organizationId: user.organizationId },
         include: {
           assignedUser: {
             select: { id: true, name: true, email: true }

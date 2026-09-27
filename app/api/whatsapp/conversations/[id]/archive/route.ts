@@ -27,15 +27,21 @@ export async function PUT(
     const resolvedParams = await params
     const contactId = resolvedParams.id
 
+    // The conversation belongs to a contact of this organization, or nothing is changed
+    const contato = await prisma.contact.findFirst({ where: { id: contactId, organizationId: user.organizationId }, select: { id: true } })
+    if (!contato) {
+      return NextResponse.json({ error: 'Contact not found' }, { status: 404 })
+    }
+
     const { isArchived } = await request.json()
 
     // Update or create conversation
     const conversation = await prisma.chatConversation.upsert({
       where: {
-        contactId,
+        contactId: contato.id,
       },
       create: {
-        contactId,
+        contactId: contato.id,
         organizationId: user.organizationId,
         isArchived,
       },

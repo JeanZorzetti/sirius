@@ -332,6 +332,7 @@ async function downloadAndCacheWabaMedia({
       mimetype: mimeType,
     })
 
+    // isolamento: messageDbId is the message this webhook saved a moment ago for this organization
     await prismaWa.whatsAppMessage.update({
       where: { id: messageDbId },
       data: { mediaUrl: key, mediaType },

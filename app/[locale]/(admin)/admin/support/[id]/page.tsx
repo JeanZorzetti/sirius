@@ -1,3 +1,4 @@
+// isolamento-arquivo: ROI Labs staff panel (guarded by staff checks below); it reads and acts across organizations by definition
 import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import { getSession } from '@/lib/auth'

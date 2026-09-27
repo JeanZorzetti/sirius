@@ -37,7 +37,10 @@ export async function POST(request: NextRequest) {
     }
 
     if (action === 'logout' && sessionId) {
-      const existing = await prisma.accessSession.findUnique({ where: { id: sessionId } })
+      // Only the caller's own session can be closed
+      const existing = await prisma.accessSession.findFirst({
+        where: { id: sessionId, userId: user.id, organizationId: user.organizationId },
+      })
       if (existing && !existing.logoutAt) {
         const durationS = Math.round((Date.now() - existing.loginAt.getTime()) / 1000)
         await prisma.accessSession.update({

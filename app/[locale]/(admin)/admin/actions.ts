@@ -1,4 +1,5 @@
 'use server'
+// isolamento-arquivo: ROI Labs staff panel (guarded by staff checks below); it reads and acts across organizations by definition
 
 import logger from '@/lib/logger'
 import { prisma } from "@/lib/prisma"

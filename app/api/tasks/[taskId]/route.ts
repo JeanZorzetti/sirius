@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
+import { carregarAcesso, escopoTarefa } from '@/lib/visibilidade'
+import { chaveDeTarefaForaDaConta } from '@/lib/tasks/chaves'
 import { notifyTaskAssigned, notifyTaskCompleted } from '@/lib/task-notifications'
 import { triggerTaskEvent } from '@/lib/tasks/realtime'
 import { executeTaskAutomations } from '@/lib/automations/task-engine'
@@ -45,37 +47,19 @@ export async function GET(
       return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
-    const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
-      select: { id: true, organizationId: true, orgRole: true },
-    })
-
-    if (!user?.organizationId) {
+    const acesso = await carregarAcesso({ email: session.user.email })
+    if (!acesso) {
       return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
 
+    // Organization and visibility (admins-only / private) in one query: a task the caller can't see is not found
     const task = await prisma.task.findFirst({
-      where: { id: taskId, organizationId: user.organizationId },
+      where: { id: taskId, ...escopoTarefa(acesso) },
       include: taskInclude,
     })
 
     if (!task) {
       return await apiError(ERR.NOT_FOUND, 404)
-    }
-
-    // Checar acesso por visibilidade (campo pode não existir em deploys antigos)
-    const visibility = (task as any).visibility ?? 'PUBLIC'
-    if (user.orgRole === 'MEMBER') {
-      if (visibility === 'ADMINS_ONLY') {
-        return await apiError(ERR.FORBIDDEN, 403)
-      }
-      if (
-        visibility === 'PRIVATE' &&
-        task.creatorId !== user.id &&
-        task.assigneeId !== user.id
-      ) {
-        return await apiError(ERR.FORBIDDEN, 403)
-      }
     }
 
     return NextResponse.json(task)
@@ -97,37 +81,19 @@ export async function PATCH(
       return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
-    const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
-      select: { id: true, name: true, organizationId: true, orgRole: true },
-    })
-
-    if (!user?.organizationId) {
+    const acesso = await carregarAcesso({ email: session.user.email })
+    if (!acesso) {
       return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
+    const user = { id: acesso.userId, name: acesso.nome, organizationId: acesso.organizationId }
 
     const existing = await prisma.task.findFirst({
-      where: { id: taskId, organizationId: user.organizationId },
+      where: { id: taskId, ...escopoTarefa(acesso) },
       include: { status: true, assignee: { select: { id: true, name: true } } },
     })
 
     if (!existing) {
       return await apiError(ERR.NOT_FOUND, 404)
-    }
-
-    // Checar acesso por visibilidade (campo pode não existir em deploys antigos)
-    const taskVisibility = (existing as any).visibility ?? 'PUBLIC'
-    if (user.orgRole === 'MEMBER') {
-      if (taskVisibility === 'ADMINS_ONLY') {
-        return await apiError(ERR.FORBIDDEN, 403)
-      }
-      if (
-        taskVisibility === 'PRIVATE' &&
-        existing.creatorId !== user.id &&
-        existing.assigneeId !== user.id
-      ) {
-        return await apiError(ERR.FORBIDDEN, 403)
-      }
     }
 
     const body = await request.json()
@@ -136,6 +102,14 @@ export async function PATCH(
       dueDate, startDate, estimatedMinutes, order,
       dealId, contactId, labelIds, archived, visibility,
     } = body
+
+    // Everything the task points to must be in this organization (statuses and labels in this project)
+    const foraDaConta = await chaveDeTarefaForaDaConta(acesso.organizationId, existing.projectId, {
+      statusId, assigneeId, dealId, contactId, labelIds,
+    })
+    if (foraDaConta) {
+      return NextResponse.json({ error: `${foraDaConta} não encontrado` }, { status: 404 })
+    }
 
     // Preparar dados de update
     const data: any = {}
@@ -155,8 +129,8 @@ export async function PATCH(
 
     // Marcar como completado se mudou para status DONE
     if (statusId && statusId !== existing.statusId) {
-      const newStatus = await prisma.taskStatus.findUnique({
-        where: { id: statusId },
+      const newStatus = await prisma.taskStatus.findFirst({
+        where: { id: statusId, projectId: existing.projectId, project: { organizationId: acesso.organizationId } },
       })
       if (newStatus?.type === 'DONE' && !existing.completedAt) {
         data.completedAt = new Date()
@@ -288,17 +262,14 @@ export async function DELETE(
       return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
-    const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
-      select: { organizationId: true },
-    })
-
-    if (!user?.organizationId) {
+    const acesso = await carregarAcesso({ email: session.user.email })
+    if (!acesso) {
       return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
+    const user = { organizationId: acesso.organizationId }
 
     const existing = await prisma.task.findFirst({
-      where: { id: taskId, organizationId: user.organizationId },
+      where: { id: taskId, ...escopoTarefa(acesso) },
     })
 
     if (!existing) {

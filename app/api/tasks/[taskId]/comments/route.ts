@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { getSession } from '@/lib/auth'
+import { tarefaDoPedido } from '@/lib/visibilidade'
 import { notifyTaskCommented } from '@/lib/task-notifications'
 import { triggerTaskEvent } from '@/lib/tasks/realtime'
 import logger from '@/lib/logger'
@@ -13,11 +13,9 @@ export async function GET(
   { params }: { params: Promise<{ taskId: string }> }
 ) {
   try {
-    const { taskId } = await params
-    const session = await getSession()
-    if (!session?.user?.email) {
-      return await apiError(ERR.UNAUTHORIZED, 401)
-    }
+    const pedido = await tarefaDoPedido((await params).taskId)
+    if (pedido instanceof Response) return pedido
+    const { taskId } = pedido
 
     const comments = await prisma.taskComment.findMany({
       where: { taskId },
@@ -40,20 +38,10 @@ export async function POST(
   { params }: { params: Promise<{ taskId: string }> }
 ) {
   try {
-    const { taskId } = await params
-    const session = await getSession()
-    if (!session?.user?.email) {
-      return await apiError(ERR.UNAUTHORIZED, 401)
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
-      select: { id: true, name: true, organizationId: true },
-    })
-
-    if (!user?.organizationId) {
-      return await apiError(ERR.ORG_NOT_FOUND, 404)
-    }
+    const pedido = await tarefaDoPedido((await params).taskId)
+    if (pedido instanceof Response) return pedido
+    const { taskId, acesso } = pedido
+    const user = { id: acesso.userId, name: acesso.nome, organizationId: acesso.organizationId }
 
     const body = await request.json()
     const { content } = body

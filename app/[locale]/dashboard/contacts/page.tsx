@@ -127,6 +127,7 @@ async function ContactsData({ orgId }: { orgId: string }) {
     }).catch(() => [] as any[])
 
     // DealClosings — busca por contactId desnormalizado (sobrevive à exclusão do deal)
+    // isolamento: contact ids come from this organization's contact list loaded above
     const allClosings = await (prisma.dealClosing as any).findMany({
         where: {
             contactId: {

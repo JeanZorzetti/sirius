@@ -1,3 +1,4 @@
+// isolamento-arquivo: ROI Labs staff panel (guarded by staff checks below); it reads and acts across organizations by definition
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'

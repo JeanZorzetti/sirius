@@ -86,7 +86,7 @@ export async function GET(
 
       // Fetch WhatsApp messages linked to this deal or its contact
       let whatsappMessages: any[] = []
-      const whatsappWhere: any = { OR: [] }
+      const whatsappWhere: any = { organizationId: context.organizationId, OR: [] }
       if (deal.id) whatsappWhere.OR.push({ dealId: deal.id })
       if (deal.contact?.id) whatsappWhere.OR.push({ contactId: deal.contact.id })
 

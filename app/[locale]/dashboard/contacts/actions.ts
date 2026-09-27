@@ -7,6 +7,7 @@ import { getSession } from '@/lib/auth'
 import { dispatchWebhookAsync } from '@/lib/webhooks/dispatcher'
 import { WEBHOOK_EVENTS } from '@/lib/webhooks/events'
 import { canCreateContact } from '@/lib/entitlements'
+import { usuarioForaDaConta } from '@/lib/pipeline/chaves'
 
 function errMessage(error: unknown): string {
     return error instanceof Error ? error.message : String(error)
@@ -95,6 +96,11 @@ export async function createContact(formData: FormData) {
         }
 
         const assignedToId = formData.get('assignedToId') as string
+        if (assignedToId && assignedToId !== 'none' && await usuarioForaDaConta(user.organizationId, assignedToId)) {
+            return { success: false, error: 'Responsável não encontrado.' }
+        }
+
+        // isolamento: assignedToId checked by usuarioForaDaConta above
 
         const contact = await prisma.contact.create({
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -170,6 +176,9 @@ export async function updateContact(contactId: string, formData: FormData) {
         const complement = formData.get('complement') as string
         const status = formData.get('status') as string
         const assignedToId = formData.get('assignedToId') as string
+        if (assignedToId && assignedToId !== 'none' && await usuarioForaDaConta(user.organizationId, assignedToId)) {
+            return { success: false, error: 'Responsável não encontrado.' }
+        }
         const observations = formData.get('observations') as string
         const document = formData.get('document') as string
         const segment = formData.get('segment') as string
@@ -206,6 +215,8 @@ export async function updateContact(contactId: string, formData: FormData) {
                 return { success: false, error: 'Já existe um contato com este email.' }
             }
         }
+
+        // isolamento: assignedToId checked by usuarioForaDaConta above
 
         const contact = await prisma.contact.update({
             where: { id: contactId },
@@ -294,7 +305,7 @@ export async function bulkDeleteContacts(contactIds: string[]) {
 
         // Check for linked deals
         const dealsCount = await prisma.deal.count({
-            where: { contactId: { in: contactIds } }
+            where: { contactId: { in: contacts.map((c) => c.id) }, organizationId: user.organizationId }
         })
 
         if (dealsCount > 0) {
@@ -466,6 +477,8 @@ export async function removeContactClosing(closingId: string) {
         const user = await getAuthenticatedUser()
         if (!user) return { success: false, error: 'Unauthorized' }
 
+        // isolamento: DealClosing has no organization column yet; the organization is checked below through the deal or,
+        // when the deal was deleted, through the contact
         const closing = await prisma.dealClosing.findUnique({
             where: { id: closingId },
             include: {
@@ -487,6 +500,7 @@ export async function removeContactClosing(closingId: string) {
             return { success: false, error: 'Sem permissão para remover este fechamento.' }
         }
 
+        // isolamento: organization checked above (orgId !== user.organizationId returns early)
         await prisma.dealClosing.delete({ where: { id: closingId } })
 
         revalidatePath('/dashboard/contacts')

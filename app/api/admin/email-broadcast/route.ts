@@ -1,3 +1,4 @@
+// isolamento-arquivo: ROI Labs staff panel (guarded by staff checks below); it reads and acts across organizations by definition
 /**
  * POST /api/admin/email-broadcast
  * Admin-only: send WhatsApp migration notice to all paying orgs (Starter/Pro/Business)

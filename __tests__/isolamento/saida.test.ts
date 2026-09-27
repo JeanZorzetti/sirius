@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeAll } from 'vitest'
 
 vi.mock('@/lib/prisma', () => ({ prisma: {} }))
 vi.mock('@/lib/email', () => ({ sendHtmlEmail: vi.fn() }))
@@ -10,6 +10,9 @@ import { executeActions } from '@/lib/automations/actions'
 const webhook = (webhookUrl: string) => [{ type: 'SEND_WEBHOOK', config: { webhookUrl } }] as never
 
 describe('SEND_WEBHOOK de automação', () => {
+  // undici is loaded on the first outbound call; under the parallel full run that cold import alone can pass 5 s
+  beforeAll(async () => { await import('undici') }, 60_000)
+
   it.each([
     'http://127.0.0.1:5432/',
     'https://127.0.0.1/',

@@ -57,7 +57,8 @@ export async function GET(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
     try {
         const session = await getSession();
-        if (!session?.user) {
+        // undefined in a Prisma filter means 'no filter': a session without an organization is refused
+        if (!session?.user?.organizationId) {
             return await apiError(ERR.UNAUTHORIZED, 401)
         }
 
@@ -69,9 +70,9 @@ export async function PATCH(req: NextRequest) {
         }
 
         if (action === 'apply') {
-            await markInsightAsApplied(insightId);
+            await markInsightAsApplied(insightId, session.user.organizationId);
         } else if (action === 'dismiss') {
-            await dismissInsight(insightId);
+            await dismissInsight(insightId, session.user.organizationId);
         } else {
             return await apiError(ERR.INVALID_INPUT, 400)
         }

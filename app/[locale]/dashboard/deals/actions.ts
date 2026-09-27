@@ -6,7 +6,6 @@ import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 import { dispatchWebhookAsync } from "@/lib/webhooks/dispatcher"
 import { WEBHOOK_EVENTS } from "@/lib/webhooks/events"
-import { executeDealAutomations } from "@/lib/automations/engine"
 
 async function checkPermission() {
     const session = await getSession()
@@ -82,6 +81,9 @@ export async function addNote(dealId: string, content: string) {
 
     if (!content) throw new Error("Content is empty")
 
+    const deal = await prisma.deal.findFirst({ where: { id: dealId, organizationId: user.organizationId }, select: { id: true } })
+    if (!deal) throw new Error("Deal not found")
+
     const note = await prisma.note.create({
         data: {
             content,
@@ -119,81 +121,10 @@ export async function addNote(dealId: string, content: string) {
     return note
 }
 
-export async function updateDealStage(dealId: string, stageId: string) {
-    const user = await checkPermission()
-
-    const deal = await prisma.deal.findUnique({ where: { id: dealId }, include: { stage: true } })
-    if (!deal) throw new Error("Deal not found")
-
-    const oldStageName = deal.stage.name
-
-    const newStage = await prisma.pipelineStage.findUnique({ where: { id: stageId } })
-    if (!newStage) throw new Error("Stage not found")
-
-    await prisma.deal.update({
-        where: { id: dealId },
-        data: { stageId }
-    })
-
-    await prisma.activity.create({
-        data: {
-            type: "STAGE_CHANGE",
-            description: `Moveu de "${oldStageName}" para "${newStage.name}"`,
-            dealId,
-            userId: user.id
-        }
-    })
-
-    // Fire-and-forget automation triggers
-    const automationContext = {
-        organizationId: deal.organizationId,
-        value: deal.value ? Number(deal.value) : 0,
-        stageId: stageId,
-        pipelineId: deal.pipelineId,
-        title: deal.title,
-        userId: deal.userId
-    }
-
-    executeDealAutomations(dealId, 'DEAL_MOVED', automationContext).catch(() => {})
-
-    const newStageName = newStage.name.toLowerCase()
-    if (newStageName.includes('ganho') || newStageName.includes('won') || newStageName.includes('fechado')) {
-        executeDealAutomations(dealId, 'DEAL_WON', automationContext).catch(() => {})
-    }
-    if (newStageName.includes('perdido') || newStageName.includes('lost') || newStageName.includes('cancelado')) {
-        executeDealAutomations(dealId, 'DEAL_LOST', automationContext).catch(() => {})
-    }
-
-    revalidatePath("/dashboard")
-}
-
-export async function updateDealValue(dealId: string, value: number) {
-    const user = await checkPermission()
-
-    const deal = await prisma.deal.findUnique({ where: { id: dealId } })
-    if (!deal) throw new Error("Deal not found")
-
-    await prisma.deal.update({
-        where: { id: dealId },
-        data: { value }
-    })
-
-    await prisma.activity.create({
-        data: {
-            type: "VALUE_CHANGE",
-            description: `Alterou valor para R$ ${value}`,
-            dealId,
-            userId: user.id
-        }
-    })
-
-    revalidatePath("/dashboard")
-}
-
 export async function deleteNote(noteId: string) {
     const user = await checkPermission()
 
-    const note = await prisma.note.findUnique({ where: { id: noteId } })
+    const note = await prisma.note.findFirst({ where: { id: noteId, deal: { organizationId: user.organizationId } } })
     if (!note) throw new Error("Note not found")
 
     if (note.userId !== user.id) {
@@ -216,14 +147,14 @@ export async function addDealClosing(dealId: string, date: string, value: number
     let productName: string | null = null
     let resolvedProductId: string | null = null
     if (productId && productId !== 'none') {
-        const product = await (prisma.product as any).findUnique({
-            where: { id: productId },
+        // A product from another organization is refused with the whole closing
+        const product = await prisma.product.findFirst({
+            where: { id: productId, organizationId: user.organizationId },
             select: { id: true, name: true },
         })
-        if (product && product.organizationId !== undefined || product) {
-            resolvedProductId = product?.id ?? null
-            productName = product?.name ?? null
-        }
+        if (!product) throw new Error("Product not found")
+        resolvedProductId = product.id
+        productName = product.name
     }
 
     // Parse "YYYY-MM-DD" from <input type="date"> as a local date (noon) to avoid
@@ -231,6 +162,7 @@ export async function addDealClosing(dealId: string, date: string, value: number
     const [cy, cm, cd] = date.split('-').map(Number)
     const closingDate = (cy && cm && cd) ? new Date(cy, cm - 1, cd, 12, 0, 0) : new Date(date)
 
+    // isolamento: the deal was checked against the organization above and productId by the scoped product lookup
     const closing = await (prisma.dealClosing as any).create({
         data: {
             dealId,
@@ -332,11 +264,18 @@ export async function reorderDeals(stageId: string, dealOrders: { id: string, or
         throw new Error("Unauthorized")
     }
 
+    // Every deal in the list must be in the caller's organization, or nothing is reordered
+    const ids = [...new Set(dealOrders.map(({ id }) => id))]
+    const daConta = await prisma.deal.count({ where: { id: { in: ids }, organizationId: user.organizationId } })
+    if (daConta !== ids.length) {
+        throw new Error("Unauthorized")
+    }
+
     // Update each deal's order
     await prisma.$transaction(
         dealOrders.map(({ id, order }) =>
-            prisma.deal.update({
-                where: { id },
+            prisma.deal.updateMany({
+                where: { id, organizationId: user.organizationId },
                 data: { order }
             })
         )

@@ -1,5 +1,6 @@
 import { DashboardTabs } from "./dashboard-tabs"
 import { prisma } from "@/lib/prisma"
+import { carregarAcesso, escopoNegocio, escopoPipeline } from "@/lib/visibilidade"
 
 function normalize(str: string) {
   return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
@@ -22,32 +23,19 @@ export async function DashboardTabsWrapper({
   csearch,
   buscas,
 }: DashboardTabsWrapperProps) {
-  // Use raw query to avoid crash if canViewDealClosings column hasn't been migrated yet
-  let canViewClosings = true
-  let pipelineRestricted = false
-  let allowedPipelineIds: string[] = []
-  try {
-    const rows = await prisma.$queryRaw<{ canViewDealClosings: boolean; pipelineRestricted: boolean; allowedPipelineIds: string[] }[]>`
-      SELECT "canViewDealClosings", "pipelineRestricted", "allowedPipelineIds" FROM "User" WHERE id = ${userId} LIMIT 1
-    `
-    if (rows.length > 0) {
-      canViewClosings = rows[0].canViewDealClosings ?? true
-      pipelineRestricted = rows[0].pipelineRestricted ?? false
-      allowedPipelineIds = rows[0].allowedPipelineIds ?? []
-    }
-  } catch {
-    // Column doesn't exist yet — default to no restriction
-  }
-
-  // Build pipeline filter based on user permissions
-  const pipelineFilter = pipelineRestricted
-    ? { organizationId, id: { in: allowedPipelineIds } }
-    : { organizationId }
+  // Who sees which pipelines comes from the one shared rule (lib/visibilidade)
+  const [acesso, permissoes] = await Promise.all([
+    carregarAcesso({ id: userId }),
+    prisma.user.findUnique({ where: { id: userId }, select: { canViewDealClosings: true } }),
+  ])
+  if (!acesso || acesso.organizationId !== organizationId) throw new Error('Unauthorized')
+  const canViewClosings = permissoes?.canViewDealClosings ?? true
+  const negociosVisiveis = escopoNegocio(acesso)
 
   // Fetch tudo em queries planas para evitar INSUFFICIENT_PATH com include aninhado
   const [rawPipelines, rawStages, rawDeals, dealContacts, contacts, stageMoves, organization] = await Promise.all([
     prisma.pipeline.findMany({
-      where: pipelineFilter,
+      where: escopoPipeline(acesso),
       include: {
         _count: {
           select: {
@@ -60,17 +48,14 @@ export async function DashboardTabsWrapper({
     }),
     // Stages SEM deals — evita o include triplo que causa INSUFFICIENT_PATH
     prisma.pipelineStage.findMany({
-      where: pipelineRestricted
-        ? { organizationId, pipelineId: { in: allowedPipelineIds } }
-        : { organizationId },
+      where: { organizationId, pipeline: escopoPipeline(acesso) },
       include: { pipeline: true },
       orderBy: { order: "asc" },
     }),
     // Deals em query separada
     prisma.deal.findMany({
       where: {
-        organizationId,
-        ...(pipelineRestricted ? { pipelineId: { in: allowedPipelineIds } } : {}),
+        ...negociosVisiveis,
         ...(vsearch ? { value: { equals: Number(vsearch) } as any } : {}),
       },
       select: {
@@ -123,7 +108,7 @@ export async function DashboardTabsWrapper({
     // When each deal entered its current stage (spec 009): the last STAGE_CHANGE, else its creation
     prisma.activity.groupBy({
       by: ["dealId"],
-      where: { type: "STAGE_CHANGE", deal: { organizationId } },
+      where: { type: "STAGE_CHANGE", deal: negociosVisiveis },
       _max: { createdAt: true },
     }),
     prisma.organization.findUnique({ where: { id: organizationId }, select: { createdAt: true } }),
