@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSession } from "@/lib/auth";
+import { autorizarExportacao, registrarExportacao } from "@/lib/exportacao";
 import { prisma } from "@/lib/prisma";
 import { generateTablePDF } from "@/lib/pdf-generator";
 import { formatContactsForExport } from "@/lib/xlsx-export";
@@ -9,11 +9,10 @@ import { ERR } from "@/lib/error-messages";
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await getSession();
-
-    if (!session?.user) {
-      return await apiError(ERR.UNAUTHORIZED, 401, { req: request });
-    }
+    // Owner and manager only; every export goes to the audit log (spec 011)
+    const quem = await autorizarExportacao();
+    if (quem instanceof Response) return quem;
+    const session = { user: { id: quem.acesso.userId } };
 
     logger.info({
       msg: "Exportando contatos para PDF",
@@ -23,7 +22,7 @@ export async function GET(request: NextRequest) {
     // Buscar contatos da organização
     const contacts = await prisma.contact.findMany({
       where: {
-        organizationId: session.user.organizationId,
+        organizationId: quem.acesso.organizationId,
       },
       orderBy: {
         createdAt: "desc",
@@ -43,6 +42,8 @@ export async function GET(request: NextRequest) {
     });
 
     // Retornar arquivo
+    await registrarExportacao(quem, 'contatos', 'pdf', contacts.length, request);
+
     return new NextResponse(new Uint8Array(buffer), {
       headers: {
         "Content-Type": "application/pdf",

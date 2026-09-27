@@ -41,6 +41,8 @@ interface DashboardTabsProps {
   userName: string
   organizationId: string
   canViewClosings?: boolean
+  /** Only the owner and the manager export the base (spec 011) */
+  podeExportar?: boolean
   /** The value and contact searches, rendered by the page (server) into the top row */
   buscas?: React.ReactNode
 }
@@ -53,6 +55,7 @@ export function DashboardTabs({
   userName,
   organizationId,
   canViewClosings = true,
+  podeExportar = false,
   buscas,
 }: DashboardTabsProps) {
   const router = useRouter()
@@ -168,7 +171,7 @@ export function DashboardTabs({
           />
           <div className="flex items-center gap-2">
             {buscas}
-            <ExportButtons resourceType="deals" disabled={!hasAnyDeals} />
+            {podeExportar && <ExportButtons resourceType="deals" disabled={!hasAnyDeals} />}
             <CreateDealDialog
               stages={filteredStages}
               contacts={contacts}

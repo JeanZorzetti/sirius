@@ -17,6 +17,7 @@ import { ValueSearch } from './value-search';
 import { ContactSearch } from './contact-search';
 import { StageChartFilter } from './stage-chart-filter';
 import { getTranslations } from 'next-intl/server';
+import { carregarAcesso, escopoPipeline } from '@/lib/visibilidade';
 
 export const metadata = { title: "Analytics | Sirius CRM" }
 
@@ -36,18 +37,15 @@ export default async function AnalyticsPage({
 
   const { from, to, mfrom, mto, ctop, csort, pid, vsearch, csearch, sfrom, sto } = await searchParams;
 
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
-    select: { organizationId: true }
-  })
-
-  if (!user || !user.organizationId) {
+  const acesso = await carregarAcesso({ email: session.user.email })
+  if (!acesso) {
     return <div>{t('errors.userNoOrg')}</div>
   }
+  const user = { organizationId: acesso.organizationId }
 
-  // Pipelines disponíveis para o filtro
+  // Pipelines the user may see (a restricted seller only gets theirs)
   const pipelines = await prisma.pipeline.findMany({
-    where: { organizationId: user.organizationId },
+    where: escopoPipeline(acesso),
     select: { id: true, name: true, isDefault: true },
     orderBy: [{ isDefault: 'desc' }, { name: 'asc' }],
   })
@@ -55,8 +53,11 @@ export default async function AnalyticsPage({
   // Pipeline filter — multi-select (comma-separated IDs)
   // Default: Pipeline Principal (isDefault: true) when nothing is selected
   const defaultPipeline = pipelines.find(p => p.isDefault) ?? pipelines[0]
-  const selectedPids = pid ? pid.split(',').filter(Boolean) : (defaultPipeline ? [defaultPipeline.id] : [])
-  const pipelineFilter = selectedPids.length > 0 ? { pipelineId: { in: selectedPids } } : {}
+  // Only visible pipelines count, whatever the URL asks for; with none selected, all visible ones (never "no filter")
+  const visiveis = pipelines.map(p => p.id)
+  const pedidos = pid ? pid.split(',').filter(Boolean) : (defaultPipeline ? [defaultPipeline.id] : [])
+  const selectedPids = pedidos.filter(id => visiveis.includes(id))
+  const pipelineFilter = { pipelineId: { in: selectedPids.length > 0 ? selectedPids : visiveis } }
 
   // Exact value search
   const valueSearchFilter = vsearch ? { value: { equals: Number(vsearch) } as any } : {}
@@ -159,7 +160,7 @@ export default async function AnalyticsPage({
     where: {
       deal: {
         organizationId: user.organizationId,
-        ...(selectedPids.length > 0 ? { pipelineId: { in: selectedPids } } : {}),
+        ...pipelineFilter,
       },
       date: { gte: mStartDate, lte: mEndDate },
     },
@@ -171,7 +172,7 @@ export default async function AnalyticsPage({
     where: {
       deal: {
         organizationId: user.organizationId,
-        ...(selectedPids.length > 0 ? { pipelineId: { in: selectedPids } } : {}),
+        ...pipelineFilter,
       },
       ...(isFiltered ? { date: closeDateFilter } : {}),
     },

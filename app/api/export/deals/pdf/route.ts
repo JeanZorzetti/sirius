@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSession } from "@/lib/auth";
+import { autorizarExportacao, registrarExportacao } from "@/lib/exportacao";
+import { escopoNegocio } from "@/lib/visibilidade";
 import { prisma } from "@/lib/prisma";
 import { generateTablePDF } from "@/lib/pdf-generator";
 import { formatDealsForExport } from "@/lib/xlsx-export";
@@ -9,11 +10,10 @@ import { ERR } from "@/lib/error-messages";
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await getSession();
-
-    if (!session?.user) {
-      return await apiError(ERR.UNAUTHORIZED, 401, { req: request });
-    }
+    // Owner and manager only; every export goes to the audit log (spec 011)
+    const quem = await autorizarExportacao();
+    if (quem instanceof Response) return quem;
+    const session = { user: { id: quem.acesso.userId } };
 
     logger.info({
       msg: "Exportando deals para PDF",
@@ -22,9 +22,8 @@ export async function GET(request: NextRequest) {
 
     // Buscar deals do usuário
     const deals = await prisma.deal.findMany({
-      where: {
-        userId: session.user.id,
-      },
+      // The organization's deals the exporter may see (pipeline restriction included)
+      where: escopoNegocio(quem.acesso),
       include: {
         pipeline: {
           select: {
@@ -66,6 +65,8 @@ export async function GET(request: NextRequest) {
     });
 
     // Retornar arquivo
+    await registrarExportacao(quem, 'negocios', 'pdf', deals.length, request);
+
     return new NextResponse(new Uint8Array(buffer), {
       headers: {
         "Content-Type": "application/pdf",

@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { ChevronLeft } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
+import { carregarAcesso, escopoProjeto, escopoTarefa, podeVerTudo } from '@/lib/visibilidade'
 import { getOrganizationEntitlements } from '@/lib/entitlements'
 import { TaskProjectWorkspace } from '@/components/tasks/task-project-workspace'
 import { ProjectMetricsBar } from '@/components/tasks/project-metrics-bar'
@@ -28,19 +29,18 @@ export default async function TaskProjectPage({ params }: Props) {
     return <div>Não autorizado. Faça login novamente.</div>
   }
 
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
-    select: { id: true, orgRole: true, organizationId: true },
-  })
+  const acesso = await carregarAcesso({ email: session.user.email })
+  const user = acesso ? { id: acesso.userId, orgRole: acesso.orgRole, organizationId: acesso.organizationId } : null
 
-  if (!user?.organizationId) {
+  if (!acesso || !user) {
     return <div>Usuário não pertence a uma organização.</div>
   }
 
   const project = await prisma.taskProject.findFirst({
+    // The project must be open to the user's role (allowedRoles) — was enforced only in the client list
     where: {
       id: projectId,
-      organizationId: user.organizationId,
+      ...escopoProjeto(acesso),
     },
     include: {
       statuses: { orderBy: { order: 'asc' } },
@@ -52,16 +52,15 @@ export default async function TaskProjectPage({ params }: Props) {
     notFound()
   }
 
+  // Visibility from the shared rule (admins-only and private tasks); below manager, only the person's own tasks
   const baseWhere: any = {
+    ...escopoTarefa(acesso),
     projectId,
-    organizationId: user.organizationId,
     archived: false,
     parentId: null,
   }
-
-  // MEMBER users only see their own tasks
-  if (user.orgRole === 'MEMBER') {
-    baseWhere.OR = [{ assigneeId: user.id }, { creatorId: user.id }]
+  if (!podeVerTudo(acesso)) {
+    baseWhere.AND = [{ OR: [{ assigneeId: user.id }, { creatorId: user.id }] }]
   }
 
   const tasks = await prisma.task.findMany({

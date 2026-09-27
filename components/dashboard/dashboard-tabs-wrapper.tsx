@@ -1,6 +1,6 @@
 import { DashboardTabs } from "./dashboard-tabs"
 import { prisma } from "@/lib/prisma"
-import { carregarAcesso, escopoNegocio, escopoPipeline } from "@/lib/visibilidade"
+import { carregarAcesso, escopoNegocio, escopoPipeline, podeExportar } from "@/lib/visibilidade"
 
 function normalize(str: string) {
   return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
@@ -171,6 +171,7 @@ export async function DashboardTabsWrapper({
       userName={userName}
       organizationId={organizationId}
       canViewClosings={canViewClosings}
+      podeExportar={podeExportar(acesso)}
       buscas={buscas}
     />
   )

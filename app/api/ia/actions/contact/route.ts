@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
+import { carregarAcesso, escopoNegocio } from '@/lib/visibilidade'
 import { prisma } from '@/lib/prisma'
 
 /**
@@ -14,18 +15,16 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
-    select: { organizationId: true },
-  })
-  if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 })
+  const acesso = await carregarAcesso({ email: session.user.email })
+  if (!acesso) return NextResponse.json({ error: 'User not found' }, { status: 404 })
+  const user = { organizationId: acesso.organizationId }
 
   const contactId = request.nextUrl.searchParams.get('contactId')
   if (!contactId) return NextResponse.json({ actions: [] })
 
   // Get deal IDs related to this contact so we capture actions on Deal entities too
   const deals = await prisma.deal.findMany({
-    where: { contactId, organizationId: user.organizationId },
+    where: { contactId, ...escopoNegocio(acesso) },
     select: { id: true },
   })
   const dealIds = deals.map(d => d.id)

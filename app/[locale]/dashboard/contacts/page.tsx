@@ -9,6 +9,7 @@ import { EmptyState } from "@/components/ui/empty-state"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Users } from "lucide-react"
 import { getSession } from "@/lib/auth"
+import { carregarAcesso, escopoNegocio, escopoPipeline, podeExportar, type Acesso } from '@/lib/visibilidade'
 import { PerfTimer } from "@/lib/perf-debug"
 import { getTranslations } from "next-intl/server"
 
@@ -44,7 +45,8 @@ function ContactsTableSkeleton() {
     )
 }
 
-async function ContactsData({ orgId }: { orgId: string }) {
+async function ContactsData({ acesso }: { acesso: Acesso }) {
+    const orgId = acesso.organizationId
     const timer = new PerfTimer(`contacts-page SSR (org=${orgId})`)
     timer.mark('queries-start')
 
@@ -78,7 +80,7 @@ async function ContactsData({ orgId }: { orgId: string }) {
         }),
         prisma.deal.findMany({
             where: {
-                organizationId: orgId,
+                ...escopoNegocio(acesso),
                 archived: false,
                 status: 'ACTIVE',
                 contactId: { not: null },
@@ -92,7 +94,7 @@ async function ContactsData({ orgId }: { orgId: string }) {
             orderBy: { createdAt: 'desc' },
         }),
         prisma.pipelineStage.findMany({
-            where: { organizationId: orgId },
+            where: { organizationId: orgId, pipeline: escopoPipeline(acesso) },
             select: { id: true, name: true },
         }),
         prisma.user.findMany({
@@ -121,7 +123,7 @@ async function ContactsData({ orgId }: { orgId: string }) {
 
     // Won deals — separate query with fallback so migration timing doesn't break the page
     const wonDeals = await (prisma.deal.findMany as any)({
-        where: { organizationId: orgId, status: 'WON', contactId: { not: null } },
+        where: { ...escopoNegocio(acesso), status: 'WON', contactId: { not: null } },
         select: { id: true, title: true, value: true, wonAt: true, contactId: true, userId: true, product: { select: { name: true } } },
         orderBy: { updatedAt: 'desc' },
     }).catch(() => [] as any[])
@@ -133,6 +135,8 @@ async function ContactsData({ orgId }: { orgId: string }) {
             contactId: {
                 in: contacts.map((c: any) => c.id),
             },
+            // a seller restricted to some pipelines sees only closings of deals in them
+            ...(acesso.pipelineRestricted ? { deal: escopoNegocio(acesso) } : {}),
         },
         select: {
             id: true,
@@ -243,7 +247,7 @@ async function ContactsData({ orgId }: { orgId: string }) {
                     <h2 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white">Contatos</h2>
                     <p className="text-sm text-zinc-500">Gerencie sua base de clientes e leads.</p>
                 </div>
-                <ContactsActionsBar orgUsers={orgUsers} customSegments={customSegments} />
+                <ContactsActionsBar orgUsers={orgUsers} customSegments={customSegments} podeExportar={podeExportar(acesso)} />
             </div>
             <div className="h-full flex-1 flex-col space-y-8 flex">
                 <ContactsDataTableClient data={enrichedContacts} orgUsers={orgUsers} customSegments={customSegments} />
@@ -268,13 +272,10 @@ export default async function ContactsPage({
         return <div>{t('errors.unauthorized')}</div>
     }
 
-    const user = await prisma.user.findUnique({
-        where: { email: session.user.email },
-        select: { organizationId: true }
-    })
+    const acesso = await carregarAcesso({ email: session.user.email })
     pageTimer.mark('user.findUnique done')
 
-    if (!user?.organizationId) {
+    if (!acesso) {
         return <div>{t('errors.userNoOrg')}</div>
     }
 
@@ -293,7 +294,7 @@ export default async function ContactsPage({
                     <ContactsTableSkeleton />
                 </>
             }>
-                <ContactsData orgId={user.organizationId} />
+                <ContactsData acesso={acesso} />
             </Suspense>
         </div>
     )

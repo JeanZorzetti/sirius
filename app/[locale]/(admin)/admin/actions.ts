@@ -4,6 +4,7 @@
 import logger from '@/lib/logger'
 import { prisma } from "@/lib/prisma"
 import { getSession, login } from "@/lib/auth"
+import { registrarAuditoria } from '@/lib/auditoria'
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 
@@ -100,7 +101,7 @@ export async function moveUserToOrganization(userId: string, newOrgId: string) {
 }
 
 export async function impersonateUser(userId: string) {
-    await checkAdmin()
+    const equipe = await checkAdmin()
 
     const targetUser = await prisma.user.findUnique({
         where: { id: userId },
@@ -109,6 +110,14 @@ export async function impersonateUser(userId: string) {
     if (!targetUser) {
         throw new Error("User not found")
     }
+
+    // The visited organization sees who from the staff entered, as whom and when (spec 011)
+    await registrarAuditoria({
+        organizationId: targetUser.organizationId,
+        autor: { userId: equipe.id, email: equipe.email, tipo: 'EQUIPE' },
+        acao: 'ENTRAR_COMO',
+        alvo: targetUser.email,
+    })
 
     // Set cookie as if we were this user
     await login(targetUser)

@@ -8,6 +8,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import logger from '@/lib/logger';
 import { getSession } from '@/lib/auth';
+import { carregarAcesso, escopoNegocio, escopoPipeline } from '@/lib/visibilidade';
 import { apiError } from '@/lib/api-error';
 import { ERR } from '@/lib/error-messages';
 import { prisma } from '@/lib/prisma';
@@ -79,6 +80,11 @@ export async function POST(req: NextRequest) {
         }
 
         const plan = user.organization.tier as 'FREE' | 'PRO';
+        // The assistant sees only what this user may see (spec 011): it must not be a shortcut to hidden pipelines
+        const acesso = await carregarAcesso({ id: user.id });
+        if (!acesso) {
+            return await apiError(ERR.UNAUTHORIZED, 401)
+        }
 
         // 3. Check usage limits
         const usageCheck = await canUseAGI(
@@ -112,7 +118,7 @@ export async function POST(req: NextRequest) {
             const deal = await prisma.deal.findFirst({
                 where: {
                     id: context.dealId,
-                    organizationId: user.organizationId,
+                    ...escopoNegocio(acesso),
                 },
                 include: {
                     contact: true,
@@ -142,7 +148,7 @@ export async function POST(req: NextRequest) {
             const pipeline = await prisma.pipeline.findFirst({
                 where: {
                     id: context.pipelineId,
-                    organizationId: user.organizationId,
+                    ...escopoPipeline(acesso),
                 },
                 include: {
                     stages: true,
@@ -164,9 +170,7 @@ export async function POST(req: NextRequest) {
         // 5.5. If no specific context, load user's deals automatically (for general queries)
         if (!context?.dealId && !context?.pipelineId) {
             const userDeals = await prisma.deal.findMany({
-                where: {
-                    organizationId: user.organizationId,
-                },
+                where: escopoNegocio(acesso),
                 include: {
                     contact: true,
                     stage: true,

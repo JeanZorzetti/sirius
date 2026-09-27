@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { FolderKanban, CheckSquare, BarChart3, ArrowRight, LayoutGrid } from 'lucide-react'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
+import { carregarAcesso, escopoProjeto, podeVerTudo } from '@/lib/visibilidade'
 import { getOrganizationEntitlements } from '@/lib/entitlements'
 import { EmptyState } from '@/components/ui/empty-state'
 import { Button } from '@/components/ui/button'
@@ -30,16 +31,11 @@ export default async function TasksHubPage({
     return <div>{t('errors.unauthorized')}</div>
   }
 
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
-    select: { id: true, organizationId: true, orgRole: true },
-  })
-
-  if (!user?.organizationId) {
+  const acesso = await carregarAcesso({ email: session.user.email })
+  if (!acesso) {
     return <div>{t('errors.userNoOrg')}</div>
   }
-
-  const userRole = user.orgRole ?? 'MEMBER'
+  const user = { id: acesso.userId, organizationId: acesso.organizationId }
 
   // Fetch all projects for organization, then filter by allowedRoles client-side.
   // allowedRoles column may not exist yet if db push hasn't run — graceful fallback.
@@ -56,8 +52,9 @@ export default async function TasksHubPage({
 
   try {
     allProjects = await prisma.taskProject.findMany({
+      // Projects open to the user's role (owner and manager see all) — the shared rule in lib/visibilidade
       where: {
-        organizationId: user.organizationId,
+        ...escopoProjeto(acesso),
         archived: false,
       },
       select: {
@@ -88,13 +85,7 @@ export default async function TasksHubPage({
     allProjects = rows.map((p) => ({ ...p, allowedRoles: [] }))
   }
 
-  // OWNER always sees all projects. Others: if allowedRoles is empty → visible to all,
-  // otherwise the user's role must be in the list.
-  const projects = userRole === 'OWNER'
-    ? allProjects
-    : allProjects.filter((p) =>
-        p.allowedRoles.length === 0 || p.allowedRoles.includes(userRole as string)
-      )
+  const projects = allProjects
 
   // My tasks aggregate counts
   const myTasksWhere = {
@@ -159,7 +150,7 @@ export default async function TasksHubPage({
   const doneByProject = new Map(projectDoneRaw.map((r) => [r.projectId, r._count._all]))
   const overdueByProject = new Map(projectOverdueRaw.map((r) => [r.projectId, r._count._all]))
 
-  const canManageRoles = userRole === 'OWNER' || userRole === 'GERENTE'
+  const canManageRoles = podeVerTudo(acesso)
   const canAccessAnalytics = entitlements.features.taskAnalytics ?? false
 
   // Calcular velocity por semana (4 pontos)

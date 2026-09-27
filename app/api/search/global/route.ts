@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
+import { carregarAcesso, escopoNegocio, escopoTarefa } from '@/lib/visibilidade'
 
 export async function GET(request: NextRequest) {
   try {
@@ -9,11 +10,8 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
-      select: { organizationId: true },
-    })
-    if (!user?.organizationId) {
+    const acesso = await carregarAcesso({ email: session.user.email })
+    if (!acesso) {
       return NextResponse.json({ error: 'Organization not found' }, { status: 404 })
     }
 
@@ -22,7 +20,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ contacts: [], deals: [], conversations: [], tasks: [] })
     }
 
-    const { organizationId } = user
+    const { organizationId } = acesso
 
     const [contacts, deals, conversations, tasks] = await Promise.all([
       prisma.contact.findMany({
@@ -40,7 +38,7 @@ export async function GET(request: NextRequest) {
 
       prisma.deal.findMany({
         where: {
-          organizationId,
+          ...escopoNegocio(acesso),
           archived: false,
           title: { contains: q, mode: 'insensitive' },
         },
@@ -69,9 +67,9 @@ export async function GET(request: NextRequest) {
 
       prisma.task.findMany({
         where: {
+          ...escopoTarefa(acesso),
           archived: false,
           title: { contains: q, mode: 'insensitive' },
-          project: { organizationId },
         },
         select: { id: true, title: true, dueDate: true },
         take: 5,

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo, useEffect } from 'react'
-import { Search, Settings, User, Users, Bell, Key, Webhook, Zap, BookOpen, Menu, X, RotateCw, Sun, Moon, LifeBuoy } from 'lucide-react'
+import { Search, Settings, User, Users, Bell, Key, Webhook, Zap, BookOpen, Menu, X, RotateCw, Sun, Moon, LifeBuoy, ScrollText } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -68,6 +68,13 @@ const tabs: SettingsTab[] = [
     icon: RotateCw,
     href: '/dashboard/settings/round-robin',
     description: 'Distribuição automática de leads',
+  },
+  {
+    id: 'auditoria',
+    label: 'Auditoria',
+    icon: ScrollText,
+    href: '/dashboard/settings/auditoria',
+    description: 'Exportações e acessos do suporte',
   },
   {
     id: 'help',

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
+import { carregarAcesso, escopoTarefa, podeVerTudo } from '@/lib/visibilidade'
 import { requireFeature, FeatureBlockedError } from '@/lib/entitlements'
 import logger from '@/lib/logger'
 import { apiError } from '@/lib/api-error'
@@ -22,11 +23,8 @@ export async function GET(request: Request) {
       return await apiError(ERR.UNAUTHORIZED, 401)
     }
 
-    const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
-      select: { id: true, organizationId: true, orgRole: true },
-    })
-
+    const acesso = await carregarAcesso({ email: session.user.email })
+    const user = acesso ? { id: acesso.userId, organizationId: acesso.organizationId } : null
     if (!user?.organizationId) {
       return await apiError(ERR.ORG_NOT_FOUND, 404)
     }
@@ -67,13 +65,15 @@ export async function GET(request: Request) {
     prevRangeStart.setHours(0, 0, 0, 0)
 
     // ── Base where ──────────────────────────────────────────────────
+    // Visibility from the shared rule; below manager, the numbers cover the person's own tasks (AND, not OR:
+    // the scope already uses OR for private tasks)
     const baseWhere: any = {
-      organizationId: user.organizationId,
+      ...escopoTarefa(acesso!),
       archived: false,
     }
     if (projectId) baseWhere.projectId = projectId
-    if (user.orgRole === 'MEMBER') {
-      baseWhere.OR = [{ assigneeId: user.id }, { creatorId: user.id }]
+    if (!podeVerTudo(acesso!)) {
+      baseWhere.AND = [{ OR: [{ assigneeId: user.id }, { creatorId: user.id }] }]
     }
 
     // ── Queries período atual + anterior em paralelo ────────────────

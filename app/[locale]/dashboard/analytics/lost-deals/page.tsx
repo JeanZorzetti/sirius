@@ -10,6 +10,7 @@
 
 import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
+import { carregarAcesso, escopoNegocio } from '@/lib/visibilidade'
 import { redirect } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { LostDealsCharts } from '@/components/analytics/lost-deals-charts'
@@ -25,18 +26,15 @@ export default async function LostDealsPage() {
   const session = await getSession()
   if (!session?.user?.email) redirect('/login')
 
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
-    select: { organizationId: true },
-  })
-
-  if (!user?.organizationId) redirect('/dashboard')
+  const acesso = await carregarAcesso({ email: session.user.email })
+  if (!acesso) redirect('/dashboard')
+  const user = { organizationId: acesso.organizationId }
 
   const orgId = user.organizationId
 
   // Buscar todos os negócios perdidos
   const lostDeals = await prisma.deal.findMany({
-    where: { organizationId: orgId, status: 'LOST' },
+    where: { ...escopoNegocio(acesso), status: 'LOST' },
     select: {
       id: true,
       title: true,
@@ -50,7 +48,7 @@ export default async function LostDealsPage() {
   })
 
   // Total de negócios (para calcular taxa)
-  const totalDeals = await prisma.deal.count({ where: { organizationId: orgId } })
+  const totalDeals = await prisma.deal.count({ where: escopoNegocio(acesso) })
 
   // KPIs
   const totalLost = lostDeals.length

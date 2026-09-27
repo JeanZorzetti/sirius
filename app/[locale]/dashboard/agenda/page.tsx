@@ -1,4 +1,5 @@
 import { getSession } from '@/lib/auth'
+import { carregarAcesso, escopoNegocio, escopoPipeline, escopoTarefa, podeVerTudo } from '@/lib/visibilidade'
 import { prisma } from '@/lib/prisma'
 import { AgendaClient } from '@/components/agenda/agenda-client'
 import { getTranslations } from 'next-intl/server'
@@ -16,13 +17,12 @@ export default async function AgendaPage({
   const session = await getSession()
   if (!session?.user?.email) return <div>{t('errors.unauthorized')}</div>
 
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
-    select: { id: true, organizationId: true, orgRole: true },
-  })
-  if (!user?.organizationId) return <div>{t('errors.userNoOrg')}</div>
+  const acesso = await carregarAcesso({ email: session.user.email })
+  if (!acesso) return <div>{t('errors.userNoOrg')}</div>
+  const user = { id: acesso.userId, organizationId: acesso.organizationId }
 
-  const isMember = user.orgRole === 'MEMBER'
+  // Below manager, the agenda shows the person's own deals and tasks (the rule used to cover only legacy MEMBER)
+  const soOsMeus = !podeVerTudo(acesso)
 
   const org = await prisma.organization.findUnique({
     where: { id: user.organizationId },
@@ -38,11 +38,11 @@ export default async function AgendaPage({
   const [deals, stages, contacts, tasks] = await Promise.all([
     prisma.deal.findMany({
       where: {
-        organizationId: user.organizationId,
+        ...escopoNegocio(acesso),
         archived: false,
         status: 'ACTIVE' as const,
         dueDate: { not: null },
-        ...(isMember ? { userId: user.id } : {}),
+        ...(soOsMeus ? { userId: user.id } : {}),
       },
       select: {
         id: true,
@@ -60,7 +60,7 @@ export default async function AgendaPage({
       orderBy: { dueDate: 'asc' },
     }),
     prisma.pipelineStage.findMany({
-      where: { pipeline: { organizationId: user.organizationId } },
+      where: { organizationId: user.organizationId, pipeline: escopoPipeline(acesso) },
       select: { id: true, name: true },
     }),
     prisma.contact.findMany({
@@ -70,11 +70,11 @@ export default async function AgendaPage({
     }),
     prisma.task.findMany({
       where: {
-        organizationId: user.organizationId,
+        ...escopoTarefa(acesso),
         archived: false,
         completedAt: null,
         dueDate: { not: null },
-        ...(isMember ? { assigneeId: user.id } : {}),
+        ...(soOsMeus ? { assigneeId: user.id } : {}),
       },
       select: {
         id: true,
