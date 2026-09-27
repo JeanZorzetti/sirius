@@ -1451,7 +1451,7 @@
       "ogDescription": "Termos e condições de uso da plataforma Sirius CRM."
     },
     "title": "Termos de Uso",
-    "lastUpdated": "Última atualização: 02 de fevereiro de 2026",
+    "lastUpdated": "Última atualização: 27 de setembro de 2026",
     "backHome": "Voltar para Home",
     "s1": {
       "title": "1. Aceitação dos Termos",
@@ -1545,8 +1545,8 @@
     "s10": {
       "title": "10. Lei Aplicável e Foro",
       "p1": "Estes Termos são regidos pelas leis da República Federativa do Brasil, especificamente pela Lei Geral de Proteção de Dados (LGPD - Lei 13.709/2018) e Código de Defesa do Consumidor.",
-      "p2": "Fica eleito o foro da Comarca de São Paulo/SP para dirimir quaisquer controvérsias decorrentes destes Termos.",
-      "jurisdiction": "São Paulo/SP"
+      "p2": "Fica eleito o foro da Comarca de Goiânia/GO para dirimir quaisquer controvérsias decorrentes destes Termos. Se você contrata como consumidor, pode propor a ação no foro do seu domicílio (Código de Defesa do Consumidor, art. 101, I).",
+      "jurisdiction": "Goiânia/GO"
     },
     "s11": {
       "title": "11. Contato",
