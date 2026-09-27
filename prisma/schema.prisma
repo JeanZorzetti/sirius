@@ -207,6 +207,9 @@ model Organization {
 
   // Audit trail (exports, staff "log in as")
   auditLogs AuditLog[]
+
+  // Proof of terms/privacy acceptance at signup
+  termsAcceptances TermsAcceptance[]
 }
 
 model User {
@@ -298,6 +301,9 @@ model User {
 
   // Audit trail
   auditLogs AuditLog[]
+
+  // Proof of terms/privacy acceptance at signup
+  termsAcceptances TermsAcceptance[]
 }
 
 enum Role {
@@ -2559,4 +2565,23 @@ model AuditLog {
   createdAt DateTime @default(now())
 
   @@index([organizationId, createdAt])
+}
+
+/// Proof that a user accepted the terms of use and the privacy policy (MP 2.200-2/2001 art. 10 §2º).
+/// Append-only: one row per acceptance, written with the user at signup.
+model TermsAcceptance {
+  id             String       @id @default(uuid())
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  versaoTermos      String // lib/termos.ts VERSAO_TERMOS when the box was checked
+  versaoPrivacidade String // lib/termos.ts VERSAO_PRIVACIDADE
+  ip                String?
+  userAgent         String?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
 }

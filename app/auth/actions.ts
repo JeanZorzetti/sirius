@@ -4,10 +4,12 @@ import { prisma } from '@/lib/prisma'
 import { hash, compare } from 'bcryptjs'
 import { login, logout } from '@/lib/auth'
 import { redirect } from 'next/navigation'
-import { cookies } from 'next/headers'
+import { cookies, headers } from 'next/headers'
 import logger, { generateCorrelationId } from '@/lib/logger'
 import { sendWelcomeEmail, sendEmailAsync } from '@/lib/email-automations'
 import { DEFAULT_STAGES } from '@/lib/pipeline-defaults'
+import { ipDoPedido } from '@/lib/auditoria'
+import { VERSAO_TERMOS, VERSAO_PRIVACIDADE } from '@/lib/termos'
 
 function generateReferralCode(): string {
   return Math.random().toString(36).substring(2, 6) + Math.random().toString(36).substring(2, 6)
@@ -98,6 +100,12 @@ export async function registerAction(prevState: any, formData: FormData) {
     if (!name || !email || !password) {
         logger.warn({ correlationId, email }, 'Registration failed: missing fields')
         return { error: 'Preencha todos os campos.' }
+    }
+
+    // No account without the terms checkbox (the form enforces it too; this is the wall that counts)
+    if (formData.get('aceite') !== 'on') {
+        logger.warn({ correlationId, email }, 'Registration failed: terms not accepted')
+        return { error: 'Marque o aceite dos Termos de Uso e da Política de Privacidade para criar a conta.' }
     }
 
     // 1. Check if user exists
@@ -202,6 +210,7 @@ export async function registerAction(prevState: any, formData: FormData) {
         // Create User
         // Note: We removed the transaction for simplicity in branching logic,
         // but in prod we should wrap the create in transaction if strict consistency needed.
+        const cabecalhos = await headers()
         const newUser = await prisma.user.create({
             data: {
                 email,
@@ -212,6 +221,16 @@ export async function registerAction(prevState: any, formData: FormData) {
                 referralCode,
                 jobTitle: jobTitle || null,
                 phone: phone || null,
+                // Same write as the user: an account never exists without its proof of acceptance
+                termsAcceptances: {
+                    create: {
+                        organizationId,
+                        versaoTermos: VERSAO_TERMOS,
+                        versaoPrivacidade: VERSAO_PRIVACIDADE,
+                        ip: ipDoPedido(cabecalhos),
+                        userAgent: cabecalhos.get('user-agent'),
+                    }
+                },
             }
         })
 

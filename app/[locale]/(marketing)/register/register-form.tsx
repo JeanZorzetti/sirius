@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useState, useTransition } from 'react'
+import { useRef, useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { registerAction } from "@/app/auth/actions"
@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { CardContent, CardFooter } from "@/components/ui/card"
 import { Eye, EyeOff, ArrowRight, ArrowLeft, User, Building2, Lock, Phone, ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { COOKIE_ACEITE } from '@/lib/termos'
 
 const SEGMENTS = [
   'Agronegócio',
@@ -49,9 +50,9 @@ const JOB_TITLES = [
   'Outro',
 ]
 
-export function RegisterForm({ inviteData, inviteToken }: { inviteData: any, inviteToken?: string }) {
+export function RegisterForm({ inviteData, inviteToken, erroInicial }: { inviteData: any, inviteToken?: string, erroInicial?: string }) {
   const [step, setStep] = useState(1)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(erroInicial ?? null)
   const [showPassword, setShowPassword] = useState(false)
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
@@ -67,6 +68,8 @@ export function RegisterForm({ inviteData, inviteToken }: { inviteData: any, inv
   const [segment, setSegment] = useState('')
   const [customJobTitle, setCustomJobTitle] = useState('')
   const [customSegment, setCustomSegment] = useState('')
+  const [aceite, setAceite] = useState(false)
+  const aceiteRef = useRef<HTMLInputElement>(null)
 
   const totalSteps = inviteData ? 1 : 3
 
@@ -110,6 +113,7 @@ export function RegisterForm({ inviteData, inviteToken }: { inviteData: any, inv
     formData.set('company', company)
     formData.set('companyDescription', companyDescription)
     formData.set('segment', effectiveSegment)
+    formData.set('aceite', aceite ? 'on' : '')
     if (inviteToken) formData.set('inviteToken', inviteToken)
 
     startTransition(async () => {
@@ -126,7 +130,7 @@ export function RegisterForm({ inviteData, inviteToken }: { inviteData: any, inv
     <form onSubmit={handleSubmit}>
       <CardContent className="space-y-5">
         {error && (
-          <div className="p-3 text-sm text-destaque bg-muted border border-border rounded-md">
+          <div role="alert" className="p-3 text-sm text-destaque bg-muted border border-border rounded-md">
             {error}
           </div>
         )}
@@ -216,6 +220,30 @@ export function RegisterForm({ inviteData, inviteToken }: { inviteData: any, inv
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
+            </div>
+
+            {/* Native `required`: submitting without it focuses the box and the browser says why */}
+            <div className="flex items-start gap-2">
+              <input
+                ref={aceiteRef}
+                id="aceite"
+                type="checkbox"
+                checked={aceite}
+                onChange={e => setAceite(e.target.checked)}
+                required
+                className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer accent-primary"
+              />
+              <Label htmlFor="aceite" className="text-sm font-normal leading-snug text-muted-foreground">
+                Li e aceito os{' '}
+                <Link href="/terms" target="_blank" rel="noopener" className="underline underline-offset-2 hover:text-destaque">
+                  Termos de Uso<span className="sr-only"> (abre em nova aba)</span>
+                </Link>{' '}
+                e a{' '}
+                <Link href="/privacy" target="_blank" rel="noopener" className="underline underline-offset-2 hover:text-destaque">
+                  Política de Privacidade<span className="sr-only"> (abre em nova aba)</span>
+                </Link>
+                .
+              </Label>
             </div>
 
             {inviteData && (
@@ -381,7 +409,12 @@ export function RegisterForm({ inviteData, inviteToken }: { inviteData: any, inv
               type="button"
               variant="outline"
               className="w-full bg-muted border-border text-foreground hover:bg-muted"
-              onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
+              onClick={() => {
+                if (!aceiteRef.current?.reportValidity()) return
+                // Read by /api/auth/google-session: no cookie, no new account
+                document.cookie = `${COOKIE_ACEITE}=1; path=/; max-age=600; samesite=lax`
+                signIn('google', { callbackUrl: '/dashboard' })
+              }}
             >
               <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                 <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
@@ -389,7 +422,7 @@ export function RegisterForm({ inviteData, inviteToken }: { inviteData: any, inv
                 <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
                 <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
               </svg>
-              Continue with Google
+              Continuar com Google
             </Button>
           </>
         )}

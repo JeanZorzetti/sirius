@@ -12,6 +12,8 @@ import logger from '@/lib/logger'
 import { getToken } from 'next-auth/jwt'
 import { prisma } from '@/lib/prisma'
 import { encrypt } from '@/lib/auth'
+import { ipDoPedido } from '@/lib/auditoria'
+import { COOKIE_ACEITE, VERSAO_TERMOS, VERSAO_PRIVACIDADE } from '@/lib/termos'
 
 function getBaseUrl(req: NextRequest): string {
   // NEXTAUTH_URL is the canonical external URL
@@ -46,6 +48,13 @@ export async function GET(req: NextRequest) {
     let isNewUser = false
 
     if (!user) {
+      // A new Google account only exists after the signup checkbox. "Entrar com Google" on /login with an
+      // unknown email lands here without it: send them to the signup form instead of creating the account.
+      if (!req.cookies.get(COOKIE_ACEITE)) {
+        logger.info({ email }, '[google-session] New account without terms acceptance, back to signup')
+        return NextResponse.redirect(new URL('/register?erro=aceite', baseUrl))
+      }
+
       isNewUser = true
       const slug =
         String(name || email).toLowerCase().replace(/[^a-z0-9]/g, '-').substring(0, 30) +
@@ -92,6 +101,15 @@ export async function GET(req: NextRequest) {
           organizationId: org.id,
           orgRole: 'OWNER',
           referralCode,
+          termsAcceptances: {
+            create: {
+              organizationId: org.id,
+              versaoTermos: VERSAO_TERMOS,
+              versaoPrivacidade: VERSAO_PRIVACIDADE,
+              ip: ipDoPedido(req.headers),
+              userAgent: req.headers.get('user-agent'),
+            },
+          },
         },
       })
 
@@ -157,6 +175,7 @@ export async function GET(req: NextRequest) {
       sameSite: 'lax',
       path: '/',
     })
+    response.cookies.delete(COOKIE_ACEITE)
 
     return response
   } catch (error) {

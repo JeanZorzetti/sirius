@@ -36,9 +36,13 @@ export async function generateMetadata({
 export default async function RegisterPage({
     searchParams,
 }: {
-    searchParams: Promise<{ invite?: string }>
+    searchParams: Promise<{ invite?: string, erro?: string }>
 }) {
-    const { invite: inviteToken } = await searchParams
+    const { invite: inviteToken, erro } = await searchParams
+    // /api/auth/google-session sends a new Google account here when it arrived without the terms checkbox
+    const erroInicial = erro === 'aceite'
+        ? 'Ainda não há conta com esse Google. Marque o aceite abaixo e continue com Google para criar a sua.'
+        : undefined
     let inviteData = null
 
     if (inviteToken) {
@@ -136,7 +140,7 @@ export default async function RegisterPage({
                             {inviteData ? "Crie sua conta para acessar o time." : "Sem cartão de crédito. Cancele quando quiser."}
                         </CardDescription>
                     </CardHeader>
-                    <RegisterForm inviteData={inviteData} inviteToken={inviteToken} />
+                    <RegisterForm inviteData={inviteData} inviteToken={inviteToken} erroInicial={erroInicial} />
                 </Card>
             </div>
         </div>

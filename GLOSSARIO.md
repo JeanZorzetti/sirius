@@ -15,3 +15,4 @@ Termos e verbos da interface. Antes de nomear um botão, um rótulo ou um estado
 | Exemplo | negócio criado pelo cadastro junto com a conta | demo, teste, fictício | selo no cartão e na fila |
 | Conversar | abre a conversa do contato | WhatsApp (como verbo), chamar | fila, cartão |
 | Abrir negócio | abre o diálogo do negócio | ver, detalhes | fila |
+| Aceite | "Li e aceito os Termos de Uso e a Política de Privacidade" (caixa desmarcada) | concordo, de acordo, T&C, "ao continuar você concorda" | cadastro e convite, passo 1 |
