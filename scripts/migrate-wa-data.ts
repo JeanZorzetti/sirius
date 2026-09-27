@@ -9,7 +9,7 @@
  *
  * Prerequisites:
  *   - Both DATABASE_URL and DATABASE_URL_WA_DIRECT must be set
- *   - WhatsApp DB must have tables created (prisma migrate deploy --schema prisma/whatsapp.prisma)
+ *   - WhatsApp DB must have tables created (prisma migrate deploy --schema prisma/wa/schema.prisma)
  *   - CRM DB must still have the old WhatsApp tables
  */
 

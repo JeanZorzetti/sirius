@@ -79,7 +79,7 @@ export default defineConfig({
    * Nunca `npm run build` aqui — aplica `prisma migrate deploy` contra o
    * DATABASE_URL do ambiente (FR-003 de specs/002-remove-dead-code). */
   webServer: {
-    command: 'npx prisma generate && npx prisma generate --schema prisma/whatsapp.prisma && npx next build && npx next start',
+    command: 'npx prisma generate && npx prisma generate --schema prisma/wa/schema.prisma && npx next build && npx next start',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
     timeout: 300 * 1000, // 5 minutes for build + start
