@@ -4,7 +4,9 @@
 
 - The spec is written and pushed: `spec.md` in `b20a93a`, with a quality checklist in which every item passes.
 - The plan is done: `plan.md`, `research.md`, `data-model.md`, `contracts/rotas.md`, `contracts/adaptador.md` and
-  `quickstart.md`. There is no code yet. The next command is `speckit-tasks`.
+  `quickstart.md`. There is no code yet.
+- `tasks.md` is done: 78 tasks in 8 phases (27/09). The next command is `speckit-analyze`, then `speckit-implement`
+  starting at the gate T005.
 - The project's `speckit-*` skills live in `.claude/skills/`. A session opened in the `ROI Labs` root does not list
   them, so read their `SKILL.md` and follow it by hand.
 
