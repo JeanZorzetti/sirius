@@ -15,6 +15,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { apiError } from '@/lib/api-error'
+import { GROQ_MODEL, GROQ_REASONING } from '@/lib/ai-models'
 import { ERR } from '@/lib/error-messages'
 
 // Lazy-init para evitar erros de build sem env var
@@ -132,7 +133,8 @@ export async function POST(request: NextRequest) {
       : ''
 
     const completion = await groq.chat.completions.create({
-      model: 'llama-3.3-70b-versatile',
+      model: GROQ_MODEL,
+      ...GROQ_REASONING,
       temperature: 0.1,
       max_tokens: 256,
       messages: [

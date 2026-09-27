@@ -3,6 +3,7 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import Groq from 'groq-sdk'
 import { apiError } from '@/lib/api-error'
+import { GROQ_MODEL, GROQ_REASONING } from '@/lib/ai-models'
 import { ERR } from '@/lib/error-messages'
 
 export const runtime = 'nodejs'
@@ -119,7 +120,8 @@ ${ctx}`
 
   // ── Stream response ───────────────────────────────────────────────────────
   const stream = await getGroq().chat.completions.create({
-    model: 'llama-3.3-70b-versatile',
+    model: GROQ_MODEL,
+    ...GROQ_REASONING,
     messages: [
       { role: 'system', content: systemPrompt },
       { role: 'user', content: prompt },

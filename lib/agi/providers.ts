@@ -3,6 +3,7 @@
  * Supports multiple LLM providers with automatic fallback
  */
 
+import { GROQ_MODEL, GROQ_MODEL_FALLBACK, GROQ_REASONING } from '@/lib/ai-models'
 import logger from '@/lib/logger'
 
 export type LLMProvider = 'ollama' | 'groq';
@@ -93,6 +94,7 @@ async function callGroq(
                 messages,
                 temperature: config.temperature,
                 max_tokens: config.maxTokens,
+                ...GROQ_REASONING,
             }),
         });
 
@@ -135,22 +137,19 @@ export async function callLLM(
     const primaryProvider = 'groq';
     const fallbackProvider = 'groq'; // Use different Groq model as fallback
 
-    // Primary config - Groq Llama 3.3 70B (BEST!)
+    // Primary and fallback models live in lib/ai-models.ts
     const primaryConfig: ProviderConfig = {
         provider: primaryProvider,
         apiKey: process.env.GROQ_API_KEY,
-        model: userPlan === 'PRO'
-            ? 'llama-3.3-70b-versatile'  // 70B for PRO users
-            : 'llama-3.3-70b-versatile', // Same model for FREE (it's fast enough!)
+        model: GROQ_MODEL,
         temperature: parseFloat(process.env.AGI_TEMPERATURE || '0.7'),
         maxTokens: userPlan === 'PRO' ? 2048 : 1024,
     };
 
-    // Fallback config - Llama 4 Scout (if 70B fails)
     const fallbackConfig: ProviderConfig = {
         provider: fallbackProvider,
         apiKey: process.env.GROQ_API_KEY,
-        model: 'llama-3.2-1b-preview', // Lightweight fallback
+        model: GROQ_MODEL_FALLBACK,
         temperature: parseFloat(process.env.AGI_TEMPERATURE || '0.7'),
         maxTokens: userPlan === 'PRO' ? 2048 : 1024,
     };
@@ -160,7 +159,7 @@ export async function callLLM(
         logger.info({ model: primaryConfig.model }, '[AGI] Using Groq')
 
         if (!process.env.GROQ_API_KEY) {
-            throw new Error('GROQ_API_KEY não configurada. Configure no Vercel.');
+            throw new Error('GROQ_API_KEY não configurada.');
         }
 
         return await callGroq(messages, primaryConfig);
@@ -172,7 +171,7 @@ export async function callLLM(
             return await callGroq(messages, fallbackConfig);
         } catch (fallbackError) {
             console.error(`[AGI] All providers failed:`, fallbackError);
-            throw new Error(`Serviço de IA temporariamente indisponível. Configure GROQ_API_KEY no Vercel.`);
+            throw new Error('Serviço de IA temporariamente indisponível. Tente de novo em alguns minutos.');
         }
     }
 }

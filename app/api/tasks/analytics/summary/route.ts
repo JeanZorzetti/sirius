@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { requireFeature, FeatureBlockedError } from '@/lib/entitlements'
 import logger from '@/lib/logger'
 import { apiError } from '@/lib/api-error'
+import { GROQ_MODEL, GROQ_REASONING } from '@/lib/ai-models'
 import { ERR } from '@/lib/error-messages'
 
 /**
@@ -85,7 +86,8 @@ Tom: profissional mas acessível, como um gestor experiente conversando com o ti
         'Authorization': `Bearer ${groqApiKey}`,
       },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: GROQ_MODEL,
+        ...GROQ_REASONING,
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: dataPrompt },

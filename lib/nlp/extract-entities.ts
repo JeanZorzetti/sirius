@@ -12,6 +12,7 @@ import {
   ExtractionResultSchema,
   enrichEntityWithWikidata,
 } from './types'
+import { GROQ_MODEL, GROQ_REASONING } from '@/lib/ai-models'
 import logger from '@/lib/logger'
 
 /**
@@ -165,7 +166,8 @@ export async function extractEntities(
 
     // Call Groq API with JSON mode
     const completion = await getGroq().chat.completions.create({
-      model: 'llama-3.3-70b-versatile', // Fast and high-quality
+      model: GROQ_MODEL,
+      ...GROQ_REASONING,
       messages: [
         {
           role: 'system',
