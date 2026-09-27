@@ -259,7 +259,7 @@ export const post: BlogPost = {
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
         <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">Qual o melhor CRM para pequenas empresas em 2026?</summary>
-        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Para pequenas empresas em 2026, o melhor CRM combina facilidade de uso, automação de follow-up e plano gratuito generoso. O Sirius CRM oferece pipeline visual, alertas de IA e integração WhatsApp gratuitamente para até 50 clientes — ideal para começar sem investimento inicial.</p>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Para pequenas empresas em 2026, o melhor CRM combina facilidade de uso, automação de follow-up e plano gratuito generoso. O Sirius CRM oferece pipeline visual e alertas de IA gratuitamente para até 50 clientes, e o WhatsApp dentro do CRM a partir do Starter — ideal para começar sem investimento inicial.</p>
       </details>
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
@@ -536,7 +536,7 @@ export const post: BlogPost = {
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
         <summary style="font-weight: 600; cursor: pointer; color: var(--foreground); list-style: revert;">What's the best CRM for small businesses in 2026?</summary>
-        <p style="margin: 0.75rem 0 0; color: var(--foreground);">For small businesses in 2026, the best CRM combines ease of use, follow-up automation, and a generous free plan. Sirius CRM offers a free plan with a visual pipeline for 2 users and 250 contacts; automation and AI start on Starter (R$ 67/month for up to 5 users) and WhatsApp integration on Business.</p>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">For small businesses in 2026, the best CRM combines ease of use, follow-up automation, and a generous free plan. Sirius CRM offers a free plan with a visual pipeline for 2 users and 250 contacts; automation, AI and WhatsApp in the CRM start on Starter (R$ 67/month for up to 5 users), and the official WhatsApp API on Business.</p>
       </details>
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">

@@ -62,12 +62,12 @@ export const post: BlogPost = {
         <li>IA que qualifica o lead por BANT e MEDDIC e agente Sofia a partir do Starter</li>
         <li>Prospecção de empresas pelo Google Maps com créditos mensais a partir do Starter</li>
         <li>Modo offline no celular</li>
-        <li>WhatsApp pela API oficial da Meta no plano Business</li>
+        <li>WhatsApp no CRM a partir do Starter, pelo seu integrador; API oficial da Meta no Business</li>
       </ul>
 
       <div style="${BOX}">
         <p style="margin: 0; color: var(--foreground);"><strong>Melhor para:</strong> escritórios de representação e times de vendas de 5 a 50 pessoas, que pagariam por usuário nas outras opções.</p>
-        <p style="margin: 0.5rem 0 0; color: var(--foreground);"><strong>Limitação:</strong> é o plano gratuito mais enxuto desta lista, sem IA, sem automação e sem WhatsApp. WhatsApp integrado só no Business. Menos integrações que Pipedrive e HubSpot.</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);"><strong>Limitação:</strong> é o plano gratuito mais enxuto desta lista, sem IA, sem automação e sem WhatsApp. O WhatsApp entra a partir do Starter, pelo integrador que você já usa; a API oficial, no Business. Menos integrações que Pipedrive e HubSpot.</p>
       </div>
 
       <p><a href="/register" style="color: var(--foreground); font-weight: 600;">→ Começar grátis no Sirius CRM</a></p>
@@ -225,7 +225,7 @@ export const post: BlogPost = {
 
       <details style="${DETAILS} margin-bottom: 2rem;">
         <summary style="${SUMMARY}">CRM com WhatsApp integrado no Brasil: quais opções existem?</summary>
-        <p style="${ANSWER}">RD Station CRM (desde o plano Free), Agendor (extensão de WhatsApp Web grátis e WhatsApp Sync pago), Ollow (plataforma de WhatsApp), Pipedrive (caixa de mensagens) e Sirius (plano Business, pela API oficial da Meta). No HubSpot, o WhatsApp nativo exige plano Professional. Antes de escolher, confira se a conexão usa a API oficial: número conectado por API não oficial corre risco de banimento.</p>
+        <p style="${ANSWER}">RD Station CRM (desde o plano Free), Agendor (extensão de WhatsApp Web grátis e WhatsApp Sync pago), Ollow (plataforma de WhatsApp), Pipedrive (caixa de mensagens) e Sirius (a partir do Starter pelo integrador que você já usa, e pela API oficial da Meta no Business). No HubSpot, o WhatsApp nativo exige plano Professional. Antes de escolher, confira se a conexão usa a API oficial: número conectado por API não oficial corre risco de banimento.</p>
       </details>
 
       <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />
@@ -277,12 +277,12 @@ export const post: BlogPost = {
         <li>AI that qualifies leads with BANT and MEDDIC and the Sofia agent from Starter</li>
         <li>Company prospecting through Google Maps with monthly credits from Starter</li>
         <li>Offline mode on mobile</li>
-        <li>WhatsApp through the official Meta API on the Business plan</li>
+        <li>WhatsApp in the CRM from Starter, through your integrator; official Meta API on Business</li>
       </ul>
 
       <div style="${BOX}">
         <p style="margin: 0; color: var(--foreground);"><strong>Best for:</strong> rep agencies and sales teams of 5 to 50 people, who would pay per user with the other options.</p>
-        <p style="margin: 0.5rem 0 0; color: var(--foreground);"><strong>Limitation:</strong> the leanest free plan on this list, with no AI, automation or WhatsApp. WhatsApp integration only on Business. Fewer integrations than Pipedrive and HubSpot.</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);"><strong>Limitation:</strong> the leanest free plan on this list, with no AI, automation or WhatsApp. WhatsApp comes from Starter, through the integrator you already use; the official API on Business. Fewer integrations than Pipedrive and HubSpot.</p>
       </div>
 
       <p><a href="/en/register" style="color: var(--foreground); font-weight: 600;">→ Start free on Sirius CRM</a></p>
@@ -440,7 +440,7 @@ export const post: BlogPost = {
 
       <details style="${DETAILS} margin-bottom: 2rem;">
         <summary style="${SUMMARY}">CRM with WhatsApp integration in Brazil: what are the options?</summary>
-        <p style="${ANSWER}">RD Station CRM (from the Free plan), Agendor (free WhatsApp Web extension and paid WhatsApp Sync), Ollow (WhatsApp platform), Pipedrive (messaging inbox) and Sirius (Business plan, through the official Meta API). On HubSpot, native WhatsApp requires a Professional plan. Before choosing, check whether the connection uses the official API: a number connected through an unofficial API risks being banned.</p>
+        <p style="${ANSWER}">RD Station CRM (from the Free plan), Agendor (free WhatsApp Web extension and paid WhatsApp Sync), Ollow (WhatsApp platform), Pipedrive (messaging inbox) and Sirius (from Starter through the integrator you already use, and through the official Meta API on Business). On HubSpot, native WhatsApp requires a Professional plan. Before choosing, check whether the connection uses the official API: a number connected through an unofficial API risks being banned.</p>
       </details>
 
       <hr style="margin: 3rem 0; border: none; border-top: 1px solid var(--border);" />

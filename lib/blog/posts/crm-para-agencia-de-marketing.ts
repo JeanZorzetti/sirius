@@ -343,7 +343,7 @@ export const post: BlogPost = {
 
       <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
         <p style="font-weight: 700; color: var(--foreground);">Set up your agency's dual pipeline in 30 minutes</p>
-        <p style="color: var(--foreground); margin: 0.5rem 0 1rem;">Sirius CRM includes unlimited pipelines, WhatsApp integration, and renewal automation — all in the free plan.</p>
+        <p style="color: var(--foreground); margin: 0.5rem 0 1rem;">Sirius CRM starts free with unlimited pipelines; WhatsApp in the CRM and renewal automation come with the paid plans, from Starter.</p>
         <a href="/en/register" style="background: var(--primary); color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Start Free →</a>
       </div>
 

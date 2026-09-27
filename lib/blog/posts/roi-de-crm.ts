@@ -146,7 +146,7 @@ export const post: BlogPost = {
       <div class="callout-cta">
         <h3 style="margin-top: 0;">🚀 Calcule o seu ROI na prática</h3>
         <p>
-          O Sirius CRM tem plano gratuito (sem cartão) com funil visual; a automação de follow-up começa no Starter e o WhatsApp integrado no Business, as features que puxam o componente 1 do ganho. Importe seus leads e veja a conversão subir antes de pagar qualquer coisa.
+          O Sirius CRM tem plano gratuito (sem cartão) com funil visual; a automação de follow-up e o WhatsApp integrado começam no Starter (a API oficial do WhatsApp fica no Business), as features que puxam o componente 1 do ganho. Importe seus leads e veja a conversão subir antes de pagar qualquer coisa.
         </p>
         <p><strong><a href="/register" style="color: var(--foreground); text-decoration: underline;">Criar conta grátis →</a></strong></p>
       </div>

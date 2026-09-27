@@ -433,7 +433,7 @@ export const post: BlogPost = {
     Nunca mais tenha o WhatsApp bloqueado.
   </p>
   <p style="color: var(--primary-foreground); font-size: 0.9375rem; margin: 0 0 1.5rem; max-width: 480px; margin-left: auto; margin-right: auto;">
-    O Sirius CRM tem integração nativa com a API Oficial do WhatsApp Business. Configure em minutos ou deixe nossa equipe fazer por você.
+    O Sirius CRM tem integração nativa com a API Oficial do WhatsApp Business, no plano Business. Configure em minutos ou deixe nossa equipe fazer por você. Nos planos Starter e Pro, o número entra pelo integrador que você já usa, com o risco de bloqueio que este artigo explica.
   </p>
   <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
     <a href="/register" style="display: inline-block; background: var(--primary); color: white; padding: 0.75rem 1.75rem; border-radius: 0.5rem; text-decoration: none; font-weight: 700; font-size: 0.9375rem;">
@@ -642,7 +642,7 @@ export const post: BlogPost = {
     Never have your WhatsApp blocked again.
   </p>
   <p style="color: var(--primary-foreground); font-size: 0.9375rem; margin: 0 0 1.5rem; max-width: 480px; margin-left: auto; margin-right: auto;">
-    Sirius CRM has native integration with the Official WhatsApp Business API. Set it up in minutes or let our team do it for you.
+    Sirius CRM has native integration with the Official WhatsApp Business API, on the Business plan. Set it up in minutes or let our team do it for you. On Starter and Pro, the number connects through the integrator you already use, with the ban risk this article explains.
   </p>
   <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
     <a href="/register" style="display: inline-block; background: var(--primary); color: white; padding: 0.75rem 1.75rem; border-radius: 0.5rem; text-decoration: none; font-weight: 700; font-size: 0.9375rem;">

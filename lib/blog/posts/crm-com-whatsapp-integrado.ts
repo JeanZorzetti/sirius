@@ -34,7 +34,7 @@ export const post: BlogPost = {
           <li>CRM com WhatsApp junta as conversas comerciais num só lugar, com histórico por cliente</li>
           <li>A integração segura usa a API oficial do WhatsApp Business, da Meta; conexões por QR Code em APIs não oficiais arriscam o banimento do número</li>
           <li>O gestor enxerga as conversas sem pegar o celular de ninguém</li>
-          <li>No Sirius CRM, o WhatsApp entra no plano Business (R$ 397/mês), pela API oficial</li>
+          <li>No Sirius CRM, o WhatsApp entra em todo plano pago: pelo integrador que você já usa a partir do Starter (R$ 67/mês) e também pela API oficial no Business (R$ 397/mês)</li>
         </ul>
       </div>
 
@@ -50,7 +50,7 @@ export const post: BlogPost = {
 
       <div style="${BOX}">
         <p style="margin: 0; font-weight: 700; color: var(--foreground);">API oficial ou conexão por QR Code?</p>
-        <p style="margin: 0.5rem 0 0; color: var(--foreground);">Ferramentas como Evolution API, Baileys e whatsmeow conectam o número lendo um QR Code, como o WhatsApp Web. Elas não são oficiais: a Meta pode banir o número, e com ele vai o histórico de conversas com os clientes. Por isso o Sirius descontinuou a conexão por QR Code e hoje conecta só pela API oficial. Explicamos a diferença em <a href="/blog/whatsapp-api-oficial-meta-crm">API oficial do WhatsApp no CRM</a>.</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);">Ferramentas como Evolution API, Baileys e whatsmeow conectam o número lendo um QR Code, como o WhatsApp Web. Elas não são oficiais: a Meta pode banir o número, e com ele vai o histórico de conversas com os clientes. Por isso o Sirius não hospeda essas conexões: nos planos pagos, você conecta o número pelo integrador que já contrata (Z-API, uazapi ou Evolution API), depois de aceitar esse risco por escrito. No Business, há também a API oficial. Explicamos a diferença em <a href="/blog/whatsapp-api-oficial-meta-crm">API oficial do WhatsApp no CRM</a>.</p>
       </div>
 
       <h3>O que a integração resolve na prática</h3>
@@ -116,8 +116,8 @@ export const post: BlogPost = {
             </tr>
             <tr>
               <td style="${TD}"><strong>Sirius CRM</strong></td>
-              <td style="${TD}">Chat pela API oficial da Meta, no histórico do cliente</td>
-              <td style="${TD}">Business (R$ 397/mês, até 50 usuários)</td>
+              <td style="${TD}">Chat no histórico do cliente, pelo seu integrador ou pela API oficial da Meta</td>
+              <td style="${TD}">Integrador a partir do Starter (R$ 67/mês); API oficial no Business (R$ 397/mês)</td>
             </tr>
           </tbody>
         </table>
@@ -126,7 +126,7 @@ export const post: BlogPost = {
       <h2>O WhatsApp no Sirius CRM: como funciona na prática</h2>
 
       <p>
-        No plano Business, o Sirius conecta o número da empresa pela API oficial da Meta. As conversas aparecem no chat do CRM, ligadas ao contato e ao negócio.
+        Nos planos pagos, o Sirius conecta o número da empresa pelo integrador que você já usa (Z-API, uazapi ou Evolution API): 1 número no Starter, 2 no Pro e 5 no Business. No Business, a conexão também pode ser pela API oficial da Meta. As conversas aparecem no chat do CRM, ligadas ao contato e ao negócio.
       </p>
 
       <ul style="${LIST}">
@@ -215,7 +215,7 @@ export const post: BlogPost = {
 
       <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
         <p style="font-weight: 700; color: var(--foreground); font-size: 1.1rem; margin: 0 0 0.75rem;">Centralize o WhatsApp do seu time no Sirius CRM</p>
-        <p style="color: var(--foreground); margin: 0 0 1rem;">WhatsApp pela API oficial da Meta no plano Business, até 50 usuários.</p>
+        <p style="color: var(--foreground); margin: 0 0 1rem;">WhatsApp no inbox em todo plano pago: 1 número no Starter, 2 no Pro e 5 no Business, que também tem a API oficial da Meta.</p>
         <p><strong><a href="/pricing" style="color: var(--foreground); text-decoration: underline;">Ver planos →</a></strong></p>
       </div>
 
@@ -270,7 +270,7 @@ export const post: BlogPost = {
           <li>A CRM with WhatsApp puts sales conversations in one place, with history per customer</li>
           <li>The safe integration uses Meta's official WhatsApp Business API; QR Code connections through unofficial APIs risk getting the number banned</li>
           <li>Managers see the conversations without picking up anyone's phone</li>
-          <li>In Sirius CRM, WhatsApp comes with the Business plan (R$ 397/month), through the official API</li>
+          <li>In Sirius CRM, WhatsApp comes with every paid plan: through the integrator you already use from Starter (R$ 67/month), and also through the official API on Business (R$ 397/month)</li>
         </ul>
       </div>
 
@@ -286,7 +286,7 @@ export const post: BlogPost = {
 
       <div style="${BOX}">
         <p style="margin: 0; font-weight: 700; color: var(--foreground);">Official API or QR Code connection?</p>
-        <p style="margin: 0.5rem 0 0; color: var(--foreground);">Tools like Evolution API, Baileys and whatsmeow connect the number by scanning a QR Code, like WhatsApp Web. They are not official: Meta can ban the number, and the conversation history with customers goes with it. That is why Sirius discontinued QR Code connections and now connects only through the official API. We explain the difference in <a href="/en/blog/whatsapp-api-oficial-meta-crm">the official WhatsApp API in your CRM</a>.</p>
+        <p style="margin: 0.5rem 0 0; color: var(--foreground);">Tools like Evolution API, Baileys and whatsmeow connect the number by scanning a QR Code, like WhatsApp Web. They are not official: Meta can ban the number, and the conversation history with customers goes with it. That is why Sirius does not host these connections: on paid plans, you connect the number through the integrator you already pay for (Z-API, uazapi or Evolution API), after accepting that risk in writing. Business also has the official API. We explain the difference in <a href="/en/blog/whatsapp-api-oficial-meta-crm">the official WhatsApp API in your CRM</a>.</p>
       </div>
 
       <h3>What the integration solves in practice</h3>
@@ -352,8 +352,8 @@ export const post: BlogPost = {
             </tr>
             <tr>
               <td style="${TD}"><strong>Sirius CRM</strong></td>
-              <td style="${TD}">Chat through the official Meta API, in the customer history</td>
-              <td style="${TD}">Business (R$ 397/month, up to 50 users)</td>
+              <td style="${TD}">Chat in the customer history, through your integrator or the official Meta API</td>
+              <td style="${TD}">Integrator from Starter (R$ 67/month); official API on Business (R$ 397/month)</td>
             </tr>
           </tbody>
         </table>
@@ -362,7 +362,7 @@ export const post: BlogPost = {
       <h2>WhatsApp in Sirius CRM: how it works in practice</h2>
 
       <p>
-        On the Business plan, Sirius connects the company number through the official Meta API. Conversations show up in the CRM chat, tied to the contact and the deal.
+        On paid plans, Sirius connects the company number through the integrator you already use (Z-API, uazapi or Evolution API): 1 number on Starter, 2 on Pro and 5 on Business. On Business, the connection can also go through the official Meta API. Conversations show up in the CRM chat, tied to the contact and the deal.
       </p>
 
       <ul style="${LIST}">
@@ -451,7 +451,7 @@ export const post: BlogPost = {
 
       <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
         <p style="font-weight: 700; color: var(--foreground); font-size: 1.1rem; margin: 0 0 0.75rem;">Centralize your team's WhatsApp in Sirius CRM</p>
-        <p style="color: var(--foreground); margin: 0 0 1rem;">WhatsApp through the official Meta API on the Business plan, up to 50 users.</p>
+        <p style="color: var(--foreground); margin: 0 0 1rem;">WhatsApp in the inbox on every paid plan: 1 number on Starter, 2 on Pro and 5 on Business, which also has the official Meta API.</p>
         <p><strong><a href="/en/pricing" style="color: var(--foreground); text-decoration: underline;">See plans →</a></strong></p>
       </div>
 

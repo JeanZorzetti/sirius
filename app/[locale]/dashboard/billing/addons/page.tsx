@@ -39,12 +39,12 @@ const ADDON_PRODUCTS = [
   {
     id: 'whatsapp_extra',
     name: 'WhatsApp Extra',
-    description: 'Instância adicional do WhatsApp',
+    description: 'Mais um número de WhatsApp conectado pelo seu integrador, além do limite do plano',
     price: 29.90,
     recurring: true,
     icon: MessageSquare,
     color: 'text-green-500',
-    features: ['1 instância extra', 'Mensalidade recorrente', 'Conecte mais números'],
+    features: ['1 número extra', 'Mensalidade recorrente', 'Z-API, uazapi ou Evolution API'],
   },
 ]
 

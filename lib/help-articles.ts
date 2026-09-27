@@ -626,7 +626,7 @@ export const helpArticles: HelpArticle[] = [
     description: "Como usar a integração nativa com WhatsApp para contatar seus leads",
     titleEn: "WhatsApp Integration",
     descriptionEn: "How to use the native WhatsApp integration to contact your leads",
-    lastUpdated: "2026-01-23",
+    lastUpdated: "2026-09-27",
     readTime: "3 min",
     content: {
       sections: [
@@ -649,6 +649,10 @@ export const helpArticles: HelpArticle[] = [
             "Use o WhatsApp para follow-ups rápidos e informais",
             "Para conversas mais formais, prefira email",
           ],
+        },
+        {
+          title: "Conversar pelo inbox do Sirius (planos pagos)",
+          content: "A partir do Starter, as conversas do WhatsApp entram no chat do Sirius, ligadas ao contato e ao negócio. O dono ou o gerente conecta o número em Chat → Conexões, com o integrador que a empresa já usa (Z-API, uazapi ou Evolution API), e aceita o aviso de risco: o integrador não é oficial, e a Meta pode bloquear o número. O Starter conecta 1 número, o Pro 2 e o Business 5. No Business, a conexão também pode ser pela API oficial da Meta, em Configurações → Integrações → WhatsApp Oficial.",
         },
         {
           title: "Dica avançada: Templates de mensagem",
@@ -677,6 +681,10 @@ export const helpArticles: HelpArticle[] = [
             "Use WhatsApp for quick, informal follow-ups",
             "For more formal conversations, prefer email",
           ],
+        },
+        {
+          title: "Chatting from the Sirius inbox (paid plans)",
+          content: "From Starter on, WhatsApp conversations land in the Sirius chat, tied to the contact and the deal. The owner or a manager connects the number in Chat → Connections, with the integrator the company already uses (Z-API, uazapi or Evolution API), and accepts the risk notice: the integrator is not official, and Meta may block the number. Starter connects 1 number, Pro 2 and Business 5. On Business, the connection can also go through the official Meta API, in Settings → Integrations → Official WhatsApp.",
         },
         {
           title: "Pro tip: Message templates",
@@ -891,9 +899,9 @@ export const helpArticles: HelpArticle[] = [
           content: "Os limites e recursos de cada plano:",
           steps: [
             "Gratuito: 2 usuários, 250 contatos, 100 negócios ativos e 1 funil",
-            "Starter (R$ 67/mês): 5 usuários, 1.000 contatos, 500 negócios, 5 funis, automações, 1 agente de IA com 200 ações/mês, 75 créditos de prospecção/mês e suporte por e-mail",
-            "Pro (R$ 147/mês): 15 usuários, 5.000 contatos, 2.500 negócios, 15 funis, 3 agentes de IA com 1.000 ações/mês, 300 créditos de prospecção/mês, analytics avançado, lead scoring, webhooks, API pública e suporte prioritário",
-            "Business (R$ 397/mês): 50 usuários, contatos e negócios ilimitados, 50 funis, WhatsApp pela API oficial da Meta, 5 agentes de IA com 3.000 ações/mês, 1.500 créditos de prospecção/mês, round-robin de leads, relatórios personalizados, SSO e log de auditoria",
+            "Starter (R$ 67/mês): 5 usuários, 1.000 contatos, 500 negócios, 5 funis, automações, 1 agente de IA com 200 ações/mês, 75 créditos de prospecção/mês, WhatsApp no inbox com 1 número pelo seu integrador e suporte por e-mail",
+            "Pro (R$ 147/mês): 15 usuários, 5.000 contatos, 2.500 negócios, 15 funis, 3 agentes de IA com 1.000 ações/mês, 300 créditos de prospecção/mês, WhatsApp no inbox com 2 números pelo seu integrador, analytics avançado, lead scoring, webhooks, API pública e suporte prioritário",
+            "Business (R$ 397/mês): 50 usuários, contatos e negócios ilimitados, 50 funis, WhatsApp no inbox com 5 números pelo seu integrador e pela API oficial da Meta, 5 agentes de IA com 3.000 ações/mês, 1.500 créditos de prospecção/mês, round-robin de leads, relatórios personalizados, SSO e log de auditoria",
           ],
         },
         {
@@ -906,7 +914,7 @@ export const helpArticles: HelpArticle[] = [
           tips: [
             "Starter: o time passou de 2 pessoas ou você quer automação de follow-up e IA",
             "Pro: de 6 a 15 pessoas, ou quando precisa de API, webhooks e lead scoring",
-            "Business: WhatsApp integrado, mais de 15 pessoas ou distribuição automática de leads",
+            "Business: API oficial do WhatsApp, mais de 15 pessoas ou distribuição automática de leads",
           ],
         },
         {
@@ -933,9 +941,9 @@ export const helpArticles: HelpArticle[] = [
           content: "Limits and features of each plan:",
           steps: [
             "Free: 2 users, 250 contacts, 100 active deals and 1 pipeline",
-            "Starter (R$ 67/month): 5 users, 1,000 contacts, 500 deals, 5 pipelines, automations, 1 AI agent with 200 actions/month, 75 prospecting credits/month and email support",
-            "Pro (R$ 147/month): 15 users, 5,000 contacts, 2,500 deals, 15 pipelines, 3 AI agents with 1,000 actions/month, 300 prospecting credits/month, advanced analytics, lead scoring, webhooks, public API and priority support",
-            "Business (R$ 397/month): 50 users, unlimited contacts and deals, 50 pipelines, WhatsApp through the official Meta API, 5 AI agents with 3,000 actions/month, 1,500 prospecting credits/month, lead round-robin, custom reports, SSO and audit log",
+            "Starter (R$ 67/month): 5 users, 1,000 contacts, 500 deals, 5 pipelines, automations, 1 AI agent with 200 actions/month, 75 prospecting credits/month, WhatsApp in the inbox with 1 number through your integrator and email support",
+            "Pro (R$ 147/month): 15 users, 5,000 contacts, 2,500 deals, 15 pipelines, 3 AI agents with 1,000 actions/month, 300 prospecting credits/month, WhatsApp in the inbox with 2 numbers through your integrator, advanced analytics, lead scoring, webhooks, public API and priority support",
+            "Business (R$ 397/month): 50 users, unlimited contacts and deals, 50 pipelines, WhatsApp in the inbox with 5 numbers through your integrator and through the official Meta API, 5 AI agents with 3,000 actions/month, 1,500 prospecting credits/month, lead round-robin, custom reports, SSO and audit log",
           ],
         },
         {
@@ -948,7 +956,7 @@ export const helpArticles: HelpArticle[] = [
           tips: [
             "Starter: the team has grown past 2 people or you want follow-up automation and AI",
             "Pro: 6 to 15 people, or when you need the API, webhooks and lead scoring",
-            "Business: WhatsApp integration, more than 15 people or automatic lead distribution",
+            "Business: the official WhatsApp API, more than 15 people or automatic lead distribution",
           ],
         },
         {

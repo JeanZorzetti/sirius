@@ -23,7 +23,7 @@ export const post: BlogPost = {
       <div class="not-prose" style="background: var(--primary); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
         <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ TL;DR — Resposta Rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
-          <li><strong>Melhor gratuito geral:</strong> Sirius CRM — pipeline ilimitado, WhatsApp integrado, IA (3 usos/mês), até 50 contatos</li>
+          <li><strong>Melhor gratuito geral:</strong> Sirius CRM — pipeline ilimitado, IA (3 usos/mês), até 50 contatos; WhatsApp dentro do CRM a partir do Starter</li>
           <li><strong>Melhor gratuito para marketing:</strong> HubSpot Free — formulários, email marketing básico, mas sem WhatsApp</li>
           <li><strong>Melhor gratuito para equipes:</strong> Bitrix24 — ilimitado em usuários, mas interface complexa</li>
           <li>Cuidado com planos free que limitam pipeline a 1 funil ou bloqueiam relatórios</li>
@@ -211,7 +211,7 @@ export const post: BlogPost = {
 
       <details style="margin: 1rem 0; border: 1px solid var(--border); border-radius: 0.75rem; overflow: hidden;">
         <summary style="font-weight: 600; cursor: pointer; padding: 1rem; color: var(--foreground); background: var(--muted);">Qual CRM gratuito tem WhatsApp integrado?</summary>
-        <p style="padding: 1rem; margin: 0; color: var(--foreground);">Entre os 5 analisados, apenas o Sirius CRM oferece integracao WhatsApp nativa no plano gratuito. HubSpot, Agendor, Bitrix24 e RD Station CRM nao integram WhatsApp nativamente — exigem ferramentas de terceiros ou planos pagos.</p>
+        <p style="padding: 1rem; margin: 0; color: var(--foreground);">Entre os 5 analisados, só o Sirius CRM traz o WhatsApp para dentro do CRM: no plano gratuito, o contato abre a conversa no WhatsApp com um clique, e a partir do Starter (R$ 67/mês) as conversas chegam no inbox do CRM, pelo integrador que você já usa. HubSpot, Agendor, Bitrix24 e RD Station CRM nao integram WhatsApp nativamente — exigem ferramentas de terceiros ou planos pagos.</p>
       </details>
 
       <details style="margin: 1rem 0; border: 1px solid var(--border); border-radius: 0.75rem; overflow: hidden;">
@@ -227,7 +227,7 @@ export const post: BlogPost = {
       <h2>Conclusao: Qual CRM Gratuito Escolher?</h2>
 
       <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
-        <li><strong>Se voce vende pelo WhatsApp</strong> → Sirius CRM (unico com WhatsApp nativo gratis)</li>
+        <li><strong>Se voce vende pelo WhatsApp</strong> → Sirius CRM (WhatsApp a um clique no gratuito; no inbox a partir do Starter)</li>
         <li><strong>Se voce faz inbound marketing</strong> → HubSpot Free (CRM + marketing integrado)</li>
         <li><strong>Se voce quer simplicidade</strong> → Agendor (interface mais limpa)</li>
         <li><strong>Se voce tem equipe grande</strong> → Bitrix24 (usuarios ilimitados)</li>

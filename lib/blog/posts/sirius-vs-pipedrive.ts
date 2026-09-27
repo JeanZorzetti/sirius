@@ -143,7 +143,7 @@ export const post: BlogPost = {
       <h2>O Pipedrive tem WhatsApp integrado?</h2>
 
       <p>
-        Tem. Desde 2022 o Pipedrive integra o WhatsApp à caixa de mensagens: as conversas aparecem no negócio e no contato. No Sirius, o WhatsApp entra no plano Business, conectado pela API oficial da Meta, e cada mensagem fica no histórico do cliente sem cópia manual. Nos planos Gratuito, Starter e Pro do Sirius não há WhatsApp integrado.
+        Tem. Desde 2022 o Pipedrive integra o WhatsApp à caixa de mensagens: as conversas aparecem no negócio e no contato. No Sirius, o WhatsApp entra a partir do Starter, pelo integrador que você já contrata (Z-API, uazapi ou Evolution API), e no Business também pela API oficial da Meta; cada mensagem fica no histórico do cliente sem cópia manual. O plano Gratuito do Sirius não tem WhatsApp integrado.
       </p>
 
       <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
@@ -165,14 +165,14 @@ export const post: BlogPost = {
         <li>Plano gratuito permanente para até 2 usuários</li>
         <li>IA de qualificação BANT/MEDDIC e agente Sofia a partir do Starter (R$ 67/mês)</li>
         <li>Prospecção por Google Maps com créditos mensais</li>
-        <li>WhatsApp pela API oficial da Meta no Business</li>
+        <li>WhatsApp no CRM a partir do Starter, pelo seu integrador; API oficial da Meta no Business</li>
         <li>Feito para o processo de venda brasileiro, com equipe no Brasil</li>
       </ul>
 
       <h3>Sirius CRM: pontos fracos</h3>
       <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
         <li>Plano gratuito sem automação, sem IA e sem WhatsApp: serve para organizar o funil, não para automatizar</li>
-        <li>WhatsApp integrado só no plano Business (R$ 397/mês)</li>
+        <li>WhatsApp integrado só nos planos pagos; a API oficial, só no Business (R$ 397/mês)</li>
         <li>Muito menos integrações prontas que o Pipedrive</li>
         <li>Base de usuários e comunidade menores</li>
         <li>Pensado para times de até 50 pessoas</li>
@@ -211,7 +211,7 @@ export const post: BlogPost = {
       <p>Escolha o Pipedrive se você:</p>
       <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
         <li>Depende de integrações que só existem no Marketplace dele</li>
-        <li>Precisa de WhatsApp integrado sem ir para um plano de R$ 397</li>
+        <li>Precisa de WhatsApp integrado sem plano pago, ou da API oficial sem ir para um plano de R$ 397</li>
         <li>Opera em vários países e já fatura em dólar</li>
         <li>Já tem o time treinado no ecossistema Pipedrive</li>
       </ul>
@@ -384,7 +384,7 @@ export const post: BlogPost = {
       <h2>Does Pipedrive have WhatsApp integration?</h2>
 
       <p>
-        Yes. Since 2022 Pipedrive has integrated WhatsApp into its messaging inbox: conversations show up on the deal and the contact. In Sirius, WhatsApp comes with the Business plan, connected through the official Meta API, and every message lands in the customer history with no manual copying. The Sirius Free, Starter and Pro plans have no WhatsApp integration.
+        Yes. Since 2022 Pipedrive has integrated WhatsApp into its messaging inbox: conversations show up on the deal and the contact. In Sirius, WhatsApp comes from Starter, through the integrator you already pay for (Z-API, uazapi or Evolution API), and on Business also through the official Meta API; every message lands in the customer history with no manual copying. The Sirius Free plan has no WhatsApp integration.
       </p>
 
       <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
@@ -406,14 +406,14 @@ export const post: BlogPost = {
         <li>Permanent free plan for up to 2 users</li>
         <li>BANT/MEDDIC qualification AI and the Sofia agent from Starter (R$ 67/month)</li>
         <li>Google Maps prospecting with monthly credits</li>
-        <li>WhatsApp through the official Meta API on Business</li>
+        <li>WhatsApp in the CRM from Starter, through your integrator; official Meta API on Business</li>
         <li>Built for the Brazilian sales process, with a team in Brazil</li>
       </ul>
 
       <h3>Sirius CRM: weaknesses</h3>
       <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
         <li>Free plan without automation, AI or WhatsApp: it organizes the pipeline, it does not automate it</li>
-        <li>WhatsApp integration only on the Business plan (R$ 397/month)</li>
+        <li>WhatsApp integration only on paid plans; the official API only on Business (R$ 397/month)</li>
         <li>Far fewer ready-made integrations than Pipedrive</li>
         <li>Smaller user base and community</li>
         <li>Designed for teams of up to 50 people</li>
@@ -452,7 +452,7 @@ export const post: BlogPost = {
       <p>Choose Pipedrive if you:</p>
       <ul style="line-height: 2; padding-left: 1.5rem; color: var(--foreground);">
         <li>Depend on integrations that only exist in its Marketplace</li>
-        <li>Need WhatsApp integration without moving to a R$ 397 plan</li>
+        <li>Need WhatsApp integration without a paid plan, or the official API without moving to a R$ 397 plan</li>
         <li>Operate in several countries and already bill in dollars</li>
         <li>Already have your team trained in the Pipedrive ecosystem</li>
       </ul>

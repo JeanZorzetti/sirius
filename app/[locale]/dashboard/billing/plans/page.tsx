@@ -19,12 +19,22 @@ interface PlanFeature {
   business: string | boolean
 }
 
+function numerosWhatsApp(): Pick<PlanFeature, 'free' | 'starter' | 'pro' | 'business'> {
+  const n = (tier: SubscriptionTier) => {
+    const max = PLAN_LIMITS[tier].maxWhatsAppInstances
+    return max > 0 ? `${max} ${max === 1 ? 'número' : 'números'}` : false
+  }
+  return { free: n('FREE'), starter: n('STARTER'), pro: n('PRO'), business: n('BUSINESS') }
+}
+
 const features: PlanFeature[] = [
   { name: 'Contatos', free: '250', starter: '1.000', pro: '5.000', business: 'Ilimitado' },
   { name: 'Negócios (Deals)', free: '100', starter: '500', pro: '2.500', business: 'Ilimitado' },
   { name: 'Pipelines', free: '1', starter: '5', pro: '15', business: '50' },
   { name: 'Usuários', free: '2', starter: '5', pro: '15', business: '50' },
-  { name: 'WhatsApp Oficial (Meta)', free: false, starter: false, pro: false, business: 'API Oficial Meta' },
+  // Spec 012: numbers through the customer's integrator come from PLAN_LIMITS; the official API stays on Business
+  { name: 'WhatsApp no inbox (integrador)', ...numerosWhatsApp() },
+  { name: 'WhatsApp API Oficial (Meta)', free: false, starter: false, pro: false, business: true },
   { name: 'Automações de Email', free: false, starter: '5', pro: '15', business: '50' },
   { name: 'Integrações', free: false, starter: 'Básicas', pro: 'Avançadas', business: 'Todas' },
   { name: 'Analytics Avançado', free: false, starter: false, pro: true, business: true },
