@@ -39,6 +39,10 @@ model Organization {
   billingStartDate       DateTime? // Start of current billing period
   whatsappInstances      Int       @default(1) // Base WhatsApp instances
   failedPaymentAttempts  Int       @default(0) // Retry logic: downgrade after 3 consecutive failures
+  // Spec 013: what is scheduled for the end of the paid period (Stripe)
+  cancelAtPeriodEnd      Boolean   @default(false)
+  currentPeriodEnd       DateTime? // End of the paid period, filled when something is scheduled
+  pendingPlan            String? // CheckoutPlan applied at the next renewal (downgrade), e.g. "STARTER"
 
   // Flag to exclude from revenue metrics (test users with paid tiers)
   isTestAccount          Boolean   @default(false)
@@ -48,7 +52,7 @@ model Organization {
   founderNumber Int?
   founderSince  DateTime?
 
-  // Trial de 7 dias (PRO completo)
+  // Trial de 14 dias (PRO completo, TRIAL_DAYS em lib/entitlements.ts)
   trialStartedAt DateTime?
   trialEndsAt    DateTime?
   trialStatus    TrialStatus @default(ACTIVE)

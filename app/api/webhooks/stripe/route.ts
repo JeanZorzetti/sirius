@@ -135,7 +135,7 @@ async function findOrgByCustomer(customer: Stripe.Invoice['customer']) {
   if (!customerId) return null
   return prisma.organization.findFirst({
     where: { stripeCustomerId: customerId },
-    select: { id: true, name: true, tier: true },
+    select: { id: true, name: true, tier: true, pendingPlan: true },
   })
 }
 
@@ -155,12 +155,16 @@ async function handleInvoicePaid(invoice: Stripe.Invoice) {
     return
   }
 
-  await renewSubscription(org.id, org.tier as SubscriptionTier, {
+  // Spec 013: a downgrade scheduled for this renewal takes effect now (the invoice already came at the new price)
+  const agendado = org.pendingPlan
+  const tier = (agendado ? agendado.replace('_ANNUAL', '') : org.tier) as SubscriptionTier
+
+  await renewSubscription(org.id, tier, {
     provider: 'STRIPE',
     providerPaymentId: invoice.id ?? null,
     amount: (invoice.amount_paid ?? 0) / 100,
     currency: invoice.currency?.toUpperCase() ?? 'BRL',
-  })
+  }, {}, agendado ? (agendado.endsWith('_ANNUAL') ? 'ANNUAL' : 'MONTHLY') : undefined)
 }
 
 async function handleInvoicePaymentFailed(invoice: Stripe.Invoice) {

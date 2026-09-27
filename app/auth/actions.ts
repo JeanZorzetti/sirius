@@ -10,6 +10,7 @@ import { sendWelcomeEmail, sendEmailAsync } from '@/lib/email-automations'
 import { DEFAULT_STAGES } from '@/lib/pipeline-defaults'
 import { ipDoPedido } from '@/lib/auditoria'
 import { VERSAO_TERMOS, VERSAO_PRIVACIDADE } from '@/lib/termos'
+import { TRIAL_DAYS } from '@/lib/trial'
 
 function generateReferralCode(): string {
   return Math.random().toString(36).substring(2, 6) + Math.random().toString(36).substring(2, 6)
@@ -150,7 +151,7 @@ export async function registerAction(prevState: any, formData: FormData) {
             const slug = companyName.toLowerCase().replace(/[^a-z0-9]/g, '-') + '-' + Math.floor(Math.random() * 1000)
 
             const trialStartedAt = new Date()
-            const trialEndsAt = new Date(trialStartedAt.getTime() + 7 * 24 * 60 * 60 * 1000)
+            const trialEndsAt = new Date(trialStartedAt.getTime() + TRIAL_DAYS * 24 * 60 * 60 * 1000)
 
             const org = await prisma.organization.create({
                 data: {

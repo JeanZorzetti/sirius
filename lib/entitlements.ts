@@ -4,7 +4,7 @@
  * Define os limites e recursos disponíveis por tier de plano
  * FREE → STARTER → PRO → BUSINESS
  *
- * Trial: novos usuários recebem 7 dias com acesso PRO completo.
+ * Trial: novos usuários recebem TRIAL_DAYS (14) dias com acesso PRO completo.
  * Após expirar sem pagamento: conta vai para read-only (pode ver, não pode criar/editar).
  *
  * Fonte única de limites de plano (US7, spec 002-remove-dead-code): absorve o que
@@ -17,6 +17,8 @@ import { prisma } from './prisma'
 
 // Re-exportar SubscriptionTier
 export { SubscriptionTier }
+
+export { TRIAL_DAYS } from './trial'
 
 // Tipo mínimo necessário para verificar estado do trial
 type OrgTrialInfo = {
@@ -48,7 +50,7 @@ export function getEffectiveTier(org: OrgTrialInfo): SubscriptionTier {
 }
 
 /**
- * Tier for the metered AI quota. The 7-day Pro trial gets Starter's, so trying the AI does not spend a Pro quota on
+ * Tier for the metered AI quota. The Pro trial gets Starter's, so trying the AI does not spend a Pro quota on
  * every signup that never converts (owner's decision, 27/09/2026). Features and limits use getEffectiveTier.
  */
 export function getQuotaTier(org: OrgTrialInfo): SubscriptionTier {
@@ -1058,7 +1060,7 @@ export async function checkWhatsAppInstanceLimit(
     throw new Error('Organization not found')
   }
 
-  // Spec 012 (research R9): the effective plan (the 7-day trial counts as Pro) plus active add-ons. Not
+  // Spec 012 (research R9): the effective plan (the trial counts as Pro) plus active add-ons. Not
   // Organization.whatsappInstances, which already grows by one per add-on and would count it twice.
   const limite =
     PLAN_LIMITS[getEffectiveTier(org)].maxWhatsAppInstances +

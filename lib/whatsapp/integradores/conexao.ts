@@ -11,7 +11,7 @@ import { FalhaIntegrador, RecusaIntegrador, type Credenciais } from './tipos'
 
 export { NOME_INTEGRADOR } from './tipos'
 
-/** WhatsApp through an integrator is on every paid plan; the 7-day trial counts (research R9). */
+/** WhatsApp through an integrator is on every paid plan; the trial counts (research R9). */
 export async function contaTemPlanoPago(organizationId: string): Promise<boolean> {
   const org = await prisma.organization.findUnique({
     where: { id: organizationId },

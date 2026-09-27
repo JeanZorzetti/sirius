@@ -12,7 +12,9 @@ import {
 } from "lucide-react"
 import { BillingPageTracker } from "@/components/analytics/billing-page-tracker"
 import { CopyReferralButton } from "./copy-referral-button"
-import { CancelSubscriptionButton } from "./cancel-subscription-button"
+import { CancelSubscriptionButton, KeepSubscriptionButton } from "./cancel-subscription-button"
+import { lerAssinatura, dentroDoArrependimento } from "@/lib/stripe"
+import logger from "@/lib/logger"
 import { PLAN_NAMES, PLAN_PRICING, PLAN_DESCRIPTIONS } from "@/lib/entitlements"
 import { SubscriptionTier } from "@prisma/client"
 import { isTrialActive, isReadOnly } from "@/lib/entitlements"
@@ -60,6 +62,11 @@ export default async function BillingPage() {
   let rewardedReferrals = 0
   let trialEndsAt: Date | null = null
   let trialStatus: string | null = null
+  // Spec 013: what is scheduled for the end of the paid period
+  let cancelAtPeriodEnd = false
+  let currentPeriodEnd: Date | null = null
+  let pendingPlan: string | null = null
+  let stripeSubscriptionId: string | null = null
 
   if (session?.user?.email) {
     const user = await prisma.user.findUnique({
@@ -75,6 +82,10 @@ export default async function BillingPage() {
             referralDiscount: true,
             trialEndsAt: true,
             trialStatus: true,
+            cancelAtPeriodEnd: true,
+            currentPeriodEnd: true,
+            pendingPlan: true,
+            stripeSubscriptionId: true,
             referrals: { where: { status: 'REWARDED' }, select: { id: true } },
           }
         }
@@ -89,6 +100,10 @@ export default async function BillingPage() {
       rewardedReferrals = user.organization?.referrals?.length ?? 0
       trialEndsAt = user.organization?.trialEndsAt ?? null
       trialStatus = user.organization?.trialStatus ?? null
+      cancelAtPeriodEnd = user.organization?.cancelAtPeriodEnd ?? false
+      currentPeriodEnd = user.organization?.currentPeriodEnd ?? null
+      pendingPlan = user.organization?.pendingPlan ?? null
+      stripeSubscriptionId = user.organization?.stripeSubscriptionId ?? null
 
       // Gerar referralCode se o usuário ainda não tiver (usuários antigos)
       if (user.referralCode) {
@@ -108,6 +123,21 @@ export default async function BillingPage() {
   const trialActive = isTrialActive(orgInfo)
   const readOnly = isReadOnly(orgInfo)
   const daysLeft = trialEndsAt ? getDaysRemaining(new Date(trialEndsAt)) : 0
+
+  // The cancel dialog says what will happen: withdrawal with refund, or access until the end of the period
+  let emArrependimento = false
+  let fimDoPeriodo: string | null = currentPeriodEnd?.toISOString() ?? null
+  if (isPaid && !isFounder && stripeSubscriptionId && !cancelAtPeriodEnd) {
+    try {
+      const assinatura = await lerAssinatura(stripeSubscriptionId)
+      emArrependimento = dentroDoArrependimento(assinatura.inicio)
+      fimDoPeriodo = assinatura.fimDoPeriodo.toISOString()
+    } catch (err) {
+      logger.warn({ err }, '[BILLING] Could not read the Stripe subscription for the cancel dialog')
+    }
+  }
+  const dataBR = (d: Date) => d.toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' })
+  const planoAgendado = pendingPlan ? PLAN_NAMES[pendingPlan.replace('_ANNUAL', '') as SubscriptionTier] : null
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://siriuscrm.com.br'
   const referralUrl = referralCode ? `${appUrl}/r/${referralCode}` : null
@@ -240,11 +270,34 @@ export default async function BillingPage() {
           </CardContent>
         )}
 
+        {/* Spec 013: scheduled cancellation or downgrade */}
+        {isPaid && cancelAtPeriodEnd && (
+          <CardContent className="pt-0">
+            <div className="border-t border-border/50 pt-4 flex items-center justify-between gap-4 flex-wrap">
+              <p className="text-sm">
+                Cancelamento agendado. Seu plano {tierLabel} continua até{' '}
+                <strong>{currentPeriodEnd ? dataBR(currentPeriodEnd) : 'o fim do período pago'}</strong>, sem nova cobrança.
+              </p>
+              <KeepSubscriptionButton />
+            </div>
+          </CardContent>
+        )}
+        {isPaid && !cancelAtPeriodEnd && planoAgendado && (
+          <CardContent className="pt-0">
+            <div className="border-t border-border/50 pt-4">
+              <p className="text-sm">
+                Seu plano muda para {planoAgendado} em{' '}
+                <strong>{currentPeriodEnd ? dataBR(currentPeriodEnd) : 'a próxima renovação'}</strong>. Até lá, tudo continua como está.
+              </p>
+            </div>
+          </CardContent>
+        )}
+
         {/* Cancel for paid non-founders */}
-        {isPaid && !isFounder && (
+        {isPaid && !isFounder && !cancelAtPeriodEnd && (
           <CardContent className="pt-0">
             <div className="border-t border-border/50 pt-4 flex justify-end">
-              <CancelSubscriptionButton planName={tierLabel} />
+              <CancelSubscriptionButton planName={tierLabel} emArrependimento={emArrependimento} fimDoPeriodo={fimDoPeriodo} />
             </div>
           </CardContent>
         )}
