@@ -1,0 +1,27 @@
+{
+  "isStatusReply": false,
+  "chatLid": "81896604192873@lid",
+  "connectedPhone": "5511999990000",
+  "waitingMessage": false,
+  "isEdit": false,
+  "isGroup": false,
+  "isNewsletter": true,
+  "instanceId": "REDACTED",
+  "messageId": "3EB0ZAPI0010",
+  "phone": "120363166555745933@newsletter",
+  "fromMe": false,
+  "momment": 1790000000000,
+  "status": "RECEIVED",
+  "chatName": "Maria",
+  "senderPhoto": null,
+  "senderName": "Maria Souza",
+  "participantPhone": null,
+  "participantLid": null,
+  "photo": null,
+  "broadcast": false,
+  "type": "ReceivedCallback",
+  "fromApi": false,
+  "text": {
+    "message": "novidade do canal"
+  }
+}

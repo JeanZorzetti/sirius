@@ -1,122 +1,61 @@
 /**
  * GET /api/whatsapp/connections/[id]/qr-code
  *
- * SSE proxy — connects to the gateway's QR stream on behalf of the browser.
- * This avoids CORS issues and keeps the API key server-side.
- *
- * The browser opens an EventSource to this URL and receives the same
- * qr / connected / timeout events the gateway emits.
+ * The QR Code of an integrator connection, read live (spec 012). The screen asks every 3 s while open, because the
+ * integrators renew the QR about every 20 s; the same call switches the screen to "Conectado" once paired (FR-007).
+ * Also reconnects a FAILED or DISCONNECTED connection that still holds credentials.
  */
 
-import { NextRequest } from 'next/server'
-import { getSession } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
-import { prismaWa } from '@/lib/prisma-wa'
+import { NextResponse } from 'next/server'
 import logger from '@/lib/logger'
+import { autorizarConfiguracao } from '@/lib/visibilidade'
+import { adaptador } from '@/lib/whatsapp/integradores'
+import { carregarConexao, contaTemPlanoPago, numeroJaConectado, respostaDoErro } from '@/lib/whatsapp/integradores/conexao'
+import { mudarEstado } from '@/lib/whatsapp/integradores/estado'
 
 export const dynamic = 'force-dynamic'
-export const runtime = 'nodejs'
 
-const GATEWAY_URL = process.env.WHATSAPP_GATEWAY_URL || ''
-const GATEWAY_API_KEY = process.env.WHATSAPP_GATEWAY_API_KEY || ''
-
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
+  const acesso = await autorizarConfiguracao()
+  if (acesso instanceof Response) return acesso
+  const { organizationId } = acesso
 
-  const session = await getSession()
-  if (!session?.user) {
-    return new Response('Unauthorized', { status: 401 })
+  const carregada = await carregarConexao(organizationId, id)
+  if (!carregada || !carregada.linha.provider) return NextResponse.json({ error: 'Conexão não encontrada.' }, { status: 404 })
+  const { linha, credenciais } = carregada
+  if (!credenciais) {
+    return NextResponse.json({ error: 'Esta conexão foi desconectada. Conecte de novo com as credenciais do integrador.' }, { status: 409 })
+  }
+  if (!(await contaTemPlanoPago(organizationId))) {
+    return NextResponse.json({ error: 'WhatsApp por integrador está nos planos pagos, a partir do Starter.' }, { status: 403 })
   }
 
-  const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    select: { organizationId: true },
-  })
+  try {
+    const integrador = adaptador(credenciais.provider)
+    const r = await integrador.qrCode(credenciais)
 
-  if (!user?.organizationId) {
-    return new Response('Organization not found', { status: 404 })
-  }
-
-  const connection = await prismaWa.whatsAppConnection.findFirst({
-    where: { id, organizationId: user.organizationId },
-  })
-
-  if (!connection) {
-    return new Response('Connection not found', { status: 404 })
-  }
-
-  const gatewayStreamUrl = `${GATEWAY_URL}/api/instances/${connection.instanceName}/qr`
-
-  logger.info({ connectionId: id, instanceName: connection.instanceName }, 'QR SSE proxy starting')
-
-  const stream = new ReadableStream({
-    async start(controller) {
-      const encoder = new TextEncoder()
-      let closed = false
-
-      const close = () => {
-        if (closed) return
-        closed = true
-        try { controller.close() } catch { /* already closed */ }
+    if ('conectado' in r) {
+      const proibido = await numeroJaConectado(organizationId, r.phoneNumber, linha.id)
+      if (proibido) {
+        await mudarEstado(linha, 'FAILED', proibido, { dados: { phoneNumber: r.phoneNumber } })
+        await integrador.desligarAviso(credenciais).catch((erro) => logger.warn({ connectionId: id, erro: String(erro) }, 'integrator notice not turned off'))
+        return NextResponse.json({ status: 'FAILED', statusMotivo: proibido })
       }
+      await mudarEstado(linha, 'CONNECTED', null, { dados: { phoneNumber: r.phoneNumber } })
+      return NextResponse.json({ status: 'CONNECTED', phoneNumber: r.phoneNumber })
+    }
 
-      request.signal.addEventListener('abort', close)
-
-      try {
-        const upstreamRes = await fetch(gatewayStreamUrl, {
-          headers: {
-            'X-API-Key': GATEWAY_API_KEY,
-            Accept: 'text/event-stream',
-          },
-          signal: request.signal,
-        })
-
-        if (!upstreamRes.ok) {
-          const body = await upstreamRes.text()
-          logger.warn({ status: upstreamRes.status, body }, 'Gateway QR stream error')
-          controller.enqueue(encoder.encode(`event: error\ndata: ${JSON.stringify({ error: `Gateway ${upstreamRes.status}: ${body}` })}\n\n`))
-          close()
-          return
-        }
-
-        if (!upstreamRes.body) {
-          controller.enqueue(encoder.encode(`event: error\ndata: ${JSON.stringify({ error: 'No response body from gateway' })}\n\n`))
-          close()
-          return
-        }
-
-        const reader = upstreamRes.body.getReader()
-        const decoder = new TextDecoder()
-
-        while (!closed) {
-          const { done, value } = await reader.read()
-          if (done) break
-
-          const chunk = decoder.decode(value, { stream: true })
-          controller.enqueue(encoder.encode(chunk))
-        }
-      } catch (err: any) {
-        if (err.name !== 'AbortError') {
-          logger.error({ error: err.message }, 'QR SSE proxy error')
-          try {
-            controller.enqueue(encoder.encode(`event: error\ndata: ${JSON.stringify({ error: err.message })}\n\n`))
-          } catch { /* controller closed */ }
-        }
-      } finally {
-        close()
-      }
-    },
-  })
-
-  return new Response(stream, {
-    headers: {
-      'Content-Type': 'text/event-stream',
-      'Cache-Control': 'no-cache, no-transform',
-      Connection: 'keep-alive',
-      'X-Accel-Buffering': 'no',
-    },
-  })
+    if (linha.status === 'FAILED' || linha.status === 'DISCONNECTED') {
+      await mudarEstado(linha, 'CONNECTING', 'aguardando a leitura do QR Code')
+    }
+    return NextResponse.json({ status: 'CONNECTING', qrCode: r.qrCode })
+  } catch (erro) {
+    try {
+      return respostaDoErro(erro)
+    } catch {
+      logger.error({ organizationId, connectionId: id, erro: String(erro) }, 'Error reading integrator QR Code')
+      return NextResponse.json({ error: 'Não foi possível buscar o QR Code agora. Tente de novo.' }, { status: 500 })
+    }
+  }
 }

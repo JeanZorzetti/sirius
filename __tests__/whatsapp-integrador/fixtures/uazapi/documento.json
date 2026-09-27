@@ -1,0 +1,33 @@
+{
+  "BaseUrl": "https://sirius-teste.uazapi.com",
+  "EventType": "messages",
+  "instanceName": "loja",
+  "owner": "5511999990000",
+  "token": "REDACTED",
+  "chat": {
+    "wa_chatid": "5511987654321@s.whatsapp.net",
+    "name": "Maria Souza"
+  },
+  "message": {
+    "chatid": "5511987654321@s.whatsapp.net",
+    "fromMe": false,
+    "id": "5511999990000:3EB0UAZ0004",
+    "isGroup": false,
+    "messageTimestamp": 1790000000000,
+    "messageType": "DocumentMessage",
+    "messageid": "3EB0UAZ0004",
+    "sender": "5511987654321@s.whatsapp.net",
+    "senderName": "Maria Souza",
+    "sender_pn": "5511987654321@s.whatsapp.net",
+    "sender_lid": "81896604192873@lid",
+    "wasSentByApi": false,
+    "mediaType": "document",
+    "type": "media",
+    "text": "",
+    "content": {
+      "URL": "https://mmg.whatsapp.net/REDACTED",
+      "mimetype": "application/pdf",
+      "fileName": "proposta.pdf"
+    }
+  }
+}

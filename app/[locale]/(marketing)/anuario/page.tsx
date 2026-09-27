@@ -358,7 +358,7 @@ export default function AnuarioPage() {
               Melhore seus resultados com o Sirius CRM
             </h2>
             <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-              WhatsApp integrado, IA BANT/MEDDIC e modo offline — tudo no plano gratuito. Comece em 5 minutos, sem cartão de crédito.
+              Funil visual e modo offline no plano gratuito; WhatsApp no CRM e IA BANT/MEDDIC a partir do Starter. Comece em 5 minutos, sem cartão de crédito.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link

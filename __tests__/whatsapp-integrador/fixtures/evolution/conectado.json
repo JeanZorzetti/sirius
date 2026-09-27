@@ -1,0 +1,16 @@
+{
+  "instance": "loja",
+  "destination": "https://sirius.test/api/webhooks/whatsapp-integrador/REDACTED",
+  "date_time": "2026-09-27T12:00:00.000Z",
+  "sender": "5511999990000@s.whatsapp.net",
+  "server_url": "https://evo.cliente.com.br",
+  "apikey": "REDACTED",
+  "event": "connection.update",
+  "data": {
+    "instance": "loja",
+    "wuid": "5511999990000@s.whatsapp.net",
+    "profileName": "Loja",
+    "state": "open",
+    "statusReason": 200
+  }
+}

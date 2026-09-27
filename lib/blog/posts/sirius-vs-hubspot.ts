@@ -103,7 +103,7 @@ export const post: BlogPost = {
       <h2>O HubSpot Free tem WhatsApp integrado?</h2>
 
       <p>
-        Não. A integração nativa do HubSpot com WhatsApp exige Marketing Hub ou Service Hub nos planos Professional ou Enterprise. No gratuito e no Starter, o caminho são aplicativos do Marketplace, em geral pagos. O Sirius Gratuito também não tem WhatsApp: no Sirius, o WhatsApp entra no plano Business, pela API oficial da Meta, com as conversas no histórico do cliente.
+        Não. A integração nativa do HubSpot com WhatsApp exige Marketing Hub ou Service Hub nos planos Professional ou Enterprise. No gratuito e no Starter, o caminho são aplicativos do Marketplace, em geral pagos. O Sirius Gratuito também não tem WhatsApp: no Sirius, o WhatsApp entra a partir do Starter (R$ 67/mês), pelo integrador que você já usa, e no Business também pela API oficial da Meta, com as conversas no histórico do cliente.
       </p>
 
       <h2>Qual plano gratuito tem IA?</h2>
@@ -296,7 +296,7 @@ export const post: BlogPost = {
       <h2>Does HubSpot Free have WhatsApp integration?</h2>
 
       <p>
-        No. HubSpot's native WhatsApp integration requires Marketing Hub or Service Hub on the Professional or Enterprise plans. On Free and Starter, the way in is Marketplace apps, usually paid. Sirius Free has no WhatsApp either: in Sirius, WhatsApp comes with the Business plan, through the official Meta API, with conversations in the customer history.
+        No. HubSpot's native WhatsApp integration requires Marketing Hub or Service Hub on the Professional or Enterprise plans. On Free and Starter, the way in is Marketplace apps, usually paid. Sirius Free has no WhatsApp either: in Sirius, WhatsApp comes from Starter (R$ 67/month), through the integrator you already use, and on Business also through the official Meta API, with conversations in the customer history.
       </p>
 
       <h2>Which free plan has AI?</h2>

@@ -278,7 +278,7 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        No plano Business, o <a href="/">Sirius CRM</a> integra o WhatsApp pela API oficial da Meta. Isso significa que o vendedor envia e recebe mensagens pelo painel do CRM, o histórico fica salvo automaticamente no contato e o gestor tem visibilidade de todas as conversas sem precisar tocar no celular de ninguém.
+        Nos planos pagos, o <a href="/">Sirius CRM</a> integra o WhatsApp pelo integrador que você já usa (a partir do Starter) ou pela API oficial da Meta (no Business). Isso significa que o vendedor envia e recebe mensagens pelo painel do CRM, o histórico fica salvo automaticamente no contato e o gestor tem visibilidade de todas as conversas sem precisar tocar no celular de ninguém.
       </p>
 
       <div class="callout-tip">

@@ -38,6 +38,10 @@ export interface ComposerProps {
   onStartRecording: () => void
   onCancelRecording: () => void
   onSendRecording: () => void
+  /** Why sending is off in this conversation (the "SAIR" lock, a dropped connection); null when it may send */
+  bloqueio?: string | null
+  /** A contact who never wrote and more than one number: the seller picks which one sends (FR-018) */
+  escolhaNumero?: { opcoes: { id: string; rotulo: string }[]; valor: string; onChange: (id: string) => void } | null
 }
 
 export function Composer({
@@ -48,7 +52,9 @@ export function Composer({
   wabaEnabled, aiDraftLoading, onRequestAIDraft,
   onOpenLocation, onOpenButtons, onOpenTemplate,
   isRecording, recordingTime, onStartRecording, onCancelRecording, onSendRecording,
+  bloqueio = null, escolhaNumero = null,
 }: ComposerProps) {
+  const travado = sending || !!bloqueio || (!!escolhaNumero && !escolhaNumero.valor)
   const tCommon = useTranslations('common')
   const taRef = useRef<HTMLTextAreaElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -105,6 +111,29 @@ export function Composer({
 
   return (
     <>
+      {bloqueio && (
+        <p role="status" className="border-t border-amber-200 bg-amber-50 px-4 py-2.5 text-[12.5px] leading-snug text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-200">
+          {bloqueio}
+        </p>
+      )}
+
+      {escolhaNumero && !bloqueio && (
+        <div className="flex items-center gap-2 border-t border-border bg-white px-4 py-2 whatsapp-header">
+          <label htmlFor="composer-numero" className="text-[12px] text-muted-foreground">Enviar por</label>
+          <select
+            id="composer-numero"
+            value={escolhaNumero.valor}
+            onChange={(e) => escolhaNumero.onChange(e.target.value)}
+            className="h-8 rounded-md border border-border bg-background px-2 text-[12.5px]"
+          >
+            {!escolhaNumero.valor && <option value="">Escolha o número</option>}
+            {escolhaNumero.opcoes.map((o) => (
+              <option key={o.id} value={o.id}>{o.rotulo}</option>
+            ))}
+          </select>
+        </div>
+      )}
+
       {/* Reply preview bar */}
       {replyingTo && (
         <div className="px-4 py-2 bg-white whatsapp-header border-t border-border dark:border-zinc-700 flex items-center gap-2">
@@ -184,7 +213,7 @@ export function Composer({
             <button
               type="button"
               onClick={onSendRecording}
-              disabled={sending}
+              disabled={travado}
               aria-label="Enviar áudio"
               className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 bg-primary hover:bg-primary text-primary-foreground transition-all duration-200 active:scale-90"
             >
@@ -208,7 +237,7 @@ export function Composer({
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              disabled={sending}
+              disabled={travado}
               aria-label="Anexar arquivo"
               className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 text-muted-foreground hover:text-muted-foreground hover:bg-black/5 transition-colors"
             >
@@ -238,7 +267,7 @@ export function Composer({
                 <button
                   type="button"
                   onClick={onOpenLocation}
-                  disabled={sending}
+                  disabled={travado}
                   aria-label="Enviar localização"
                   title="Enviar localização"
                   className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 text-muted-foreground hover:text-muted-foreground hover:bg-black/5 transition-colors"
@@ -248,7 +277,7 @@ export function Composer({
                 <button
                   type="button"
                   onClick={onOpenButtons}
-                  disabled={sending}
+                  disabled={travado}
                   aria-label="Enviar mensagem com botões"
                   title="Enviar mensagem com botões"
                   className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 text-muted-foreground hover:text-muted-foreground hover:bg-black/5 transition-colors"
@@ -258,7 +287,7 @@ export function Composer({
                 <button
                   type="button"
                   onClick={onOpenTemplate}
-                  disabled={sending}
+                  disabled={travado}
                   aria-label="Enviar template"
                   title="Enviar template aprovado"
                   className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 text-muted-foreground hover:text-muted-foreground hover:bg-black/5 transition-colors"
@@ -288,7 +317,7 @@ export function Composer({
                 placeholder="Mensagem"
                 value={text}
                 onChange={e => handleTextChange(e.target.value)}
-                disabled={sending}
+                disabled={sending || !!bloqueio}
                 rows={1}
                 aria-label="Campo de mensagem"
                 aria-describedby="message-help-text"
@@ -303,7 +332,7 @@ export function Composer({
                   'whatsapp-text-primary'
                 )}
                 onKeyDown={e => {
-                  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); onSend() }
+                  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); if (!travado) onSend() }
                 }}
                 onPaste={e => {
                   const items = e.clipboardData?.items
@@ -329,7 +358,7 @@ export function Composer({
               <button
                 type="button"
                 onClick={pendingFile ? onSendMedia : onSend}
-                disabled={sending}
+                disabled={travado}
                 aria-label={pendingFile ? 'Enviar arquivo' : 'Enviar mensagem'}
                 className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 bg-primary hover:bg-primary text-primary-foreground transition-all duration-200 active:scale-90 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               >
@@ -343,7 +372,7 @@ export function Composer({
               <button
                 type="button"
                 onClick={onStartRecording}
-                disabled={sending}
+                disabled={travado}
                 aria-label="Gravar áudio"
                 className="h-[42px] w-[42px] rounded-full flex items-center justify-center flex-shrink-0 bg-primary hover:bg-primary text-primary-foreground transition-all duration-200 active:scale-90 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               >

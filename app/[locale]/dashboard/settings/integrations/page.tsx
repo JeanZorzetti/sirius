@@ -1,5 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { prisma } from '@/lib/prisma'
+import { prismaWa } from '@/lib/prisma-wa'
 import { getSession } from '@/lib/auth'
 import Link from 'next/link'
 import { Workflow, MessageSquare, Calendar, ArrowLeft, CheckCircle2, XCircle, Activity, TrendingUp, AlertCircle, BarChart3, Share2, Database, Instagram } from 'lucide-react'
@@ -52,7 +53,8 @@ export default async function IntegrationsPage() {
         recentLogs,
         n8nLogs,
         wabaLogs,
-        calendarLogs
+        calendarLogs,
+        conexoesIntegrador
     ] = await Promise.all([
         prisma.integrationLog.count({
             where: {
@@ -100,7 +102,11 @@ export default async function IntegrationsPage() {
                 type: 'GOOGLE_CALENDAR',
                 createdAt: { gte: last7Days }
             }
-        })
+        }),
+        // Integrator connections holding credentials (spec 012)
+        prismaWa.whatsAppConnection.count({
+            where: { organizationId: user.organization.id, provider: { not: null }, apiKey: { not: null } }
+        }).catch(() => 0)
     ])
 
     const successRate = totalLogs24h > 0 ? Math.round((successLogs24h / totalLogs24h) * 100) : 100
@@ -122,9 +128,24 @@ export default async function IntegrationsPage() {
             status: 'stable' as const,
         },
         {
+            id: 'whatsapp-integrador',
+            name: 'WhatsApp por integrador',
+            description: 'Z-API, uazapi ou Evolution API, com a conta que você já tem. Nos planos pagos, a partir do Starter.',
+            icon: MessageSquare,
+            iconColor: 'text-emerald-500',
+            iconBg: 'bg-emerald-500/10',
+            iconShadow: 'shadow-[0_0_10px_rgba(16,185,129,0.2)]',
+            enabled: conexoesIntegrador > 0,
+            configured: conexoesIntegrador > 0,
+            href: '/dashboard/chat',
+            requiresPro: false,
+            eventsLast7Days: 0,
+            status: 'stable' as const,
+        },
+        {
             id: 'whatsapp-official',
             name: 'WhatsApp Oficial',
-            description: 'API Oficial do WhatsApp Business (Meta Cloud API)',
+            description: 'API Oficial do WhatsApp Business (Meta Cloud API). Plano Business.',
             icon: MessageSquare,
             iconColor: 'text-emerald-500',
             iconBg: 'bg-emerald-500/10',
@@ -423,7 +444,11 @@ export default async function IntegrationsPage() {
                                 Configure webhooks e gerencie workflows via API.
                             </p>
                             <p>
-                                <strong>WhatsApp Oficial:</strong> API Oficial do WhatsApp Business (Meta Cloud API).
+                                <strong>WhatsApp por integrador:</strong> conecte o número pela Z-API, uazapi ou Evolution API que você já contrata.
+                                As conversas entram no inbox do Sirius. Está nos planos pagos: 1 número no Starter, 2 no Pro e 5 no Business.
+                            </p>
+                            <p>
+                                <strong>WhatsApp Oficial (plano Business):</strong> API Oficial do WhatsApp Business (Meta Cloud API).
                                 Envie mensagens, templates aprovados pela Meta, receba mensagens em tempo real e acompanhe status de entrega e leitura.
                             </p>
                             <p>

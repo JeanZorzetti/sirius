@@ -8,6 +8,7 @@ import { dispatchWebhookAsync } from '@/lib/webhooks/dispatcher'
 import { WEBHOOK_EVENTS } from '@/lib/webhooks/events'
 import { canCreateContact } from '@/lib/entitlements'
 import { usuarioForaDaConta } from '@/lib/pipeline/chaves'
+import { comPais, digitos } from '@/lib/whatsapp/telefone'
 
 function errMessage(error: unknown): string {
     return error instanceof Error ? error.message : String(error)
@@ -155,6 +156,27 @@ export async function createContact(formData: FormData) {
         logger.error({ err: error }, 'Failed to create contact')
         return { success: false, error: `Failed to create contact: ${errMessage(error)}` }
     }
+}
+
+/**
+ * A contact that arrived from WhatsApp with only a LID has no phone (spec 012, research R6): the seller fills it in
+ * from the chat or the profile. Only the phone changes, and only while it is empty.
+ */
+export async function completarTelefone(contactId: string, telefone: string) {
+    const user = await getAuthenticatedUser()
+    if (!user) return { success: false as const, error: 'Faça login para salvar.' }
+    const d = digitos(telefone)
+    if (d.length < 10 || d.length > 15) {
+        return { success: false as const, error: 'Informe o telefone com DDD, por exemplo (11) 98765-4321.' }
+    }
+    const phone = `+${comPais(telefone)}`
+    const { count } = await prisma.contact.updateMany({
+        where: { id: contactId, organizationId: user.organizationId, phone: null },
+        data: { phone },
+    })
+    if (count === 0) return { success: false as const, error: 'Este contato não foi encontrado ou já tem telefone.' }
+    revalidatePath('/dashboard/contacts')
+    return { success: true as const, phone }
 }
 
 export async function updateContact(contactId: string, formData: FormData) {

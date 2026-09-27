@@ -1,0 +1,27 @@
+{
+  "instance": "loja",
+  "destination": "https://sirius.test/api/webhooks/whatsapp-integrador/REDACTED",
+  "date_time": "2026-09-27T12:00:00.000Z",
+  "sender": "5511999990000@s.whatsapp.net",
+  "server_url": "https://evo.cliente.com.br",
+  "apikey": "REDACTED",
+  "event": "messages.upsert",
+  "data": {
+    "key": {
+      "remoteJid": "5511987654321@s.whatsapp.net",
+      "fromMe": true,
+      "id": "3EB0EVO0005"
+    },
+    "pushName": "Maria Souza",
+    "status": "DELIVERY_ACK",
+    "message": {
+      "extendedTextMessage": {
+        "text": "respondi pelo celular"
+      }
+    },
+    "messageType": "extendedTextMessage",
+    "messageTimestamp": 1790000000,
+    "instanceId": "REDACTED",
+    "source": "android"
+  }
+}

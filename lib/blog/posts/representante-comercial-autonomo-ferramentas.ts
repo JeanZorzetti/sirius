@@ -106,7 +106,7 @@ export const post: BlogPost = {
       <h3>Custo</h3>
 
       <p>
-        O app WhatsApp Business é gratuito. Para integrar o número ao CRM, o caminho seguro é a API oficial do WhatsApp Business: a Meta cobra pelos modelos de mensagem conforme a tabela dela, e no Sirius a integração vem no plano Business. Evite conexões por QR Code em APIs não oficiais, que arriscam o banimento do número.
+        O app WhatsApp Business é gratuito. Para integrar o número ao CRM, o caminho seguro é a API oficial do WhatsApp Business: a Meta cobra pelos modelos de mensagem conforme a tabela dela, e no Sirius ela vem no plano Business. Nos planos Starter e Pro, o Sirius conecta o número pelo integrador que você já contrata (Z-API, uazapi ou Evolution API), que não é oficial. Evite conexões por QR Code em APIs não oficiais, que arriscam o banimento do número.
       </p>
 
       <h2>Como gerenciar pedidos sem internet como representante?</h2>
@@ -300,7 +300,7 @@ export const post: BlogPost = {
       </ul>
 
       <p>
-        Isso significa que com uma única ferramenta — e um único login — o representante resolve o núcleo da sua operação. A planilha de comissões e a assinatura digital continuam separadas. O WhatsApp entra no Sirius pela API oficial no plano Business.
+        Isso significa que com uma única ferramenta — e um único login — o representante resolve o núcleo da sua operação. A planilha de comissões e a assinatura digital continuam separadas. O WhatsApp entra no Sirius a partir do Starter, pelo integrador que você já usa, e pela API oficial no plano Business.
       </p>
 
       <div style="background: var(--primary); padding: 2rem; border-radius: 1rem; margin: 2.5rem 0; text-align: center;">
@@ -401,7 +401,7 @@ export const post: BlogPost = {
       </ul>
 
       <p>
-        <a href="/" style="color: var(--foreground); text-decoration: underline;">Sirius CRM</a> was built specifically for this profile: Brazilian sales reps who work in the field, manage multiple manufacturers, and need a tool that fits the way they actually work: offline mode on mobile, Google Maps prospecting, AI qualification from the Starter plan and WhatsApp through the official API on the Business plan.
+        <a href="/" style="color: var(--foreground); text-decoration: underline;">Sirius CRM</a> was built specifically for this profile: Brazilian sales reps who work in the field, manage multiple manufacturers, and need a tool that fits the way they actually work: offline mode on mobile, Google Maps prospecting, AI qualification from the Starter plan and WhatsApp in the CRM from Starter too (the official API on the Business plan).
       </p>
 
       <h2>Tool 2: Commission Spreadsheet / Calculator</h2>

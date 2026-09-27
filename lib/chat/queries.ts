@@ -22,7 +22,7 @@ export type ConnectionScope = {
 /** Subset of WhatsAppMessage the conversation list actually renders. */
 export type ChatLastMessage = Pick<
   WhatsAppMessage,
-  'id' | 'contactId' | 'text' | 'direction' | 'status' | 'sentAt' | 'mediaType'
+  'id' | 'contactId' | 'text' | 'direction' | 'status' | 'sentAt' | 'mediaType' | 'connectionId'
 >
 
 export type ChatConversation = Contact & {
@@ -111,7 +111,7 @@ export async function getLastMessagesPerContact(
   if (contactIds.length === 0) return []
   return prismaWa.$queryRaw<ChatLastMessage[]>`
     SELECT DISTINCT ON ("contactId")
-      "contactId", id, text, direction, status, "sentAt", "mediaType"
+      "contactId", id, text, direction, status, "sentAt", "mediaType", "connectionId"
     FROM "WhatsAppMessage"
     WHERE "organizationId" = ${organizationId}
       AND "contactId" = ANY(${contactIds}::text[])

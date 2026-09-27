@@ -53,7 +53,7 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: Generate Prisma Client
-        run: npx prisma generate && npx prisma generate --schema prisma/whatsapp.prisma
+        run: npx prisma generate && npx prisma generate --schema prisma/wa/schema.prisma
 
       - name: Run TypeScript type check
         run: npx tsc --noEmit
@@ -78,10 +78,10 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: Generate Prisma Client
-        run: npx prisma generate && npx prisma generate --schema prisma/whatsapp.prisma
+        run: npx prisma generate && npx prisma generate --schema prisma/wa/schema.prisma
 
       - name: Build Next.js app
-        run: npx prisma generate && npx prisma generate --schema prisma/whatsapp.prisma && npx next build
+        run: npx prisma generate && npx prisma generate --schema prisma/wa/schema.prisma && npx next build
         env:
           # Use build-time env vars if needed
           SKIP_ENV_VALIDATION: true
@@ -113,7 +113,7 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: Generate Prisma Client
-        run: npx prisma generate && npx prisma generate --schema prisma/whatsapp.prisma
+        run: npx prisma generate && npx prisma generate --schema prisma/wa/schema.prisma
 
       - name: Run Vitest unit tests
         run: npm run test:unit
@@ -178,14 +178,14 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Generate Prisma Client
-        run: npx prisma generate && npx prisma generate --schema prisma/whatsapp.prisma
+        run: npx prisma generate && npx prisma generate --schema prisma/wa/schema.prisma
 
       # db push, not migrate deploy: the tests exercise the app against the current schema, not the migration history
       - name: Create the test databases
         run: |
           PGPASSWORD=sirius psql -h localhost -U sirius -d sirius -c 'CREATE EXTENSION IF NOT EXISTS vector' -c 'CREATE DATABASE sirius_wa'
           npx prisma db push --skip-generate --accept-data-loss
-          npx prisma db push --skip-generate --accept-data-loss --schema prisma/whatsapp.prisma
+          npx prisma db push --skip-generate --accept-data-loss --schema prisma/wa/schema.prisma
 
       - name: Run Playwright tests
         run: npx playwright test --project=chromium
@@ -231,7 +231,7 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: Generate Prisma Client
-        run: npx prisma generate && npx prisma generate --schema prisma/whatsapp.prisma
+        run: npx prisma generate && npx prisma generate --schema prisma/wa/schema.prisma
 
       - name: Validate Prisma schema
         run: npx prisma validate

@@ -1,0 +1,19 @@
+{
+  "BaseUrl": "https://sirius-teste.uazapi.com",
+  "instanceName": "loja",
+  "owner": "5511999990000",
+  "token": "REDACTED",
+  "EventType": "connection",
+  "instance": {
+    "id": "r1a2b3",
+    "name": "loja",
+    "status": "connected",
+    "owner": "5511999990000",
+    "profileName": "Loja"
+  },
+  "status": {
+    "connected": true,
+    "loggedIn": true,
+    "jid": "5511999990000:12@s.whatsapp.net"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "BaseUrl": "https://sirius-teste.uazapi.com",
+  "EventType": "messages",
+  "instanceName": "loja",
+  "owner": "5511999990000",
+  "token": "REDACTED",
+  "chat": {
+    "wa_chatid": "5511987654321@s.whatsapp.net",
+    "name": "Maria Souza"
+  },
+  "message": {
+    "chatid": "81896604192873@lid",
+    "fromMe": false,
+    "id": "5511999990000:3EB0UAZ0001",
+    "isGroup": false,
+    "messageTimestamp": 1790000000000,
+    "messageType": "Conversation",
+    "messageid": "3EB0UAZ0007",
+    "sender": "81896604192873@lid",
+    "senderName": "Maria Souza",
+    "sender_pn": "5511987654321@s.whatsapp.net",
+    "sender_lid": "81896604192873@lid",
+    "wasSentByApi": false,
+    "mediaType": "",
+    "type": "text",
+    "text": "oi",
+    "content": "oi"
+  }
+}

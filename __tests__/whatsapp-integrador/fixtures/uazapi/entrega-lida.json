@@ -1,0 +1,20 @@
+{
+  "BaseUrl": "https://sirius-teste.uazapi.com",
+  "instanceName": "loja",
+  "owner": "5511999990000",
+  "token": "REDACTED",
+  "EventType": "messages_update",
+  "type": "ReadReceipt",
+  "state": "Read",
+  "event": {
+    "Chat": "5511987654321@s.whatsapp.net",
+    "Sender": "5511987654321@s.whatsapp.net",
+    "IsFromMe": false,
+    "IsGroup": false,
+    "MessageIDs": [
+      "3EB0SIRIUS01"
+    ],
+    "Timestamp": "2026-09-27T12:00:05Z",
+    "Type": "read"
+  }
+}

@@ -33,7 +33,7 @@ export const post: BlogPost = {
         <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ Resposta rápida</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li><strong style="color: var(--primary-foreground);">RD Station CRM</strong>: plano Free para até 4 usuários, com recursos de venda pelo WhatsApp. Pagos por usuário: Básico R$ 73/usuário/mês, Pro R$ 131/usuário/mês (mínimo de 4). Integração nativa com o RD Station Marketing.</li>
-          <li><strong style="color: var(--primary-foreground);">Sirius CRM</strong>: plano Gratuito para até 2 usuários, sem IA, sem automação e sem WhatsApp. Pagos por conta: Starter R$ 67/mês (até 5 usuários), Pro R$ 147/mês (até 15), Business R$ 397/mês (até 50, com WhatsApp pela API oficial).</li>
+          <li><strong style="color: var(--primary-foreground);">Sirius CRM</strong>: plano Gratuito para até 2 usuários, sem IA, sem automação e sem WhatsApp. Pagos por conta: Starter R$ 67/mês (até 5 usuários), Pro R$ 147/mês (até 15), Business R$ 397/mês (até 50). WhatsApp no CRM em todo plano pago: pelo integrador que você já usa a partir do Starter e também pela API oficial no Business.</li>
           <li>Para um time de 5 vendedores: Sirius Starter R$ 67/mês no total; RD Station Básico 5 × R$ 73 = R$ 365/mês.</li>
         </ul>
       </div>
@@ -102,7 +102,7 @@ export const post: BlogPost = {
       <h2>RD Station CRM tem WhatsApp integrado em 2026?</h2>
 
       <p>
-        Tem. O RD Station CRM oferece recursos de venda pelo WhatsApp em todos os planos, inclusive o Free, e a partir do Pro salva os áudios das conversas. No Sirius, o WhatsApp entra só no plano Business (R$ 397/mês), conectado pela API oficial da Meta, e cada mensagem fica no histórico do cliente. Se o seu time precisa de WhatsApp no CRM sem pagar nada, o RD Station Free atende e o Sirius Gratuito não.
+        Tem. O RD Station CRM oferece recursos de venda pelo WhatsApp em todos os planos, inclusive o Free, e a partir do Pro salva os áudios das conversas. No Sirius, o WhatsApp entra a partir do Starter (R$ 67/mês), pelo integrador que você já contrata (Z-API, uazapi ou Evolution API), e no Business (R$ 397/mês) também pela API oficial da Meta; cada mensagem fica no histórico do cliente. Se o seu time precisa de WhatsApp no CRM sem pagar nada, o RD Station Free atende e o Sirius Gratuito não.
       </p>
 
       <h2>O RD Station CRM tem IA?</h2>
@@ -151,13 +151,13 @@ export const post: BlogPost = {
         <li>IA de qualificação BANT/MEDDIC e agente Sofia a partir do Starter</li>
         <li>Prospecção de empresas pelo Google Maps com créditos mensais</li>
         <li>Modo offline no celular para visita em campo</li>
-        <li>WhatsApp pela API oficial da Meta no Business</li>
+        <li>WhatsApp no CRM a partir do Starter, pelo seu integrador; API oficial da Meta no Business</li>
       </ul>
 
       <h3>Sirius CRM: pontos fracos</h3>
       <ul style="${LIST}">
         <li>Plano gratuito para só 2 usuários, sem IA, sem automação e sem WhatsApp</li>
-        <li>WhatsApp integrado só no plano Business</li>
+        <li>WhatsApp no CRM só nos planos pagos; a API oficial, só no Business</li>
         <li>Sem marketing automation e sem integração nativa com o RD Station Marketing</li>
         <li>Comunidade menor que a do ecossistema RD Station</li>
       </ul>
@@ -218,7 +218,7 @@ export const post: BlogPost = {
 
       <details style="${DETAILS}">
         <summary style="${SUMMARY}">Qual é melhor para uma equipe de vendas de 5 pessoas?</summary>
-        <p style="${ANSWER}">Pelo preço, o Sirius: R$ 67/mês no Starter para os 5, com automação e IA, contra R$ 365/mês no Básico do RD Station. Se esse time vive de leads do RD Station Marketing, ou precisa de WhatsApp no CRM sem ir para o plano Business do Sirius, o RD Station pode compensar a diferença.</p>
+        <p style="${ANSWER}">Pelo preço, o Sirius: R$ 67/mês no Starter para os 5, com automação e IA, contra R$ 365/mês no Básico do RD Station. Se esse time vive de leads do RD Station Marketing, ou precisa de WhatsApp no CRM sem pagar nada, o RD Station pode compensar a diferença.</p>
       </details>
 
       <details style="${DETAILS} margin-bottom: 2rem;">
@@ -253,7 +253,7 @@ export const post: BlogPost = {
         <p style="margin: 0 0 0.75rem; font-weight: 700; font-size: 1.05rem; color: var(--primary-foreground);">⚡ Quick answer</p>
         <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: #ffffff;">
           <li><strong style="color: var(--primary-foreground);">RD Station CRM</strong>: Free plan for up to 4 users, with WhatsApp sales features. Paid plans per user: Basic R$ 73/user/month, Pro R$ 131/user/month (minimum of 4). Native integration with RD Station Marketing.</li>
-          <li><strong style="color: var(--primary-foreground);">Sirius CRM</strong>: Free plan for up to 2 users, with no AI, no automation and no WhatsApp. Paid plans per account: Starter R$ 67/month (up to 5 users), Pro R$ 147/month (up to 15), Business R$ 397/month (up to 50, with WhatsApp through the official API).</li>
+          <li><strong style="color: var(--primary-foreground);">Sirius CRM</strong>: Free plan for up to 2 users, with no AI, no automation and no WhatsApp. Paid plans per account: Starter R$ 67/month (up to 5 users), Pro R$ 147/month (up to 15), Business R$ 397/month (up to 50). WhatsApp in the CRM on every paid plan: through the integrator you already use from Starter, and also through the official API on Business.</li>
           <li>For a team of 5: Sirius Starter R$ 67/month in total; RD Station Basic 5 × R$ 73 = R$ 365/month.</li>
         </ul>
       </div>
@@ -322,7 +322,7 @@ export const post: BlogPost = {
       <h2>Does RD Station CRM have WhatsApp integration in 2026?</h2>
 
       <p>
-        Yes. RD Station CRM offers WhatsApp sales features on every plan, including Free, and from Pro it saves audio messages. In Sirius, WhatsApp comes only with the Business plan (R$ 397/month), connected through the official Meta API, and every message lands in the customer history. If your team needs WhatsApp in the CRM without paying anything, RD Station Free does it and Sirius Free does not.
+        Yes. RD Station CRM offers WhatsApp sales features on every plan, including Free, and from Pro it saves audio messages. In Sirius, WhatsApp comes from Starter (R$ 67/month), through the integrator you already pay for (Z-API, uazapi or Evolution API), and on Business (R$ 397/month) also through the official Meta API; every message lands in the customer history. If your team needs WhatsApp in the CRM without paying anything, RD Station Free does it and Sirius Free does not.
       </p>
 
       <h2>Does RD Station CRM have AI?</h2>
@@ -371,13 +371,13 @@ export const post: BlogPost = {
         <li>BANT/MEDDIC qualification AI and the Sofia agent from Starter</li>
         <li>Company prospecting through Google Maps with monthly credits</li>
         <li>Offline mode on mobile for field visits</li>
-        <li>WhatsApp through the official Meta API on Business</li>
+        <li>WhatsApp in the CRM from Starter, through your integrator; official Meta API on Business</li>
       </ul>
 
       <h3>Sirius CRM: weaknesses</h3>
       <ul style="${LIST}">
         <li>Free plan for only 2 users, with no AI, automation or WhatsApp</li>
-        <li>WhatsApp integration only on the Business plan</li>
+        <li>WhatsApp in the CRM only on paid plans; the official API only on Business</li>
         <li>No marketing automation and no native RD Station Marketing integration</li>
         <li>Smaller community than the RD Station ecosystem</li>
       </ul>
@@ -438,7 +438,7 @@ export const post: BlogPost = {
 
       <details style="${DETAILS}">
         <summary style="${SUMMARY}">Which is better for a 5-person sales team?</summary>
-        <p style="${ANSWER}">On price, Sirius: R$ 67/month on Starter for all 5, with automation and AI, against R$ 365/month on RD Station Basic. If that team lives on RD Station Marketing leads, or needs WhatsApp in the CRM without moving to Sirius Business, RD Station can be worth the difference.</p>
+        <p style="${ANSWER}">On price, Sirius: R$ 67/month on Starter for all 5, with automation and AI, against R$ 365/month on RD Station Basic. If that team lives on RD Station Marketing leads, or needs WhatsApp in the CRM without paying anything, RD Station can be worth the difference.</p>
       </details>
 
       <details style="${DETAILS} margin-bottom: 2rem;">

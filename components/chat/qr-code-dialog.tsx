@@ -1,215 +1,127 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { CheckCircle2, Loader2, RefreshCw, WifiOff } from 'lucide-react'
+import { toast } from 'sonner'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { Loader2, RefreshCw, CheckCircle2, WifiOff } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
-
-interface Connection {
-  id: string
-  instanceName: string
-  status: string
-}
+import { nomeDoIntegrador, type ConexaoPublica } from './conexao-ui'
 
 interface QRCodeDialogProps {
-  connection: Connection
+  connection: ConexaoPublica
   open: boolean
   onOpenChange: (open: boolean) => void
+  /** Paired: the parent reloads its connections */
+  onConectado?: () => void
 }
 
-export function QRCodeDialog({ connection, open, onOpenChange }: QRCodeDialogProps) {
-  const router = useRouter()
-  const [qrCode, setQrCode] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [connected, setConnected] = useState(false)
-  const eventSourceRef = useRef<EventSource | null>(null)
-  const statusIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+type Estado =
+  | { fase: 'carregando' }
+  | { fase: 'qr'; qrCode: string }
+  | { fase: 'conectado' }
+  | { fase: 'erro'; texto: string }
 
-  const cleanup = () => {
-    if (eventSourceRef.current) {
-      eventSourceRef.current.close()
-      eventSourceRef.current = null
-    }
-    if (statusIntervalRef.current) {
-      clearInterval(statusIntervalRef.current)
-      statusIntervalRef.current = null
-    }
+/** The integrators renew the QR about every 20 s; asking every 3 s keeps it fresh and notices the pairing (FR-007). */
+const INTERVALO_MS = 3000
+
+export function QRCodeDialog({ connection, open, onOpenChange, onConectado }: QRCodeDialogProps) {
+  const [estado, setEstado] = useState<Estado>({ fase: 'carregando' })
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const ativo = useRef(false)
+  // the parent re-renders while the connections poll; its callbacks must not restart the QR
+  const avisos = useRef({ onConectado, onOpenChange })
+  avisos.current = { onConectado, onOpenChange }
+
+  const parar = () => {
+    ativo.current = false
+    if (timer.current) clearTimeout(timer.current)
+    timer.current = null
   }
 
-  const startQRStream = async () => {
-    cleanup()
-    setIsLoading(true)
-    setError(null)
-    setQrCode(null)
-    setConnected(false)
-
+  const consultar = useCallback(async () => {
     try {
-      // Connect to CRM's SSE proxy — it forwards the gateway QR stream
-      // with proper auth and no CORS issues
-      const es = new EventSource(`/api/whatsapp/connections/${connection.id}/qr-code`)
-      eventSourceRef.current = es
-
-      es.addEventListener('qr', (e) => {
-        // Gateway sends QR as base64 data URL or raw base64
-        const qrData = e.data
-        if (qrData) {
-          setQrCode(qrData.startsWith('data:') ? qrData : `data:image/png;base64,${qrData}`)
-          setIsLoading(false)
-        }
-      })
-
-      es.addEventListener('connected', () => {
-        setConnected(true)
-        setIsLoading(false)
-        cleanup()
-        toast.success('WhatsApp conectado!')
-
-        // Trigger sync
-        fetch(`/api/whatsapp/connections/${connection.id}/sync`, { method: 'POST' }).catch(() => {})
-
-        setTimeout(() => {
-          onOpenChange(false)
-          router.refresh()
-        }, 1500)
-      })
-
-      es.addEventListener('timeout', () => {
-        cleanup()
-        setError('QR Code expirou. Clique para gerar novamente.')
-        setIsLoading(false)
-      })
-
-      es.addEventListener('error', (e) => {
-        // SSE error event from our proxy (gateway unreachable, instance not found, etc.)
-        const evt = e as MessageEvent
-        if (evt.data) {
-          try {
-            const parsed = JSON.parse(evt.data)
-            setError(parsed.error || 'Erro no gateway')
-          } catch {
-            setError('Erro ao conectar com o gateway')
-          }
-          cleanup()
-          setIsLoading(false)
-        }
-      })
-
-      es.onerror = () => {
-        if (es.readyState === EventSource.CLOSED) {
-          if (!qrCode) {
-            setError('Não foi possível conectar ao gateway')
-          }
-          setIsLoading(false)
-        }
+      const res = await fetch(`/api/whatsapp/connections/${connection.id}/qr-code`, { cache: 'no-store' })
+      const data = await res.json().catch(() => ({}))
+      if (!ativo.current) return
+      if (!res.ok) {
+        parar()
+        setEstado({ fase: 'erro', texto: data.error || 'Não foi possível buscar o QR Code agora.' })
+        return
       }
-
-      // Fallback: also poll status in case we miss the SSE connected event
-      statusIntervalRef.current = setInterval(async () => {
-        try {
-          const statusRes = await fetch(`/api/whatsapp/connections/${connection.id}/status`)
-          if (statusRes.ok) {
-            const statusData = await statusRes.json()
-            if (statusData.status === 'CONNECTED') {
-              setConnected(true)
-              cleanup()
-              toast.success('WhatsApp conectado!')
-              setTimeout(() => {
-                onOpenChange(false)
-                router.refresh()
-              }, 1500)
-            }
-          }
-        } catch {
-          // Ignore status check errors — the SSE stream is the primary mechanism
-        }
-      }, 5000)
-
-    } catch (error: any) {
-      setError(error.message)
-      setIsLoading(false)
+      if (data.status === 'CONNECTED') {
+        parar()
+        setEstado({ fase: 'conectado' })
+        toast.success('WhatsApp conectado.')
+        avisos.current.onConectado?.()
+        setTimeout(() => avisos.current.onOpenChange(false), 1500)
+        return
+      }
+      if (data.status === 'FAILED') {
+        parar()
+        setEstado({ fase: 'erro', texto: `Não foi possível ativar: ${data.statusMotivo}.` })
+        avisos.current.onConectado?.()
+        return
+      }
+      setEstado({ fase: 'qr', qrCode: data.qrCode })
+    } catch {
+      if (!ativo.current) return
+      // a network blip does not end the pairing; keep asking
     }
-  }
+    if (ativo.current) timer.current = setTimeout(consultar, INTERVALO_MS)
+  }, [connection.id])
+
+  const comecar = useCallback(() => {
+    parar()
+    ativo.current = true
+    setEstado({ fase: 'carregando' })
+    consultar()
+  }, [consultar])
 
   useEffect(() => {
-    if (open) {
-      startQRStream()
-    } else {
-      cleanup()
-      setQrCode(null)
-      setError(null)
-      setConnected(false)
-    }
-    return cleanup
-  }, [open, connection.id])
+    if (open) comecar()
+    return parar
+  }, [open, comecar])
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Conectar WhatsApp</DialogTitle>
-          <DialogDescription>
-            Escaneie o QR Code com seu WhatsApp para conectar
-          </DialogDescription>
+          <DialogTitle>Conectar WhatsApp ({nomeDoIntegrador(connection)})</DialogTitle>
+          <DialogDescription>Leia o QR Code com o celular do número que você quer conectar.</DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-col items-center gap-4 py-4">
-          {connected ? (
-            <div className="flex flex-col items-center gap-3 py-6">
-              <CheckCircle2 className="h-16 w-16 text-emerald-500" />
-              <p className="text-sm font-medium text-emerald-700 dark:text-emerald-400">
-                WhatsApp conectado com sucesso!
-              </p>
-            </div>
-          ) : isLoading ? (
-            <div className="flex flex-col items-center gap-4">
-              <Loader2 className="h-12 w-12 animate-spin text-muted-foreground" />
-              <p className="text-sm text-muted-foreground">Gerando QR Code...</p>
-            </div>
-          ) : error ? (
-            <div className="flex flex-col items-center gap-4">
-              <WifiOff className="h-10 w-10 text-muted-foreground" />
-              <p className="text-sm text-destructive text-center">{error}</p>
-              <Button onClick={startQRStream} variant="outline">
-                <RefreshCw className="mr-2 h-4 w-4" />
-                Tentar Novamente
-              </Button>
-            </div>
-          ) : qrCode ? (
+          {estado.fase === 'qr' && (
             <>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <div className="relative w-64 h-64 bg-white p-3 rounded-lg border">
-                <img
-                  src={qrCode}
-                  alt="QR Code WhatsApp"
-                  className="w-full h-full object-contain"
-                />
+              <div className="h-64 w-64 rounded-lg border bg-white p-3">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={estado.qrCode} alt="QR Code para conectar o WhatsApp" className="h-full w-full object-contain" />
               </div>
-
-              <div className="text-center space-y-2">
-                <p className="text-sm font-medium">Como escanear:</p>
-                <ol className="text-xs text-muted-foreground space-y-1 text-left">
-                  <li>1. Abra o WhatsApp no seu celular</li>
-                  <li>2. Toque em Mais opções ou Configurações</li>
-                  <li>3. Toque em Dispositivos conectados</li>
-                  <li>4. Toque em Conectar um dispositivo</li>
-                  <li>5. Aponte seu telefone para esta tela</li>
-                </ol>
-              </div>
-
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Loader2 className="h-4 w-4 animate-spin" />
-                Aguardando conexão...
-              </div>
-
-              <Button onClick={startQRStream} variant="outline" size="sm">
-                <RefreshCw className="mr-2 h-4 w-4" />
-                Atualizar QR Code
-              </Button>
+              <ol className="list-decimal space-y-1 pl-5 text-xs text-muted-foreground">
+                <li>Abra o WhatsApp no celular.</li>
+                <li>Toque em Mais opções ou Configurações, depois em Dispositivos conectados.</li>
+                <li>Toque em Conectar um dispositivo e aponte o celular para esta tela.</li>
+              </ol>
             </>
-          ) : null}
+          )}
+          {estado.fase === 'conectado' && <CheckCircle2 className="h-16 w-16 text-emerald-600" aria-hidden="true" />}
+          {estado.fase === 'carregando' && <Loader2 className="h-12 w-12 animate-spin text-muted-foreground" aria-hidden="true" />}
+          {estado.fase === 'erro' && <WifiOff className="h-10 w-10 text-muted-foreground" aria-hidden="true" />}
+
+          {/* One live region for every phase, so the switch to "conectado" is announced */}
+          <p role="status" aria-live="polite" className={estado.fase === 'erro' ? 'text-center text-sm text-destructive' : 'flex items-center gap-2 text-sm text-muted-foreground'}>
+            {estado.fase === 'carregando' && 'Buscando o QR Code…'}
+            {estado.fase === 'qr' && 'Aguardando a leitura. O QR Code se renova sozinho.'}
+            {estado.fase === 'conectado' && 'WhatsApp conectado.'}
+            {estado.fase === 'erro' && estado.texto}
+          </p>
+
+          {estado.fase === 'erro' && (
+            <Button onClick={comecar} variant="outline">
+              <RefreshCw className="mr-2 h-4 w-4" aria-hidden="true" />
+              Tentar de novo
+            </Button>
+          )}
         </div>
       </DialogContent>
     </Dialog>

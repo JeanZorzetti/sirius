@@ -1,6 +1,6 @@
 'use client'
 
-import { Check, CheckCheck, Copy, Forward as ForwardIcon, Loader2, Reply, Star } from 'lucide-react'
+import { AlertCircle, Check, CheckCheck, Copy, Forward as ForwardIcon, Loader2, Reply, Star } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { QuotedMessage } from '../quoted-message'
 import { ReactionBar } from '../reaction-bar'
@@ -90,7 +90,7 @@ export function MessageBubble({
 
         <div
           role="article"
-          aria-label={`Mensagem ${out ? 'enviada' : 'recebida'} às ${fmtTime(msg.sentAt)}`}
+          aria-label={`Mensagem ${out ? (msg.status === 'FAILED' ? 'não enviada' : 'enviada') : 'recebida'} às ${fmtTime(msg.sentAt)}`}
           className={cn(
             'max-w-[65%] shadow-[0_1px_0.5px_rgba(11,20,26,0.13)] relative overflow-hidden transition-colors',
             media ? 'p-[3px]' : 'px-[9px] pt-[6px] pb-[7px]',
@@ -166,6 +166,8 @@ export function MessageBubble({
             {out && (
               msg.status === 'SENDING'
                 ? <Loader2 className="h-[14px] w-[14px] text-muted-foreground animate-spin message-status-icon" />
+                : msg.status === 'FAILED'
+                  ? <AlertCircle className="h-[14px] w-[14px] text-destructive message-status-icon" aria-hidden="true" />
                 : msg.status === 'READ'
                   ? <CheckCheck className="h-[16px] w-[16px] text-foreground message-status-icon" />
                   : msg.status === 'DELIVERED'
@@ -173,6 +175,11 @@ export function MessageBubble({
                     : <Check className="h-[16px] w-[16px] text-muted-foreground message-status-icon" />
             )}
           </span>
+          {out && msg.status === 'FAILED' && (
+            <p className="clear-both pt-1 text-[11.5px] font-medium leading-snug text-destructive">
+              não enviada{msg.erro ? ` · ${msg.erro}` : ''}
+            </p>
+          )}
         </div>
 
         {/* Forward button for outbound messages */}

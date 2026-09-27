@@ -1,0 +1,32 @@
+{
+  "isStatusReply": false,
+  "chatLid": "81896604192873@lid",
+  "connectedPhone": "5511999990000",
+  "waitingMessage": false,
+  "isEdit": false,
+  "isGroup": false,
+  "isNewsletter": false,
+  "instanceId": "REDACTED",
+  "messageId": "3EB0ZAPI0004",
+  "phone": "5511987654321",
+  "fromMe": false,
+  "momment": 1790000000000,
+  "status": "RECEIVED",
+  "chatName": "Maria",
+  "senderPhoto": null,
+  "senderName": "Maria Souza",
+  "participantPhone": null,
+  "participantLid": null,
+  "photo": null,
+  "broadcast": false,
+  "type": "ReceivedCallback",
+  "fromApi": false,
+  "document": {
+    "documentUrl": "https://storage.z-api.io/instances/REDACTED/proposta.pdf",
+    "mimeType": "application/pdf",
+    "title": "proposta",
+    "pageCount": 2,
+    "fileName": "proposta.pdf",
+    "caption": null
+  }
+}

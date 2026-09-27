@@ -1,7 +1,9 @@
 import { getSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { prismaWa } from "@/lib/prisma-wa"
-import { canUseFeature } from "@/lib/entitlements"
+import { canUseFeature, checkWhatsAppInstanceLimit, getEffectiveTier } from "@/lib/entitlements"
+import { podeVerTudo } from "@/lib/visibilidade"
+import { SELECT_PUBLICO, paraPublica } from "@/lib/whatsapp/integradores/conexao"
 import { getChatConversations, type ChatConversation } from "@/lib/chat/queries"
 import { ChatInterface } from "@/components/chat/chat-interface"
 import { ChatUpgradeCta } from "@/components/chat/chat-upgrade-cta"
@@ -42,10 +44,12 @@ export default async function ChatPage({
         id: true,
         name: true,
         organizationId: true,
+        orgRole: true,
         organization: {
           select: {
             tier: true,
-            whatsappInstances: true,
+            trialEndsAt: true,
+            trialStatus: true,
             wabaEnabled: true,
             wabaPhoneNumberId: true,
           }
@@ -61,30 +65,34 @@ export default async function ChatPage({
     return <div>{t('errors.userNoOrg')}</div>
   }
 
-  const canUseChat = canUseFeature(user.organization.tier, 'can_use_chat_interface')
+  // The effective plan, so the 7-day trial gets the chat too (spec 012, research R9)
+  const canUseChat = canUseFeature(getEffectiveTier(user.organization), 'can_use_chat_interface')
   if (!canUseChat) {
     return <ChatUpgradeCta />
   }
 
-  // O gateway QR (whatsmeow) foi descontinuado — o status das conexões legadas
-  // é o que está no DB; o caminho vivo é a API Oficial Meta (wabaEnabled).
-  let connections
-  try {
-    connections = await prismaWa.whatsAppConnection.findMany({
+  // Only the public fields reach the client component (FR-005): no credentials, secret or hash
+  const carregado = await Promise.all([
+    prismaWa.whatsAppConnection.findMany({
       where: { organizationId: user.organizationId },
+      select: SELECT_PUBLICO,
       orderBy: { createdAt: 'desc' },
-    })
-  } catch (err) {
+    }),
+    checkWhatsAppInstanceLimit(user.organizationId),
+  ]).catch((err) => {
     console.error("[CHAT_PAGE] Falha ao buscar conexões:", errMessage(err))
-    return <div>{t('errors.fetchUser')}</div>
-  }
+    return null
+  })
+  if (!carregado) return <div>{t('errors.fetchUser')}</div>
+  const [linhas, limite] = carregado
 
-  // Only active connections count — prevents mixing messages from
-  // old/disconnected instances
+  // Connections in any state, like /api/whatsapp/conversations: a dropped connection keeps its conversations visible
   const scope = {
-    connectionIds: connections.filter(c => c.status === 'CONNECTED').map(c => c.id),
+    connectionIds: linhas.map(c => c.id),
     wabaEnabled: user.organization.wabaEnabled === true && !!user.organization.wabaPhoneNumberId,
   }
+  // Legacy gateway rows (no provider) are discontinued: their history stays in the inbox, the row leaves the screen
+  const connections = linhas.filter(c => c.provider).map(paraPublica)
 
   let contacts: ChatConversation[]
   try {
@@ -102,7 +110,9 @@ export default async function ChatPage({
         userId={user.id}
         userName={user.name || 'Usuário'}
         organizationId={user.organizationId}
-        maxInstances={user.organization.whatsappInstances || 1}
+        limite={limite.limite}
+        usadas={limite.usadas}
+        podeGerenciar={podeVerTudo(user)}
         initialPhone={initialPhone}
         wabaEnabled={scope.wabaEnabled}
       />

@@ -20,7 +20,7 @@ COPY --from=deps /app/node_modules ./node_modules
 # Copy source AFTER deps to maximize cache hits
 COPY . .
 RUN node_modules/.bin/prisma generate && \
-    node_modules/.bin/prisma generate --schema prisma/whatsapp.prisma
+    node_modules/.bin/prisma generate --schema prisma/wa/schema.prisma
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 # ponytail: sem type gate aqui. O job `typecheck` do ci.yml roda `tsc --noEmit`

@@ -183,7 +183,7 @@ export const automacaoVendasFAQs: FAQItem[] = [
 export const melhorCrm2026FAQs: FAQItem[] = [
   {
     question: 'Qual o melhor CRM para pequenas empresas em 2026?',
-    answer: 'Para pequenas empresas em 2026, o melhor CRM combina facilidade de uso, automação de follow-up e plano gratuito generoso. O Sirius CRM oferece pipeline visual, alertas de IA e integração WhatsApp gratuitamente para até 50 clientes — ideal para começar sem investimento inicial.',
+    answer: 'Para pequenas empresas em 2026, o melhor CRM combina facilidade de uso, automação de follow-up e plano gratuito generoso. O Sirius CRM oferece pipeline visual e alertas de IA gratuitamente para até 50 clientes, e o WhatsApp dentro do CRM a partir do Starter — ideal para começar sem investimento inicial.',
   },
   {
     question: 'CRM com WhatsApp é essencial em 2026?',
@@ -340,7 +340,7 @@ export const crmGratuitoFAQs: FAQItem[] = [
   },
   {
     question: 'Qual CRM gratuito tem WhatsApp integrado?',
-    answer: 'Entre os 5 analisados, apenas o Sirius CRM oferece integração WhatsApp nativa no plano gratuito. HubSpot, Agendor, Bitrix24 e RD Station CRM não integram WhatsApp nativamente — exigem ferramentas de terceiros ou planos pagos.',
+    answer: 'Entre os 5 analisados, só o Sirius CRM traz o WhatsApp para dentro do CRM: no plano gratuito, o contato abre a conversa no WhatsApp com um clique, e a partir do Starter (R$ 67/mês) as conversas chegam no inbox do CRM, pelo integrador que você já usa. HubSpot, Agendor, Bitrix24 e RD Station CRM não integram WhatsApp nativamente — exigem ferramentas de terceiros ou planos pagos.',
   },
   {
     question: 'Posso migrar de um CRM gratuito para outro?',
@@ -384,7 +384,7 @@ export const crmVarejoFAQs: FAQItem[] = [
   },
   {
     question: 'Qual o melhor CRM gratuito para varejo?',
-    answer: 'Para varejo com 1-3 vendedores, o Sirius CRM oferece plano gratuito com pipeline visual, WhatsApp integrado e alertas de follow-up — essencial para recompra. HubSpot Free também funciona, mas não tem WhatsApp nativo, o que é limitante para o varejo brasileiro onde 93% das vendas envolvem WhatsApp.',
+    answer: 'Para varejo com 1-3 vendedores, o Sirius CRM oferece plano gratuito com pipeline visual, WhatsApp a um clique do contato e alertas de follow-up (as conversas dentro do CRM vêm a partir do Starter) — essencial para recompra. HubSpot Free também funciona, mas não tem WhatsApp nativo, o que é limitante para o varejo brasileiro onde 93% das vendas envolvem WhatsApp.',
   },
   {
     question: 'CRM no varejo substitui o sistema de PDV?',
@@ -458,7 +458,7 @@ export const crmAgenciaFAQs: FAQItem[] = [
   },
   {
     question: 'Qual o melhor CRM gratuito para agência pequena?',
-    answer: 'Para agências de até 5 pessoas, o Sirius CRM oferece pipeline visual gratuito com WhatsApp integrado — ideal para prospecção e atendimento. HubSpot Free é outra opção com formulários e email marketing básico. O critério decisivo para agências é suporte a múltiplos pipelines e campos customizados — verifique se o plano gratuito oferece isso.',
+    answer: 'Para agências de até 5 pessoas, o Sirius CRM oferece pipeline visual gratuito, com o WhatsApp dentro do CRM a partir do Starter — ideal para prospecção e atendimento. HubSpot Free é outra opção com formulários e email marketing básico. O critério decisivo para agências é suporte a múltiplos pipelines e campos customizados — verifique se o plano gratuito oferece isso.',
   },
 ]
 

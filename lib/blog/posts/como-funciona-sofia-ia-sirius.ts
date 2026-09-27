@@ -368,7 +368,7 @@ export const post: BlogPost = {
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin: 0.75rem 0;">
         <summary style="font-weight: 600; cursor: pointer; color: var(--foreground);">Sofia funciona com WhatsApp?</summary>
-        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Sim. No plano Business, o Sirius CRM integra o WhatsApp pela API oficial da Meta. Sofia pode enviar e receber mensagens pelo WhatsApp, analisar conversas para extração de dados (BANT, sentimento) e propor follow-ups diretamente pelo canal que seu cliente já usa. A integração com WhatsApp está disponível no plano Business.</p>
+        <p style="margin: 0.75rem 0 0; color: var(--foreground);">Sim, pela API oficial da Meta, no plano Business. Sofia pode enviar e receber mensagens pelo WhatsApp, analisar conversas para extração de dados (BANT, sentimento) e propor follow-ups diretamente pelo canal que seu cliente já usa. Nos planos Starter e Pro, o WhatsApp entra no inbox pelo integrador que você já usa, e a Sofia não envia por ele: pelo integrador, só sai mensagem digitada por uma pessoa.</p>
       </details>
 
       <details style="border: 1px solid var(--border); border-radius: 0.5rem; padding: 1rem; margin: 0.75rem 0;">

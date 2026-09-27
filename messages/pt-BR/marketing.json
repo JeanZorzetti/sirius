@@ -56,8 +56,8 @@
         "description": "Gerencie seu pipeline visualmente. Múltiplos pipelines por produto, região ou equipe. Valor total por estágio e previsão de fechamento."
       },
       "whatsapp": {
-        "title": "WhatsApp Oficial",
-        "description": "Inbox unificado via API Oficial Meta. Tags, respostas rápidas, atribuição por vendedor e mídia. Exclusivo Business.",
+        "title": "WhatsApp no inbox",
+        "description": "Inbox unificado pelo integrador que você já usa ou pela API Oficial Meta. Tags, respostas rápidas, atribuição por vendedor e mídia. Nos planos pagos.",
         "metric": "98% leitura"
       },
       "analytics": {
@@ -83,7 +83,7 @@
     },
     "about": {
       "title": "O que é o Sirius CRM?",
-      "description": "O Sirius CRM é uma plataforma de vendas projetada para o mercado brasileiro, utilizada por mais de 100 empresas e 110 usuários, com mais de 650 negócios criados pelos clientes na plataforma. Oferece quatro planos de assinatura: um plano Gratuito, Starter por R$67, Pro por R$147 e Business por R$397. Seus diferenciais incluem a integração nativa com WhatsApp via API Oficial Meta (plano Business), prospecção de leads B2B pelo Google Maps e a assistente de vendas com IA, AGI Sirius."
+      "description": "O Sirius CRM é uma plataforma de vendas projetada para o mercado brasileiro, utilizada por mais de 100 empresas e 110 usuários, com mais de 650 negócios criados pelos clientes na plataforma. Oferece quatro planos de assinatura: um plano Gratuito, Starter por R$67, Pro por R$147 e Business por R$397. Seus diferenciais incluem o WhatsApp dentro do CRM em todos os planos pagos, pelo integrador que o cliente já contrata (Z-API, uazapi ou Evolution API) ou via API Oficial Meta (plano Business), prospecção de leads B2B pelo Google Maps e a assistente de vendas com IA, AGI Sirius."
     },
     "testimonials": {
       "title": "Times de alta performance confiam no Sirius",
@@ -199,17 +199,17 @@
   "features": {
     "meta": {
       "title": "Sirius CRM: Funcionalidades de IA e Pipeline [2026]",
-      "description": "Descubra como a IA Nativa do Sirius qualifica seus leads automaticamente com BANT e MEDDIC, integra WhatsApp via API Oficial Meta, prospecta no Google Maps e automatiza follow-ups. Pipeline Kanban visual. Teste grátis 7 dias.",
+      "description": "Descubra como a IA Nativa do Sirius qualifica seus leads automaticamente com BANT e MEDDIC, integra o WhatsApp pelo seu integrador ou pela API Oficial Meta, prospecta no Google Maps e automatiza follow-ups. Pipeline Kanban visual. Teste grátis 7 dias.",
       "ogTitle": "Funcionalidades Sirius CRM 2026 [12+ Ferramentas de IA] — WhatsApp Oficial e Pipeline",
-      "ogDescription": "IA que qualifica leads automaticamente, WhatsApp via API Oficial Meta (Business), pipeline Kanban, prospecção Google Maps, automações e analytics PRO. Tudo em um só CRM.",
+      "ogDescription": "IA que qualifica leads automaticamente, WhatsApp em todo plano pago (API Oficial Meta no Business), pipeline Kanban, prospecção Google Maps, automações e analytics PRO. Tudo em um só CRM.",
       "twitterTitle": "Funcionalidades Sirius CRM 2026 [12+ Ferramentas de IA] — WhatsApp Oficial e Pipeline",
-      "twitterDescription": "IA que qualifica leads com BANT e MEDDIC, WhatsApp via API Oficial Meta, pipeline Kanban, prospecção Google Maps e automações. Teste grátis."
+      "twitterDescription": "IA que qualifica leads com BANT e MEDDIC, WhatsApp no inbox em todo plano pago, pipeline Kanban, prospecção Google Maps e automações. Teste grátis."
     },
     "hero": {
       "badge": "+50 funcionalidades",
       "title": "Tudo para vender mais,",
       "titleHighlight": "sem complexidade",
-      "subtitle": "Pipeline Kanban, WhatsApp Oficial (Business), IA comercial, prospecção automática, automações de deals e email, analytics avançado, API pública e muito mais. Desenhamos cada recurso pensando na produtividade do vendedor brasileiro.",
+      "subtitle": "Pipeline Kanban, WhatsApp em todo plano pago (API Oficial no Business), IA comercial, prospecção automática, automações de deals e email, analytics avançado, API pública e muito mais. Desenhamos cada recurso pensando na produtividade do vendedor brasileiro.",
       "ctaPrimary": "Testar Grátis",
       "ctaSecondary": "Ver Planos e Preços"
     },
@@ -235,9 +235,9 @@
         "badge": "Core"
       },
       "whatsapp": {
-        "name": "WhatsApp Oficial",
-        "description": "Conecte seu WhatsApp Business via API Oficial da Meta. Envie e receba mensagens direto do CRM com total conformidade. Inbox unificado com tags, respostas rápidas, atribuição de conversas e mídia (fotos, áudios, documentos). Exclusivo plano Business.",
-        "badge": "Business"
+        "name": "WhatsApp no inbox",
+        "description": "Conecte seu número pelo integrador que você já usa (Z-API, uazapi ou Evolution API), em todo plano pago: 1 número no Starter, 2 no Pro e 5 no Business. No Business, também pela API Oficial da Meta. Envie e receba mensagens direto do CRM. Inbox unificado com tags, respostas rápidas, atribuição de conversas e mídia (fotos, áudios, documentos).",
+        "badge": "Starter+"
       },
       "agi": {
         "name": "AGI Sirius — IA Comercial",
@@ -340,7 +340,7 @@
               },
               "3": {
                 "q": "Tem integração com WhatsApp?",
-                "a": "Sim. No plano Business, integramos via API Oficial do WhatsApp Business (Meta). As conversas aparecem automaticamente na timeline do contato e você responde direto do CRM sem risco de banimento."
+                "a": "Sim, em todo plano pago. Você conecta o número pelo integrador que já usa (Z-API, uazapi ou Evolution API): 1 número no Starter, 2 no Pro e 5 no Business. O integrador não é oficial, e a Meta pode bloquear o número. No Business, há também a API Oficial do WhatsApp Business (Meta), o caminho autorizado pela Meta. As conversas aparecem na timeline do contato e você responde direto do CRM."
               }
             }
           }
@@ -591,10 +591,10 @@
       },
       "comunicacao": {
         "title": "Comunicação Multi-canal",
-        "subtitle": "WhatsApp Oficial, email e notificações — tudo integrado sem sair do CRM",
+        "subtitle": "WhatsApp, email e notificações — tudo integrado sem sair do CRM",
         "inbox": {
-          "name": "Inbox Unificado (WhatsApp Oficial)",
-          "description": "Todas as conversas WhatsApp em um só lugar via API Oficial Meta. Filtre por tags, busque por nome, fixe chats importantes, arquive conversas antigas. Atribua conversas a membros da equipe. Disponível no plano Business."
+          "name": "Inbox Unificado (WhatsApp)",
+          "description": "Todas as conversas WhatsApp em um só lugar, pelo seu integrador (a partir do Starter) ou pela API Oficial Meta (Business). Filtre por tags, busque por nome, fixe chats importantes, arquive conversas antigas. Atribua conversas a membros da equipe."
         },
         "quickReplies": {
           "name": "Respostas Rápidas",
@@ -796,9 +796,9 @@
         "users_starter": "5",
         "users_pro": "15",
         "users_business": "50",
-        "whatsapp_starter": "—",
-        "whatsapp_pro": "—",
-        "whatsapp_business": "API Oficial Meta",
+        "whatsapp_starter": "1 número (integrador)",
+        "whatsapp_pro": "2 números (integrador)",
+        "whatsapp_business": "5 números + API Oficial Meta",
         "prospecting_starter": "75 leads",
         "prospecting_pro": "300 leads",
         "prospecting_business": "1.500 leads",
@@ -855,6 +855,7 @@
           "1.000 Contatos",
           "500 Negócios ativos",
           "5 Pipelines Kanban",
+          "WhatsApp: 1 número (integrador)",
           "75 créditos de prospecção/mês",
           "1 Agente IA autônomo (Sofia)",
           "200 ações autônomas/mês",
@@ -871,6 +872,7 @@
           "5.000 Contatos",
           "2.500 Negócios ativos",
           "15 Pipelines Kanban",
+          "WhatsApp: 2 números (integrador)",
           "300 créditos de prospecção/mês",
           "3 Agentes IA autônomos (Sofia)",
           "1.000 ações autônomas/mês",
@@ -889,7 +891,7 @@
           "Contatos Ilimitados",
           "Negócios Ilimitados",
           "50 Pipelines Kanban",
-          "WhatsApp via API Oficial Meta",
+          "WhatsApp: 5 números + API Oficial Meta",
           "1.500 créditos de prospecção/mês",
           "5 Agentes IA autônomos (Sofia)",
           "3.000 ações autônomas/mês",
@@ -962,9 +964,9 @@
     "labelAnnual": "Anual",
     "meta": {
       "title": "Planos Sirius CRM 2026: Grátis a R$ 397/mês, Sem Cartão",
-      "description": "4 planos para qualquer tamanho de time: Grátis (R$0), Starter (R$67/mês), Pro com IA (R$147/mês), Business (R$397/mês) com WhatsApp via API Oficial Meta. Agentes IA autônomos e pipeline Kanban. Cancele quando quiser.",
-      "ogTitle": "Planos Sirius CRM 2026 [Grátis a R$397/mês] — IA + WhatsApp Oficial Business",
-      "ogDescription": "4 planos: Grátis, Starter R$67, Pro R$147, Business R$397/mês com WhatsApp via API Oficial Meta. Agentes IA autônomos e pipeline Kanban."
+      "description": "4 planos para qualquer tamanho de time: Grátis (R$0), Starter (R$67/mês), Pro com IA (R$147/mês), Business (R$397/mês). WhatsApp no inbox em todo plano pago, API Oficial Meta no Business. Agentes IA autônomos e pipeline Kanban. Cancele quando quiser.",
+      "ogTitle": "Planos Sirius CRM 2026 [Grátis a R$397/mês] — IA + WhatsApp em todo plano pago",
+      "ogDescription": "4 planos: Grátis, Starter R$67, Pro R$147, Business R$397/mês. WhatsApp em todo plano pago, API Oficial Meta no Business. Agentes IA autônomos e pipeline Kanban."
     }
   },
   "about": {

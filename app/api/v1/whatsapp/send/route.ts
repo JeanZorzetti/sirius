@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
       apiResponse(context.requestId, undefined, {
         code: 'GONE',
         message:
-          'QR-code WhatsApp connections were discontinued. WhatsApp messaging is now available exclusively through the official Meta API (Business plan).',
+          'Sending WhatsApp through the public API is only available through the official Meta API (Business plan). Connections through an integrator only send messages typed by a person in the Sirius inbox.',
       }),
       { status: 410 }
     )

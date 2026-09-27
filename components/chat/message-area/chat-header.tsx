@@ -3,15 +3,12 @@
 import { ArrowLeft, Info, Search, Sparkles, Users } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
-} from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 import { ConversationTags } from '../conversation-tags'
 import { AgentAssignment } from '../agent-assignment'
 import { TypingIndicator } from '../typing-indicator'
 import { AgentActionsBadge } from '../agent-actions-badge'
-import type { Connection, Contact, User } from './types'
+import type { Contact, User } from './types'
 
 export interface ChatHeaderProps {
   contact: Contact
@@ -30,9 +27,6 @@ export interface ChatHeaderProps {
   onToggleSidebar: () => void
   isSearchOpen: boolean
   onToggleSearch: () => void
-  connections: Connection[]
-  conn: string
-  onConnChange: (id: string) => void
   onBack?: () => void
 }
 
@@ -40,7 +34,7 @@ export function ChatHeader({
   contact, name, sub, isGroup, avatarColor, initials, profilePicUrl, isTyping,
   coPilotEnabled, onToggleCoPilot, users, onContactUpdate,
   showSidebar, onToggleSidebar, isSearchOpen, onToggleSearch,
-  connections, conn, onConnChange, onBack,
+  onBack,
 }: ChatHeaderProps) {
   return (
     <div className="hidden lg:flex h-[60px] px-4 border-b items-center justify-between bg-muted whatsapp-header flex-shrink-0">
@@ -131,20 +125,6 @@ export function ChatHeader({
           contactTags={contact.tags || []}
           onTagsUpdate={onContactUpdate}
         />
-        {connections.length > 1 && (
-          <Select value={conn} onValueChange={onConnChange}>
-            <SelectTrigger className="w-auto max-w-[180px] h-8 text-xs border-border">
-              <SelectValue placeholder="Conexão" />
-            </SelectTrigger>
-            <SelectContent>
-              {connections.map(c => (
-                <SelectItem key={c.id} value={c.id} className="text-xs">
-                  {c.displayName || c.phoneNumber || c.instanceName.split('-').pop()}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        )}
       </div>
     </div>
   )

@@ -11,12 +11,15 @@ const mocks = vi.hoisted(() => ({
     organization: { findFirst: vi.fn() },
     contact: { findFirst: vi.fn(), create: vi.fn() },
     facebookLead: { create: vi.fn(), findUnique: vi.fn() },
+    $queryRaw: vi.fn(async () => []),
   },
   prismaWa: {
     whatsAppMessage: { findFirst: vi.fn(), create: vi.fn(), updateMany: vi.fn() },
   },
   triggerAgentsForInboundMessage: vi.fn(() => Promise.resolve()),
   triggerAgentsForContactCreated: vi.fn(() => Promise.resolve()),
+  // the official route answers first and processes in after() (spec 012)
+  pendentes: [] as (() => Promise<unknown>)[],
 }))
 
 vi.mock('@/lib/prisma', () => ({ prisma: mocks.prisma }))
@@ -29,6 +32,11 @@ vi.mock('@/lib/storage', () => ({ uploadMedia: vi.fn() }))
 vi.mock('@/lib/integrations/whatsapp-official-client', () => ({ logWabaActivity: vi.fn(), getWhatsAppOfficialClient: vi.fn() }))
 vi.mock('@/lib/ads/facebook-lead-ads', () => ({ fetchLeadData: vi.fn() }))
 vi.mock('@/lib/logger', () => ({ default: { info: vi.fn(), warn: vi.fn(), error: vi.fn(), debug: vi.fn() } }))
+vi.mock('@/lib/webhooks', () => ({ dispatchWebhookAsync: vi.fn(), WEBHOOK_EVENTS: { WHATSAPP_MESSAGE_IN: 'whatsapp.message.in' } }))
+vi.mock('next/server', async (original) => ({
+  ...(await original<typeof import('next/server')>()),
+  after: (tarefa: () => Promise<unknown>) => { mocks.pendentes.push(tarefa) },
+}))
 
 import { encrypt } from '@/lib/encryption'
 import { POST as waba } from '@/app/api/webhooks/whatsapp-official/route'
@@ -64,8 +72,10 @@ describe('webhook do WhatsApp oficial', () => {
 
   it('aceita o aviso assinado com o App Secret da conta e grava a mensagem', async () => {
     mocks.prisma.organization.findFirst.mockResolvedValue({ id: 'org-a', wabaAppSecret: encrypt('app-secret-da-conta-a') })
+    mocks.prisma.contact.create.mockResolvedValue({ id: 'contato-a', name: 'Cliente' })
     const res = await waba(pedido(mensagem, assinar(mensagem, 'app-secret-da-conta-a')))
     expect(res.status).toBe(200)
+    for (const tarefa of mocks.pendentes.splice(0)) await tarefa()
     expect(mocks.prismaWa.whatsAppMessage.create).toHaveBeenCalledTimes(1)
   })
 
