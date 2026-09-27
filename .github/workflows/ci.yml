@@ -131,12 +131,37 @@ jobs:
   test-e2e:
     name: E2E Tests (Playwright)
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     needs: [build]
-    # ponytail: 17 specs (auth/CRUD/api) exigem Postgres real, que a CI não
-    # provisiona — não bloqueia o PR até existir um service container de
-    # banco aqui. Sobe quando alguém tratar isso como história própria.
+    # ponytail: stays non-blocking until the stale specs are fixed; the database is real now
     continue-on-error: true
+
+    # Throwaway test database: pgvector because the schema has a vector column
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: sirius
+          POSTGRES_PASSWORD: sirius
+          POSTGRES_DB: sirius
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U sirius"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      CI: true
+      DATABASE_URL: postgresql://sirius:sirius@localhost:5432/sirius
+      DATABASE_URL_WA: postgresql://sirius:sirius@localhost:5432/sirius_wa
+      DATABASE_URL_WA_DIRECT: postgresql://sirius:sirius@localhost:5432/sirius_wa
+      SESSION_SECRET: e2e-session-secret-not-used-anywhere-else
+      NEXTAUTH_SECRET: e2e-nextauth-secret-not-used-anywhere-else
+      NEXTAUTH_URL: http://localhost:3000
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+      INTEGRATION_ENCRYPTION_KEY: '0000000000000000000000000000000000000000000000000000000000000000'
 
     steps:
       - name: Checkout code
@@ -151,18 +176,21 @@ jobs:
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
 
       - name: Generate Prisma Client
         run: npx prisma generate && npx prisma generate --schema prisma/whatsapp.prisma
 
+      # db push, not migrate deploy: the tests exercise the app against the current schema, not the migration history
+      - name: Create the test databases
+        run: |
+          PGPASSWORD=sirius psql -h localhost -U sirius -d sirius -c 'CREATE EXTENSION IF NOT EXISTS vector' -c 'CREATE DATABASE sirius_wa'
+          npx prisma db push --skip-generate --accept-data-loss
+          npx prisma db push --skip-generate --accept-data-loss --schema prisma/whatsapp.prisma
+
       - name: Run Playwright tests
-        run: npm run test:e2e --if-present
-        env:
-          CI: true
-          # o webServer builda e sobe um Next.js real — só precisa resolver, não conectar
-          DATABASE_URL: 'postgresql://user:password@localhost:5432/db'
+        run: npx playwright test --project=chromium
 
       - name: Upload Playwright report
         uses: actions/upload-artifact@v4
