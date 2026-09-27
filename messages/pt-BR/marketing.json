@@ -1395,7 +1395,7 @@
       "intro": "Compartilhamos dados apenas com:",
       "mp": "Stripe e Mercado Pago:",
       "mpText": "Para processamento de pagamentos (PCI-DSS compliant).",
-      "resend": "Brevo:",
+      "resend": "Resend:",
       "resendText": "Para envio de emails transacionais e marketing.",
       "vercel": "Hostinger:",
       "vercelText": "Hospedagem da aplicação e do banco de dados, em servidor VPS nos Estados Unidos.",
