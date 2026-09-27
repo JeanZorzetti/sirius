@@ -1,15 +1,17 @@
 /**
- * E2E tests for API error localization via Accept-Language header.
+ * E2E: erro de API sempre em português.
  *
- * Uses GET /api/automations which passes `req` to apiError(), enabling
- * Accept-Language-based locale resolution for unauthenticated callers.
+ * Usa GET /api/automations, que passa `req` para apiError(). Antes da
+ * aposentadoria do locale EN (spec 004), esse caminho resolvia o idioma pelo
+ * Accept-Language; agora o cabeçalho não é mais sinal de nada e o primeiro
+ * teste existe justamente para provar que ele é ignorado.
  */
 import { test, expect } from '@playwright/test'
 
 const ENDPOINT = '/api/automations'
 
-test.describe('i18n — API error localization', () => {
-  test('unauthenticated request with Accept-Language: en returns English error', async ({
+test.describe('Só português — erros da API', () => {
+  test('Accept-Language: en é ignorado — o erro sai em português', async ({
     request,
   }) => {
     const response = await request.get(ENDPOINT, {
@@ -24,7 +26,7 @@ test.describe('i18n — API error localization', () => {
     const body = await response.json()
     expect(body).toHaveProperty('error')
     expect(typeof body.error).toBe('string')
-    expect(body.error).toBe('Unauthorized')
+    expect(body.error).toBe('Não autorizado')
   })
 
   test('unauthenticated request with Accept-Language: pt-BR returns Portuguese error', async ({
