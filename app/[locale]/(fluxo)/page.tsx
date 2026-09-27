@@ -73,7 +73,7 @@ export default function LandingPage() {
     },
     "featureList": [
       "Pipeline Kanban visual com drag-and-drop",
-      "WhatsApp integrado via Evolution API",
+      "WhatsApp pela API oficial da Meta ou pelo seu integrador",
       "AGI Sirius — IA que qualifica leads com BANT e MEDDIC",
       "Prospecção automática pelo Google Maps",
       "Automações de follow-up por email e WhatsApp",
@@ -95,7 +95,7 @@ export default function LandingPage() {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": "Sirius CRM",
-    "description": "CRM completo para vendas brasileiras com pipeline Kanban, WhatsApp integrado via Evolution API, AGI com IA comercial, prospecção Google Maps, automações de deals e email, analytics avançado e API pública.",
+    "description": "CRM completo para vendas brasileiras com pipeline Kanban, WhatsApp pela API oficial ou por integrador, AGI com IA comercial, prospecção Google Maps, automações de deals e email, analytics avançado e API pública.",
     "brand": {
       "@type": "Brand",
       "name": "ROI Labs"
@@ -122,7 +122,7 @@ export default function LandingPage() {
         "name": "O que é o Sirius CRM?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Sirius CRM é uma plataforma completa de vendas com pipeline Kanban, WhatsApp integrado via Evolution API, IA comercial (AGI Sirius), prospecção automática pelo Google Maps, automações de deals e email, analytics avançado e API pública. Feito para vendedores brasileiros."
+          "text": "Sirius CRM é uma plataforma completa de vendas com pipeline Kanban, WhatsApp pela API oficial ou por integrador, IA comercial (AGI Sirius), prospecção automática pelo Google Maps, automações de deals e email, analytics avançado e API pública. Feito para vendedores brasileiros."
         }
       },
       {
@@ -138,7 +138,7 @@ export default function LandingPage() {
         "name": "Como funciona o WhatsApp integrado?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "O Sirius se conecta ao WhatsApp via Evolution API com pareamento por QR Code. Você envia e recebe mensagens direto do CRM, com inbox unificado, tags, respostas rápidas e atribuição de conversas por vendedor."
+          "text": "O Sirius conecta ao WhatsApp pela API oficial da Meta, o caminho recomendado. Se preferir, conecte por QR Code o integrador que você já contrata (Z-API, uazapi, Evolution API e similares): essa conexão não é oficial e a Meta pode bloquear o número. Você envia e recebe mensagens direto do CRM, com inbox unificado, tags, respostas rápidas e atribuição de conversas por vendedor."
         }
       },
       {

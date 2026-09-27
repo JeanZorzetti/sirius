@@ -38,7 +38,7 @@ export function ChatUpgradeCta() {
           <div className="space-y-1">
             <h2 className="font-semibold text-foreground">WhatsApp Oficial disponível no plano Business</h2>
             <p className="text-sm text-muted-foreground">
-              Conecte seu número via API Oficial Meta, sem risco de banimento, com suporte a templates, mídia e status em tempo real.
+              Conecte seu número via API Oficial Meta, o caminho autorizado pela Meta, com suporte a templates, mídia e status em tempo real.
             </p>
           </div>
           <Link href="/dashboard/billing/plans">

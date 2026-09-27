@@ -143,7 +143,37 @@ export default async function TermsPage(
               </div>
             </div>
 
-            {/* 6 */}
+            {/* 6. WhatsApp: official API vs integrators the customer hires */}
+            <div id="whatsapp" className="mb-8 scroll-mt-24">
+              <h2 className="text-2xl font-bold mb-4">{t('wa.title')}</h2>
+              <div className="space-y-4">
+                <p>{t('wa.intro')}</p>
+                <ul className="list-disc list-inside space-y-2">
+                  <li><strong>{t('wa.officialLabel')}</strong> {t('wa.official')}</li>
+                  <li><strong>{t('wa.unofficialLabel')}</strong> {t('wa.unofficial')}</li>
+                </ul>
+                <h3 className="text-xl font-semibold mt-6">{t('wa.s61title')}</h3>
+                <p className="font-semibold text-destaque">{t('wa.s61text')}</p>
+                <h3 className="text-xl font-semibold mt-6">{t('wa.s62title')}</h3>
+                <p>{t('wa.s62text')}</p>
+                <h3 className="text-xl font-semibold mt-6">{t('wa.s63title')}</h3>
+                <p>{t('wa.s63text')}</p>
+                <h3 className="text-xl font-semibold mt-6">{t('wa.s64title')}</h3>
+                <p>{t('wa.s64text')}</p>
+                <h3 className="text-xl font-semibold mt-6">{t('wa.s65title')}</h3>
+                <p>{t('wa.s65intro')}</p>
+                <ul className="list-disc list-inside space-y-2">
+                  <li>{t('wa.li1')}</li>
+                  <li>{t('wa.li2')}</li>
+                  <li>{t('wa.li3')}</li>
+                </ul>
+                <p>{t('wa.s65outro')}</p>
+                <h3 className="text-xl font-semibold mt-6">{t('wa.s66title')}</h3>
+                <p>{t('wa.s66text')}</p>
+              </div>
+            </div>
+
+            {/* 7 */}
             <div className="mb-8">
               <h2 className="text-2xl font-bold mb-4">{t('s6.title')}</h2>
               <div className="space-y-4">

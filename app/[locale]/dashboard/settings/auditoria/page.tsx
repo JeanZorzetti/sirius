@@ -11,6 +11,7 @@ export const metadata = { title: 'Auditoria | Sirius CRM' }
 const ACOES: Record<string, string> = {
   EXPORTACAO: 'Exportou',
   ENTRAR_COMO: 'Suporte entrou como',
+  ACEITE_INTEGRADOR: 'Aceitou o risco da conexão não oficial:',
 }
 const ALVOS: Record<string, string> = { contatos: 'contatos', negocios: 'negócios' }
 const quando = new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short', timeZone: 'America/Sao_Paulo' })
@@ -52,13 +53,14 @@ export default async function AuditoriaPage() {
     <div className="space-y-4 p-4 md:p-6">
       {cabecalho}
       <p className="text-sm text-muted-foreground">
-        Quem exportou a base da conta e quando a equipe do Sirius entrou para dar suporte. Mostra os 200 registros mais
-        recentes.
+        Quem exportou a base da conta, quem aceitou o risco de conectar o WhatsApp por integrador e quando a equipe do
+        Sirius entrou para dar suporte. Mostra os 200 registros mais recentes.
       </p>
 
       {registros.length === 0 ? (
         <p className="rounded-md border p-4 text-sm text-muted-foreground">
-          Nenhum registro ainda. Exportações e acessos do suporte aparecem aqui assim que acontecerem.
+          Nenhum registro ainda. Exportações, aceites de integrador e acessos do suporte aparecem aqui assim que
+          acontecerem.
         </p>
       ) : (
         <div className="overflow-x-auto rounded-md border">

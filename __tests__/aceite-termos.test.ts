@@ -10,6 +10,7 @@ vi.mock('@/lib/prisma', () => ({
   prisma: {
     user: { findUnique: vi.fn(), create: vi.fn() },
     organization: { create: vi.fn() },
+    auditLog: { create: vi.fn() },
   },
 }))
 vi.mock('@/lib/auth', () => ({ login: vi.fn(), logout: vi.fn() }))
@@ -18,7 +19,8 @@ vi.mock('next/headers', () => ({ cookies: vi.fn(), headers: vi.fn(async () => ne
 
 import { prisma } from '@/lib/prisma'
 import { registerAction } from '@/app/auth/actions'
-import { VERSAO_TERMOS, VERSAO_PRIVACIDADE } from '@/lib/termos'
+import { registrarAceiteIntegrador } from '@/lib/auditoria'
+import { VERSAO_TERMOS, VERSAO_PRIVACIDADE, VERSAO_AVISO_INTEGRADOR } from '@/lib/termos'
 
 const MESES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro']
 
@@ -51,5 +53,24 @@ describe('aceite dos termos no cadastro', () => {
     expect(prisma.user.findUnique).not.toHaveBeenCalled()
     expect(prisma.organization.create).not.toHaveBeenCalled()
     expect(prisma.user.create).not.toHaveBeenCalled()
+  })
+
+  it('integrador de WhatsApp: sem o aceite não grava nada; com ele, grava quem, qual integrador e qual aviso', async () => {
+    const base = { organizationId: 'org-1', autor: { userId: 'u-1', email: 'ana@exemplo.com', tipo: 'USUARIO' as const }, integrador: 'Z-API', ip: '10.0.0.1' }
+
+    expect(await registrarAceiteIntegrador({ ...base, aceite: undefined })).toBe(false)
+    expect(await registrarAceiteIntegrador({ ...base, aceite: 'true' })).toBe(false)
+    expect(prisma.auditLog.create).not.toHaveBeenCalled()
+
+    expect(await registrarAceiteIntegrador({ ...base, aceite: true })).toBe(true)
+    expect(prisma.auditLog.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({
+        organizationId: 'org-1',
+        autorUserId: 'u-1',
+        acao: 'ACEITE_INTEGRADOR',
+        alvo: `Z-API · aviso de ${VERSAO_AVISO_INTEGRADOR}`,
+        ip: '10.0.0.1',
+      }),
+    })
   })
 })

@@ -1,3 +1,21 @@
+# Leia primeiro: integradores de WhatsApp (entram em 28/09/2026)
+
+Os Termos (seção 6) e a Política de Privacidade já estão no ar dizendo que **a conexão por integrador só é ativada
+depois que um usuário confirma o aviso de risco, e que isso fica registrado**. A tela e a rota de conexão precisam
+cumprir isso, senão o texto publicado vira promessa falsa.
+
+- **Tela de conexão:** usar `<AceiteIntegrador checked onChange />` de `components/chat/aceite-integrador.tsx`
+  (caixa desmarcada e obrigatória, com o texto de `lib/termos.ts`). Não reescrever o texto na tela.
+- **Rota que ativa a conexão:** antes de ativar, chamar
+  `registrarAceiteIntegrador({ organizationId, autor, integrador, aceite: body.aceite, ip: ipDoPedido(req.headers) })`
+  de `lib/auditoria.ts`. Se voltar `false`, responder 400 e não ativar nada. O registro aparece em
+  Configurações → Auditoria para o dono.
+- **Conexão por integrador não pode:** disparo em massa, lista de transmissão automatizada, cadência automática para
+  quem não iniciou conversa (Termos 6.5). Bloquear no código, não só no texto.
+- **Desconexão e banimento** viram aviso na tela para o admin da conta, não só log.
+- Mudou o texto do aviso? Subir `VERSAO_AVISO_INTEGRADOR` em `lib/termos.ts`.
+- Os textos do site já falam em "API oficial ou integrador" desde 27/09.
+
 # Handoff: spec 011 implementada e degrau 5 do mapa GSC (2026-09-26)
 
 Duas frentes rodaram em paralelo nesta data. A spec 011 vem primeiro; a parte do mapa GSC segue igual à que a outra

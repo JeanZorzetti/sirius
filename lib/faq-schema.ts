@@ -402,7 +402,7 @@ export const crmVarejoFAQs: FAQItem[] = [
 export const whatsappVendasFAQs: FAQItem[] = [
   {
     question: 'WhatsApp Business ou WhatsApp Business API: qual usar para vendas B2B?',
-    answer: 'WhatsApp Business (app gratuito) é suficiente para times de até 3 vendedores com volume baixo-médio. A API (via provedores como Evolution API, Twilio ou Z-API) é necessária quando você precisa de múltiplos atendentes no mesmo número, automações avançadas ou integração com CRM. Para PMEs, o app gratuito + CRM com integração resolve 90% dos casos.',
+    answer: 'WhatsApp Business (app gratuito) é suficiente para times de até 3 vendedores com volume baixo-médio. A API oficial (direto na Meta ou por parceiros como a Twilio) é necessária quando você precisa de múltiplos atendentes no mesmo número, automações avançadas ou integração com CRM. Integradores não oficiais (Z-API, Evolution API e similares) conectam por QR Code, mas a Meta pode bloquear o número. Para PMEs, o app gratuito + CRM com integração resolve 90% dos casos.',
   },
   {
     question: 'Quantas mensagens posso enviar por dia no WhatsApp sem ser bloqueado?',

@@ -70,6 +70,8 @@ export default async function PrivacyPage(
                   <p className="text-base leading-7"><strong className="text-foreground">{t('s1.usage')}</strong> {t('s1.usageText')}</p>
                   <p className="text-base leading-7"><strong className="text-foreground">{t('s1.crm')}</strong> {t('s1.crmText')}</p>
                   <p className="text-base leading-7"><strong className="text-foreground">{t('s1.payment')}</strong> {t('s1.paymentText')}</p>
+                  <p className="text-base leading-7"><strong className="text-foreground">{t('s1.whatsapp')}</strong> {t('s1.whatsappText')}</p>
+                  <p className="text-base leading-7"><strong className="text-foreground">{t('s1.acceptance')}</strong> {t('s1.acceptanceText')}</p>
                 </div>
               </div>
 
@@ -159,6 +161,8 @@ export default async function PrivacyPage(
                     <li><strong className="text-foreground">{t('s6.resend')}</strong> {t('s6.resendText')}</li>
                     <li><strong className="text-foreground">{t('s6.vercel')}</strong> {t('s6.vercelText')}</li>
                     <li><strong className="text-foreground">{t('s6.sentry')}</strong> {t('s6.sentryText')}</li>
+                    <li><strong className="text-foreground">{t('s6.meta')}</strong> {t('s6.metaText')}</li>
+                    <li><strong className="text-foreground">{t('s6.integrators')}</strong> {t('s6.integratorsText')}</li>
                   </ul>
                   <p className="text-base leading-7 font-semibold text-foreground">{t('s6.dpa')}</p>
                 </div>

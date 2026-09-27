@@ -674,7 +674,7 @@
         "subtitle": "Conecte o Sirius a todo o seu ecossistema de ferramentas",
         "whatsapp": {
           "name": "WhatsApp Oficial (Meta API)",
-          "description": "Integração via API Oficial do WhatsApp Business (Meta Cloud API). Sem risco de banimento. Envio/recebimento de mensagens, templates aprovados, mídia e status em tempo real. Exclusivo plano Business."
+          "description": "Integração via API Oficial do WhatsApp Business (Meta Cloud API). Caminho autorizado pela Meta. Envio/recebimento de mensagens, templates aprovados, mídia e status em tempo real. Exclusivo plano Business."
         },
         "calendar": {
           "name": "Google Calendar",
@@ -1335,7 +1335,7 @@
       "ogDescription": "Como coletamos, usamos e protegemos seus dados no Sirius CRM."
     },
     "title": "Política de Privacidade",
-    "lastUpdated": "Última atualização: 1 de janeiro de 2026",
+    "lastUpdated": "Última atualização: 27 de setembro de 2026",
     "intro": "Sua privacidade é fundamental para nós. Esta política explica como coletamos, usamos e protegemos seus dados.",
     "s1": {
       "title": "1. Informações que Coletamos",
@@ -1346,7 +1346,11 @@
       "crm": "Dados de CRM:",
       "crmText": "Contatos, negócios, pipelines e outras informações que você insere no sistema.",
       "payment": "Informações de Pagamento:",
-      "paymentText": "Processadas exclusivamente pelo Mercado Pago. Não armazenamos dados de cartão de crédito."
+      "paymentText": "Processadas exclusivamente pelo Mercado Pago. Não armazenamos dados de cartão de crédito.",
+      "whatsapp": "Conversas do WhatsApp:",
+      "whatsappText": "Mensagens, mídias e dados dos contatos das conversas que você conecta ao Sirius. Tratamos esses dados por conta da sua empresa, que é a controladora deles.",
+      "acceptance": "Registro de aceite:",
+      "acceptanceText": "Data, IP e navegador de quando você aceita os Termos de Uso, esta Política ou o aviso de risco de um integrador de WhatsApp, para provar o aceite."
     },
     "s2": {
       "title": "2. Como Usamos Seus Dados",
@@ -1397,7 +1401,11 @@
       "vercelText": "Hospedagem da aplicação (SOC 2 Type II certified).",
       "sentry": "Sentry:",
       "sentryText": "Monitoramento de erros (dados anonimizados).",
-      "dpa": "Todos os parceiros assinam DPAs (Data Processing Agreements) em conformidade com LGPD."
+      "dpa": "Os parceiros que a ROI Labs contrata assinam DPAs (Data Processing Agreements) em conformidade com a LGPD. Os integradores de WhatsApp ficam fora dessa lista, porque o contrato deles é com a sua empresa.",
+      "meta": "Meta (WhatsApp):",
+      "metaText": "Quando você conecta a API oficial, as mensagens passam pela Meta.",
+      "integrators": "Integradores de WhatsApp que você escolhe:",
+      "integratorsText": "Quando você conecta um integrador (como Z-API, uazapi, W-API ou Evolution API), as mensagens passam por ele. Você contrata o integrador diretamente, e ele trata esses dados sob os termos e a política de privacidade dele."
     },
     "s7": {
       "title": "7. Seus Direitos (LGPD)",
@@ -1503,17 +1511,41 @@
       "li7": "Revender ou sublicenciar o serviço sem autorização expressa",
       "warning": "Violações resultarão em suspensão imediata da conta, sem reembolso."
     },
+    "wa": {
+      "title": "6. Conexões com o WhatsApp",
+      "intro": "O Sirius conecta ao WhatsApp por dois caminhos, e você escolhe qual usar em cada número:",
+      "officialLabel": "API oficial:",
+      "official": "a API do WhatsApp Business da Meta. É o caminho autorizado pela Meta e o que recomendamos.",
+      "unofficialLabel": "Integradores não oficiais:",
+      "unofficial": "conexão por pareamento com QR Code, feita por um integrador de terceiros que você contrata diretamente, como Z-API, uazapi, W-API, Evolution API e similares.",
+      "s61title": "6.1. O risco da conexão por integrador",
+      "s61text": "Integradores não oficiais não são autorizados pela Meta. A Meta pode restringir ou bloquear o número conectado a qualquer momento e sem aviso, e nem a ROI Labs nem o integrador conseguem recuperá-lo. O Sirius não é afiliado à Meta nem ao WhatsApp. Você pode migrar o número para a API oficial quando quiser.",
+      "s62title": "6.2. Aceite antes de conectar",
+      "s62text": "A conexão por integrador só é ativada depois que um usuário da sua empresa confirma, na tela de conexão, que leu o risco acima. Registramos quem confirmou, quando e de qual IP, e o dono da conta vê esse registro em Configurações → Auditoria.",
+      "s63title": "6.3. O integrador é contratado por você",
+      "s63text": "Você contrata e paga o integrador diretamente, e ele trata as mensagens por conta da sua empresa, sob os termos e a política de privacidade dele. O Sirius envia e recebe mensagens por ele seguindo as suas instruções. Cobrança, falha e mudança de serviço do integrador são tratadas entre você e ele.",
+      "s64title": "6.4. Sem meta de disponibilidade",
+      "s64text": "A meta de disponibilidade da seção 8 não vale para conexões por integrador. Mensagens podem atrasar, faltar ou chegar repetidas quando o integrador ou o WhatsApp mudam.",
+      "s65title": "6.5. O que é proibido nessas conexões",
+      "s65intro": "Além do uso proibido da seção 5, nas conexões por integrador é proibido:",
+      "li1": "Envio em massa ou lista de transmissão automatizada",
+      "li2": "Mensagem automática para quem ainda não conversou com você",
+      "li3": "Mensagem para quem não consentiu em recebê-la",
+      "s65outro": "Violação leva à suspensão da conexão e pode levar ao encerramento da conta (seção 9).",
+      "s66title": "6.6. Responsabilidade",
+      "s66text": "Se você contrata o Sirius como empresa, a ROI Labs não responde pelo bloqueio, pela restrição ou pela perda do número conectado por integrador, nem pelas mensagens perdidas por causa disso. Você responde pelo conteúdo que envia e ressarce a ROI Labs por reclamações de terceiros causadas por esse conteúdo. Se você contrata como consumidor, valem todos os seus direitos pelo Código de Defesa do Consumidor."
+    },
     "s6": {
-      "title": "6. Propriedade Intelectual",
-      "s61title": "6.1. Propriedade da ROI Labs",
+      "title": "7. Propriedade Intelectual",
+      "s61title": "7.1. Propriedade da ROI Labs",
       "s61text": "Todo o código, design, marca, interfaces e funcionalidades do Sirius CRM são de propriedade exclusiva da ROI Labs e protegidos por leis de direitos autorais e propriedade intelectual.",
-      "s62title": "6.2. Seus Dados",
+      "s62title": "7.2. Seus Dados",
       "s62text": "Você mantém todos os direitos sobre os dados que insere no sistema (contatos, deals, pipelines, etc.). Concedemos a nós apenas uma licença limitada para processar esses dados exclusivamente para fornecer o serviço.",
-      "s63title": "6.3. Feedback e Sugestões",
+      "s63title": "7.3. Feedback e Sugestões",
       "s63text": "Ao enviar sugestões, ideias ou feedback, você concede à ROI Labs o direito de usar, implementar e comercializar essas ideias sem compensação ou atribuição."
     },
     "s7": {
-      "title": "7. Limitação de Responsabilidade",
+      "title": "8. Limitação de Responsabilidade",
       "asIs": "O Sirius CRM é fornecido \"como está\" e \"conforme disponível\", sem garantias de qualquer tipo.",
       "noGuarantee": "Não garantimos:",
       "li1": "Disponibilidade ininterrupta do serviço (meta de 99,5% de uptime)",
@@ -1523,14 +1555,14 @@
       "liability": "Nossa responsabilidade total por danos está limitada ao valor pago nos últimos 3 meses.",
       "notResponsible": "Não nos responsabilizamos por:",
       "li5": "Perda de dados causada por ação do usuário",
-      "li6": "Falhas de integrações de terceiros (Mercado Pago, WhatsApp, etc.)",
+      "li6": "Falhas de integrações de terceiros (Mercado Pago, WhatsApp, integradores etc.; ver seção 6)",
       "li7": "Danos indiretos, lucros cessantes ou perda de oportunidades"
     },
     "s8": {
-      "title": "8. Rescisão de Conta",
-      "s81title": "8.1. Por Você",
+      "title": "9. Rescisão de Conta",
+      "s81title": "9.1. Por Você",
       "s81text": "Você pode deletar sua conta a qualquer momento através das Configurações. Dados serão retidos por 90 dias para recuperação e depois permanentemente deletados.",
-      "s82title": "8.2. Por Nós",
+      "s82title": "9.2. Por Nós",
       "s82intro": "Reservamo-nos o direito de suspender ou encerrar contas que:",
       "li1": "Violem estes Termos de Uso",
       "li2": "Estejam envolvidas em atividades ilegais ou fraudulentas",
@@ -1538,18 +1570,18 @@
       "s82outro": "Notificaremos por email com 7 dias de antecedência, exceto em casos de violação grave."
     },
     "s9": {
-      "title": "9. Alterações nestes Termos",
+      "title": "10. Alterações nestes Termos",
       "p1": "Podemos atualizar estes Termos periodicamente. Mudanças significativas serão comunicadas por email com 30 dias de antecedência.",
       "p2": "O uso continuado do serviço após mudanças constitui aceitação dos novos termos. Se discordar, você deve descontinuar o uso e deletar sua conta."
     },
     "s10": {
-      "title": "10. Lei Aplicável e Foro",
+      "title": "11. Lei Aplicável e Foro",
       "p1": "Estes Termos são regidos pelas leis da República Federativa do Brasil, especificamente pela Lei Geral de Proteção de Dados (LGPD - Lei 13.709/2018) e Código de Defesa do Consumidor.",
       "p2": "Fica eleito o foro da Comarca de Goiânia/GO para dirimir quaisquer controvérsias decorrentes destes Termos. Se você contrata como consumidor, pode propor a ação no foro do seu domicílio (Código de Defesa do Consumidor, art. 101, I).",
       "jurisdiction": "Goiânia/GO"
     },
     "s11": {
-      "title": "11. Contato",
+      "title": "12. Contato",
       "intro": "Para dúvidas sobre estes Termos de Uso, entre em contato:",
       "emailLabel": "Email:",
       "companyLabel": "Empresa:",

@@ -311,7 +311,7 @@ export default async function FeaturesPage() {
       {
         "@type": "HowToStep",
         "name": "Conecte seu WhatsApp",
-        "text": "Integre o WhatsApp Business via Evolution API com QR Code. Envie e receba mensagens direto do CRM. Use o inbox unificado com tags e respostas rápidas."
+        "text": "Conecte o WhatsApp pela API oficial da Meta ou pelo integrador que você já usa. Envie e receba mensagens direto do CRM. Use o inbox unificado com tags e respostas rápidas."
       },
       {
         "@type": "HowToStep",
@@ -359,10 +359,10 @@ export default async function FeaturesPage() {
       "ratingValue": "4.8",
       "ratingCount": "12"
     },
-    "description": "CRM visual com pipeline Kanban, WhatsApp integrado via Evolution API, IA comercial, prospecção Google Maps, automações de deals e email, analytics avançado e API pública para vendedores brasileiros.",
+    "description": "CRM visual com pipeline Kanban, WhatsApp pela API oficial ou por integrador, IA comercial, prospecção Google Maps, automações de deals e email, analytics avançado e API pública para vendedores brasileiros.",
     "featureList": [
       "Pipeline Kanban Visual",
-      "WhatsApp Integrado (Evolution API)",
+      "WhatsApp Integrado (API oficial ou integrador)",
       "AGI Sirius — IA Comercial",
       "Prospecção Google Maps",
       "Automações de Deals e Email",
