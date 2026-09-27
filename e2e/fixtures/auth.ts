@@ -1,5 +1,6 @@
 import { test as base, expect } from '@playwright/test'
 import { Page } from '@playwright/test'
+import { RegisterPage } from '../page-objects/register-page'
 
 type AuthFixtures = {
   authenticatedPage: Page
@@ -15,26 +16,16 @@ async function login(page: Page, email: string, password: string) {
   await page.fill('input[name="email"]', email)
   await page.fill('input[name="password"]', password)
   await page.click('button[type="submit"]')
-  await page.waitForURL('/dashboard')
+  await page.waitForURL(/\/dashboard/)
 }
 
 /**
- * Helper function to register a new user
+ * Registers a new user through the real signup form and lands on the dashboard
  */
-async function register(
-  page: Page,
-  email: string,
-  password: string,
-  name: string,
-  organizationName: string
-) {
+async function register(page: Page, email: string, password: string, name: string, organizationName: string) {
   await page.goto('/register')
-  await page.fill('input[name="name"]', name)
-  await page.fill('input[name="email"]', email)
-  await page.fill('input[name="password"]', password)
-  await page.fill('input[name="organizationName"]', organizationName)
-  await page.click('button[type="submit"]')
-  await page.waitForURL('/dashboard')
+  await new RegisterPage(page).register(name, email, password, organizationName)
+  await page.waitForURL(/\/dashboard/)
 }
 
 /**
