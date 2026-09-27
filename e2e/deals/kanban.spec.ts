@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test'
 import { RegisterPage } from '../page-objects/register-page'
 import { KanbanPage } from '../page-objects/kanban-page'
+import { DashboardPage } from '../page-objects/dashboard-page'
 
 test.describe('Kanban Board Operations', () => {
   // Helper to create a test user and login with a deal
@@ -25,6 +26,7 @@ test.describe('Kanban Board Operations', () => {
 
     // Wait for registration to complete
     await page.waitForURL(/\/dashboard/, { timeout: 15000 })
+    await new DashboardPage(page).dismissWelcome()
 
     return userData
   }

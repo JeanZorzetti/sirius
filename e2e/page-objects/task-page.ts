@@ -17,15 +17,15 @@ export class TaskPage extends BasePage {
 
   async createTask(title: string) {
     // Look for "Adicionar tarefa" button
-    const addButton = this.page.locator('button:has-text("Adicionar tarefa")').first()
+    const addButton = this.page.getByRole('button', { name: /nova tarefa/i }).first()
     await addButton.click()
 
     // Fill dialog
-    const titleInput = this.page.locator('input[placeholder*="título"]').first()
+    const titleInput = this.page.locator('[role="dialog"] #title')
     await titleInput.fill(title)
 
     // Submit dialog
-    const submitButton = this.page.locator('button:has-text("Criar")').first()
+    const submitButton = this.page.locator('[role="dialog"] button[type="submit"]')
     await submitButton.click()
 
     // Wait for task to appear

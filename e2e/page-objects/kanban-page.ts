@@ -100,10 +100,8 @@ export class KanbanPage extends BasePage {
       }
     }
 
-    // Submit form by pressing the submit button inside the form
-    const submitButton = this.page.locator('form button[type="submit"]').or(
-      this.page.getByRole('button', { name: /criar|salvar/i })
-    ).first()
+    // The dialog's own submit: the sidebar has a form with a submit button too (logout)
+    const submitButton = this.page.locator('[role="dialog"] button[type="submit"]')
     await submitButton.click()
 
     // With Optimistic UI, dialog closes immediately - no need to wait
@@ -230,7 +228,8 @@ export class KanbanPage extends BasePage {
    * Check if a deal exists on the board
    */
   async hasDeal(title: string): Promise<boolean> {
-    return await this.getDealCardByTitle(title).isVisible({ timeout: 3000 }).catch(() => false)
+    // isVisible() answers at once; the card shows up after the server confirms the deal
+    return this.getDealCardByTitle(title).waitFor({ state: 'visible', timeout: 10000 }).then(() => true, () => false)
   }
 
   /**
@@ -265,7 +264,7 @@ export class KanbanPage extends BasePage {
     // Check if we can see at least one stage heading and the "Novo Deal" button
     await this.page.locator('[data-testid="kanban-column"]').first().waitFor({ timeout: 15000 }).catch(() => {})
     const hasStages = await this.page.locator('[data-testid="kanban-column"]').count() > 0
-    const hasButton = await this.page.locator('button:has-text("Novo Deal")').isVisible().catch(() => false)
+    const hasButton = await this.page.locator('button:has-text("Novo Deal"):visible').first().isVisible().catch(() => false)
     return hasStages && hasButton
   }
 
