@@ -65,10 +65,10 @@ path.
   - the callback checks that whoever started the flow is still owner or manager of that account.
 - **Test:** `__tests__/isolamento/integracoes.test.ts`.
 
-## Test suite on 27/09
+## Test suite and CI on 27/09
 
-- **`__tests__/auth/actions.test.ts`: 4 tests red since `ae7d698`.** The terms acceptance at signup made them stale:
-  they do not send the acceptance box, so the action answers "Marque o aceite…". This is unrelated to spec 012 and
-  still needs fixing.
-- **Timeouts under the full parallel run:** `public-css-guard` and `multi-tenant/deal-isolation` sometimes exceed 5 s.
-  Both pass on their own.
+- The 4 signup tests that broke with the acceptance change were fixed in `8442652`.
+- The CI gate had been red since `feat(legal)` because of an ESLint error in `VitaisDeCampo` and the unimported
+  `<AceiteIntegrador>`. Both were fixed in `f572a5e`, and the gate is green again.
+- When spec 012 imports `<AceiteIntegrador>`, remove it from `scripts/dead-code-allowlist.json`.
+- `public-css-guard` and `multi-tenant/deal-isolation` still sometimes exceed 5 s in the full parallel run.
