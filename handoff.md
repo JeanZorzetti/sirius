@@ -1,4 +1,57 @@
-# Handoff: degrau 5 do mapa GSC (snippet) executado (2026-09-26)
+# Handoff: spec 011 implementada e degrau 5 do mapa GSC (2026-09-26)
+
+Duas frentes rodaram em paralelo nesta data. A spec 011 vem primeiro; a parte do mapa GSC segue igual à que a outra
+sessão escreveu.
+
+# Parte 1: spec 011, isolamento entre contas e visibilidade
+
+## Estado em uma linha
+A `specs/011-isolamento-contas/` está implementada e no ar em quatro entregas: US4 `6ed84c0`, US2 `0b48a6a`, US1
+`7b9c257`, US3 `e2e16eb`. Ela cobre as ações 1 a 4 da revisão de CRM de 25/09; o relatório fica fora do repositório.
+
+## Feito
+- **Toda busca e gravação por id carrega a conta.** A guarda estática `__tests__/isolamento/guarda-estatica.test.ts`
+  roda na suíte com 0 pontos e sem lista de exceções. Rota nova com `findUnique({ where: { id } })` sem conferência
+  quebra o CI e aponta arquivo e linha.
+  - Para justificar um caso legítimo: `// isolamento: <motivo>` até 3 linhas acima da chamada, ou
+    `// isolamento-arquivo: <motivo>` nas 15 primeiras linhas do arquivo (painel da equipe ROI Labs).
+  - Chave estrangeira gravada em tarefa e negócio passa por `lib/tasks/chaves.ts` e `lib/pipeline/chaves.ts`.
+- **Visibilidade dentro da conta num lugar só:** `lib/visibilidade.ts`.
+  - `carregarAcesso`, `escopoNegocio`, `escopoPipeline`, `escopoProjeto` e `escopoTarefa`.
+  - Kanban, analytics, contatos, agenda, tarefas, busca global, chat da IA e exportação leem por aí.
+- **Exportação:** só dono e gerente. Cada exportação vai para a tabela `AuditLog`, e o "entrar como" da equipe
+  também. O dono vê tudo em `/dashboard/settings/auditoria`.
+- **IA: a IA sugere, o humano grava.** Toda ação nasce `NEEDS_APPROVAL`, com o rascunho em `output.rascunho`.
+  - Só a aprovação (`lib/agaas-aprovacao.ts`) aplica.
+  - O limiar de confiança saiu da interface.
+- **Integrações:**
+  - Os webhooks da Meta conferem `X-Hub-Signature-256` (`lib/meta-assinatura.ts`).
+  - Saída para URL de terceiro passa por `fetchPublico` (`lib/url-publica.ts`), que recusa endereço interno.
+
+## Falta fazer (dono)
+1. **App Secret do WhatsApp oficial na conta de teste da equipe.** Em `/dashboard/settings/integrations/whatsapp-official`,
+   colar a Chave secreta do app (Meta → Configurações do app → Básico). Sem ela, as mensagens que chegam são recusadas.
+2. **EasyPanel:** conferir que `FACEBOOK_APP_SECRET` e `INSTAGRAM_APP_SECRET` estão definidos.
+3. O roteiro de conferência em produção está em `specs/011-isolamento-contas/quickstart.md`, seção 2. O resultado da
+   suíte e do banco está no fim do mesmo arquivo.
+
+## Próxima spec (ações 5 a 10 da revisão)
+- **5.** Uma função `moverNegocio` para todo caminho que muda etapa ou status, com registro do movimento, status pelo
+  tipo da etapa e disparo de automação.
+- **6.** `registrarContato`: telefone em E.164, `phoneKey` indexado e origem de 1º toque. Duplicado vira sugestão.
+- **7.** Agenda de crons versionada no repo, snapshot de volta e registro de cada execução.
+- **8.** Operação "eliminar titular" (LGPD), separada do excluir comum.
+- **9.** `organizationId` em `DealClosing`, `Note` e `Activity`, com backfill.
+- **10.** Fila Hoje com o grupo "sem retorno marcado".
+
+## Gotchas
+- `prisma generate` dá EPERM enquanto outro `next dev`/`start` segura a DLL. Gerar para uma pasta temporária e copiar,
+  sem derrubar o servidor dos outros.
+- Filtro Prisma com `undefined` significa "sem filtro". Sessão sem `organizationId` é recusada antes da consulta.
+- Teste que importa rota a frio estoura 5 s na suíte cheia; `vi.setConfig({ testTimeout: 30_000 })` no arquivo.
+- `@radix-ui/react-slider` ficou no `package.json` sem uso, depois que o `components/ui/slider.tsx` saiu.
+
+# Parte 2: degrau 5 do mapa GSC (snippet)
 
 ## Estado em uma linha
 As duas alavancas do degrau "5 · Snippet" do `hub.roilabs.com.br/gsc/mapa/sirius` (título e schema) foram
