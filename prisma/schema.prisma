@@ -631,6 +631,11 @@ model Activity {
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
+
+  // Spec 014: where the deal came from and went to, and who moved it (USER, API, IA, AUTOMACAO)
+  fromStageId String?
+  toStageId   String?
+  actorType   String  @default("USER")
 }
 
 // Email Automation Models
@@ -1824,6 +1829,10 @@ model AutomationExecution {
   metadata     Json?
   executedAt   DateTime         @default(now())
 
+  // Spec 014: the move that fired it; one execution per automation and move (null for the idle cron)
+  activityId   String?
+
+  @@unique([automationId, activityId])
   @@index([automationId])
   @@index([dealId])
 }

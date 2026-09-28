@@ -18,6 +18,7 @@ import { callLLM } from '@/lib/agi/providers'
 import { getWhatsAppOfficialClient, normalizePhone } from '@/lib/integrations/whatsapp-official-client'
 import { getGoogleCalendarClient } from '@/lib/integrations/google-calendar-client'
 import { retrieveContext } from '@/lib/rag/retrieval'
+import { moverNegocio, aoCriarNegocio } from '@/lib/pipeline/mover-negocio'
 import logger from '@/lib/logger'
 
 export type ModoExecucao = 'rascunho' | 'aplicar'
@@ -298,10 +299,15 @@ Responda APENAS em JSON válido com esta estrutura:
         status: 'ACTIVE',
       },
     })
-    return { dealId: deal.id, jaExistia: false }
+    return { dealId: deal.id, jaExistia: false, deal, nomeDaEtapa: pipeline.stages[0].name }
   })
 
-  logger.info({ organizationId, contactId: contato.id, ...aberto }, '[AgaaS:LeadQualifier] Approved')
+  // Spec 014: history + DEAL_CREATED automations, after the transaction commits
+  if (aberto.deal) {
+    await aoCriarNegocio({ deal: aberto.deal, nomeDaEtapa: aberto.nomeDaEtapa, autor: { userId: aberto.deal.userId, tipo: 'IA' } })
+  }
+
+  logger.info({ organizationId, contactId: contato.id, dealId: aberto.dealId, jaExistia: aberto.jaExistia }, '[AgaaS:LeadQualifier] Approved')
 
   // A suggested meeting becomes another proposal for approval, never an automatic message
   const proxima = String(q.nextAction ?? '').toLowerCase()
@@ -322,7 +328,7 @@ Responda APENAS em JSON válido com esta estrutura:
     }).catch(() => {})
   }
 
-  return ok({ ...q, ...aberto, dealTitle: q.suggestedDealTitle })
+  return ok({ ...q, dealId: aberto.dealId, jaExistia: aberto.jaExistia, dealTitle: q.suggestedDealTitle })
 }
 
 /**
@@ -380,18 +386,13 @@ Responda APENAS em JSON válido:
 
   if (targetStage && targetStage.id !== deal.stageId) {
     const autor = action.userId || (await donoDaConta(prisma, organizationId, ctx.contato))
-    await prisma.$transaction([
-      // isolamento: targetStage is one of this deal's pipeline stages; the deal was loaded by (id, organizationId) in carregarAlvo
-      prisma.deal.update({ where: { id: deal.id, organizationId }, data: { stageId: targetStage.id } }),
-      prisma.activity.create({
-        data: {
-          type: 'STAGE_CHANGE',
-          description: `Moveu de "${deal.stage.name}" para "${targetStage.name}" (sugestão da IA aprovada)`,
-          dealId: deal.id,
-          userId: autor,
-        },
-      }),
-    ])
+    // Spec 014: an approved AI move is a move like any other (history, status by stage type, automations)
+    await moverNegocio({
+      organizationId,
+      dealId: deal.id,
+      paraEtapaId: targetStage.id,
+      autor: { userId: autor, tipo: 'IA' },
+    })
     movedTo = targetStage.name
     logger.info({ dealId: deal.id, from: deal.stage.name, to: movedTo }, '[AgaaS:DealStageAnalyzer] Approved move')
   }

@@ -4,8 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { formatDecimal, formatDate } from '@/lib/api-helpers'
 import { uuidSchema } from '@/lib/api-validators'
 import logger from '@/lib/logger'
-import { sendDealWonNotification } from '@/lib/push-notifications'
-import { executeDealAutomations } from '@/lib/automations/engine'
+import { moverNegocio } from '@/lib/pipeline/mover-negocio'
 import { dispatchWebhookAsync, WEBHOOK_EVENTS } from '@/lib/webhooks'
 
 /**
@@ -32,7 +31,7 @@ export async function PATCH(
       }
 
       const body = await req.json()
-      const { stageId, movedBy = 'human', reason } = body
+      const { stageId, movedBy = 'human' } = body
 
       if (!stageId) {
         return NextResponse.json(
@@ -86,10 +85,26 @@ export async function PATCH(
         )
       }
 
-      // Update deal stage
-      const deal = await prisma.deal.update({
+      // Spec 014: the one door for moves (history with origin/destination, status by stage type, automations)
+      const movimento = await moverNegocio({
+        organizationId: context.organizationId,
+        dealId: paramsData.id,
+        paraEtapaId: stageId,
+        autor: { userId: existingDeal.userId, tipo: movedBy === 'ai' ? 'IA' : 'API' },
+      })
+      if (!movimento.ok) {
+        return NextResponse.json(
+          apiResponse(context.requestId, undefined, {
+            code: 'NOT_FOUND',
+            message: "Target stage not found in this deal's pipeline"
+          }),
+          { status: 404 }
+        )
+      }
+
+      // isolamento: deal checked above (existingDeal, scoped by organizationId)
+      const deal = await prisma.deal.findUniqueOrThrow({
         where: { id: paramsData.id },
-        data: { stageId },
         include: {
           stage: { select: { id: true, name: true, order: true } },
           pipeline: { select: { id: true, name: true } },
@@ -98,45 +113,16 @@ export async function PATCH(
         }
       })
 
-      // Create activity record
-      await prisma.activity.create({
-        data: {
-          type: 'STAGE_CHANGE',
-          description: `Deal moved from "${existingDeal.stage.name}" to "${targetStage.name}" by ${movedBy}${reason ? `: ${reason}` : ''}`,
-          dealId: deal.id,
-          userId: deal.userId
-        }
-      })
-
       // Dispatch webhook
-      dispatchWebhookAsync(context.organizationId, WEBHOOK_EVENTS.DEAL_STAGE_CHANGED, {
-        dealId: deal.id,
-        previousStageId: existingDeal.stageId,
-        previousStageName: existingDeal.stage.name,
-        newStageId: stageId,
-        newStageName: targetStage.name,
-        movedBy
-      })
-
-      // Deal won/lost notifications + automations
-      const stageName = deal.stage.name.toLowerCase()
-      const automationContext = {
-        organizationId: deal.organizationId,
-        value: deal.value ? parseFloat(deal.value.toString()) : 0,
-        stageId: deal.stageId,
-        pipelineId: deal.pipelineId,
-        title: deal.title,
-        userId: deal.userId
-      }
-
-      executeDealAutomations(deal.id, 'DEAL_MOVED', automationContext).catch(() => {})
-
-      if (stageName.includes('ganho') || stageName.includes('won') || stageName.includes('fechado')) {
-        sendDealWonNotification(context.organizationId, deal.title, deal.value ? deal.value.toNumber() : undefined).catch(() => {})
-        executeDealAutomations(deal.id, 'DEAL_WON', automationContext).catch(() => {})
-      }
-      if (stageName.includes('perdido') || stageName.includes('lost') || stageName.includes('cancelado')) {
-        executeDealAutomations(deal.id, 'DEAL_LOST', automationContext).catch(() => {})
+      if (movimento.mudou) {
+        dispatchWebhookAsync(context.organizationId, WEBHOOK_EVENTS.DEAL_STAGE_CHANGED, {
+          dealId: deal.id,
+          previousStageId: existingDeal.stageId,
+          previousStageName: existingDeal.stage.name,
+          newStageId: stageId,
+          newStageName: targetStage.name,
+          movedBy
+        })
       }
 
       const formattedDeal = {

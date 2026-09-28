@@ -5,7 +5,7 @@ import { getPaginationParams, getPaginationMeta, paginatedResponse, getSortParam
 import { validateRequest, createDealSchema } from '@/lib/api-validators'
 import logger from '@/lib/logger'
 import { sendNewDealNotification } from '@/lib/push-notifications'
-import { executeDealAutomations } from '@/lib/automations/engine'
+import { aoCriarNegocio } from '@/lib/pipeline/mover-negocio'
 import { canCreateDeal } from '@/lib/entitlements'
 
 /**
@@ -331,15 +331,8 @@ export async function POST(request: NextRequest) {
         logger.error({ error, dealId: deal.id }, 'Failed to send new deal notification')
       })
 
-      // Fire-and-forget: trigger DEAL_CREATED automations
-      executeDealAutomations(deal.id, 'DEAL_CREATED', {
-        organizationId: deal.organizationId,
-        value: deal.value ? parseFloat(deal.value.toString()) : 0,
-        stageId: deal.stageId,
-        pipelineId: deal.pipelineId,
-        title: deal.title,
-        userId: deal.userId
-      }).catch(() => {})
+      // Spec 014: history + DEAL_CREATED automations
+      await aoCriarNegocio({ deal, nomeDaEtapa: stage.name, autor: { userId: user.id, tipo: 'API' } })
 
       return NextResponse.json(
         apiResponse(context.requestId, formattedDeal),

@@ -21,13 +21,16 @@ const m = vi.hoisted(() => {
   }
   const enviar = vi.fn(async () => ({}))
   const callLLM = vi.fn()
-  return { prisma, prismaWa, enviar, callLLM, CONTATO_A }
+  const moverNegocio = vi.fn(async () => ({ ok: true, mudou: true }))
+  const aoCriarNegocio = vi.fn(async () => 'atividade-1')
+  return { prisma, prismaWa, enviar, callLLM, CONTATO_A, moverNegocio, aoCriarNegocio }
 })
 
 vi.mock('@/lib/prisma', () => ({ prisma: m.prisma }))
 vi.mock('@/lib/prisma-wa', () => ({ prismaWa: m.prismaWa }))
 vi.mock('@/lib/agaas-quota', () => ({ checkAgaasQuota: vi.fn(async () => ({ allowed: true })), incrementAgaasUsage: vi.fn() }))
 vi.mock('@/lib/agi/providers', () => ({ callLLM: m.callLLM }))
+vi.mock('@/lib/pipeline/mover-negocio', () => ({ moverNegocio: m.moverNegocio, aoCriarNegocio: m.aoCriarNegocio }))
 vi.mock('@/lib/integrations/whatsapp-official-client', () => ({
   getWhatsAppOfficialClient: vi.fn(async () => ({ sendTextMessage: m.enviar })),
   normalizePhone: (p: string) => p.replace(/\D/g, ''),
@@ -147,6 +150,7 @@ describe('aprovação', () => {
     expect(data.value).toBeNull()
     expect(data.userId).toBe('dono-mais-antigo')
     expect(data.organizationId).toBe('org-a')
+    expect(m.aoCriarNegocio).toHaveBeenCalledWith(expect.objectContaining({ autor: expect.objectContaining({ tipo: 'IA' }) }))
   })
 
   it('abrir negócio: contato que já tem negócio aberto não ganha outro', async () => {
@@ -171,8 +175,10 @@ describe('aprovação', () => {
     })
 
     expect(r.output.movedTo).toBe('Proposta')
-    expect(m.prisma.deal.update).toHaveBeenCalledWith({ where: { id: 'negocio-a', organizationId: 'org-a' }, data: { stageId: 'e2' } })
-    expect(m.prisma.activity.create).toHaveBeenCalledWith({ data: expect.objectContaining({ type: 'STAGE_CHANGE', dealId: 'negocio-a', userId: 'vendedora-a' }) })
+    // Spec 014: the approved AI move goes through the one door, with the approver as author
+    expect(m.moverNegocio).toHaveBeenCalledWith({
+      organizationId: 'org-a', dealId: 'negocio-a', paraEtapaId: 'e2', autor: { userId: 'vendedora-a', tipo: 'IA' },
+    })
   })
 
   it('sugestão de perfil e de empresa, aprovada, não grava no contato', async () => {

@@ -43,6 +43,9 @@ export async function executeDealAutomations(
       triggerType
     }
 
+    // Spec 014: the move that fired this event; one execution per automation and move (FR-005)
+    const activityId = (context.activityId as string | undefined) ?? null
+
     // Fetch all enabled automations for this org + trigger
     const automations = await prisma.dealAutomation.findMany({
       where: {
@@ -78,12 +81,28 @@ export async function executeDealAutomations(
             data: {
               automationId: automation.id,
               dealId,
+              activityId,
               status: 'SKIPPED',
               actionsRun: 0,
               metadata: { reason: 'conditions_not_met' }
             }
           }).catch(() => {}) // Non-critical
           continue
+        }
+
+        // Claim the (automation, move) pair before running anything: a second call for the same move stops here.
+        // ponytail: a crash mid-actions leaves the claim with actionsRun 0; a RUNNING status if that ever matters.
+        let execucaoId: string
+        try {
+          // isolamento: dealId/contactId/userId come from executeDealAutomations, only called with a deal loaded inside its organization (lib/pipeline/mover-negocio, API v1 scoped routes, deal-idle cron)
+          const reservada = await prisma.automationExecution.create({
+            data: { automationId: automation.id, dealId, activityId, status: 'SUCCESS', actionsRun: 0, metadata: { triggerType } },
+            select: { id: true },
+          })
+          execucaoId = reservada.id
+        } catch (err) {
+          if ((err as { code?: string }).code === 'P2002') continue // already ran for this move
+          throw err
         }
 
         // Execute actions
@@ -93,12 +112,11 @@ export async function executeDealAutomations(
         const status = errors.length === 0 ? 'SUCCESS' : 'FAILED'
         const errorMessage = errors.length > 0 ? errors.join('; ') : undefined
 
-        // Record execution
-        // isolamento: dealId/contactId/userId come from executeDealAutomations, only called with a deal loaded inside its organization (API v1 scoped routes, deal-idle cron)
-        await prisma.automationExecution.create({
+        // Record the outcome on the claimed execution
+        // isolamento: execucaoId is the row this call just created for an automation of context.organizationId
+        await prisma.automationExecution.update({
+          where: { id: execucaoId },
           data: {
-            automationId: automation.id,
-            dealId,
             status: status as any,
             actionsRun,
             error: errorMessage,

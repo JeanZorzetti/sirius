@@ -25,6 +25,7 @@ vi.mock('@/lib/prisma', () => ({
       create: vi.fn(),
       update: vi.fn(),
       delete: vi.fn(),
+      findUniqueOrThrow: vi.fn(),
     },
     pipelineStage: {
       findFirst: vi.fn(),
@@ -36,6 +37,12 @@ vi.mock('@/lib/prisma', () => ({
       findFirst: vi.fn(),
     },
   },
+}))
+
+// Spec 014: moves and creations go through the one door
+vi.mock('@/lib/pipeline/mover-negocio', () => ({
+  moverNegocio: vi.fn(async () => ({ ok: true, mudou: false })),
+  aoCriarNegocio: vi.fn(async () => 'atividade-1'),
 }))
 
 // Mock do logger
@@ -417,6 +424,7 @@ describe('Deals API - CRUD', () => {
       })
       ;(prisma.deal.findFirst as Mock).mockResolvedValue(mockDeal)
       ;(prisma.deal.update as Mock).mockResolvedValue(mockUpdatedDeal)
+      ;(prisma.deal.findUniqueOrThrow as Mock).mockResolvedValue(mockUpdatedDeal)
 
       const request = createRequest('/api/v1/deals/550e8400-e29b-41d4-a716-446655440000', 'PATCH', requestBody)
 

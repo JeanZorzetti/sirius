@@ -4,12 +4,13 @@ import logger from '@/lib/logger'
 import { prisma } from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 import { getSession } from "@/lib/auth"
-import { sendDealCreatedEmail, sendDealStageChangedEmail, sendUpgradeNudgeEmail, sendEmailAsync, shouldSendUpgradeNudge } from '@/lib/email-automations'
+import { sendUpgradeNudgeEmail, sendEmailAsync, shouldSendUpgradeNudge } from '@/lib/email-automations'
 import { dispatchWebhookAsync } from '@/lib/webhooks/dispatcher'
 import { WEBHOOK_EVENTS } from '@/lib/webhooks/events'
 import { canCreateDeal } from '@/lib/entitlements'
 import { chaveDeNegocioForaDaConta } from '@/lib/pipeline/chaves'
 import { ERR } from '@/lib/error-messages'
+import { moverNegocio, aoCriarNegocio } from '@/lib/pipeline/mover-negocio'
 
 async function getAuthenticatedUser() {
   const session = await getSession()
@@ -28,89 +29,30 @@ export async function updateDealStage(dealId: string, stageId: string) {
   try {
     const user = await getAuthenticatedUser()
 
-    // Security: Ensure deal belongs to user's org
-    const deal = await prisma.deal.findUnique({
-      where: { id: dealId },
-      include: {
-        stage: true,
-        contact: true,
-        user: true
-      }
+    // Spec 014: the one door for moves (history, status by stage type, automations)
+    const r = await moverNegocio({
+      organizationId: user.organizationId,
+      dealId,
+      paraEtapaId: stageId,
+      autor: { userId: user.id, tipo: 'USER' },
     })
-    if (!deal || deal.organizationId !== user.organizationId) {
-      return { success: false, error: 'Unauthorized' }
+    if (!r.ok) {
+      return { success: false, error: r.erro === 'NAO_ENCONTRADO' ? 'Unauthorized' : 'Invalid stage' }
     }
 
-    // Get old stage name before update
-    const oldStageName = deal.stage.name
-
-    // Get new stage
-    const newStage = await prisma.pipelineStage.findUnique({
-      where: { id: stageId }
-    })
-
-    if (!newStage) {
-      return { success: false, error: 'Invalid stage' }
-    }
-
-    // Validation: stage must belong to the same pipeline as the deal
-    if (newStage.pipelineId !== deal.pipelineId) {
-      return {
-        success: false,
-        error: 'Stage must belong to the same pipeline as the deal. Use moveDealToPipeline to change pipelines.'
-      }
-    }
-
-    // Validation: stage must belong to user's organization
-    if (newStage.organizationId !== user.organizationId) {
-      return { success: false, error: 'Invalid stage' }
-    }
-
-    // Update deal
-    await prisma.deal.update({
-      where: { id: dealId },
-      data: { stageId: stageId },
-    })
-
-    // Log activity (only if stage actually changed)
-    if (deal.stageId !== stageId) {
-      await prisma.activity.create({
-        data: {
-          type: 'STAGE_CHANGE',
-          description: `Moveu de "${oldStageName}" para "${newStage.name}"`,
-          dealId,
-          userId: user.id,
-        }
+    if (r.mudou) {
+      // isolamento: deal and stage checked inside the organization by moverNegocio
+      const deal = await prisma.deal.findUnique({
+        where: { id: dealId },
+        select: { id: true, title: true, value: true, stage: { select: { id: true, name: true } } },
       })
-    }
-
-    // Dispatch webhook (async, non-blocking)
-    dispatchWebhookAsync(user.organizationId, WEBHOOK_EVENTS.DEAL_STAGE_CHANGED, {
-      deal: {
-        id: deal.id,
-        title: deal.title,
-        value: Number(deal.value || 0)
-      },
-      oldStage: { name: oldStageName },
-      newStage: { id: newStage.id, name: newStage.name }
-    })
-
-    // Send email notification (async, non-blocking)
-    // Only if stage actually changed
-    if (oldStageName !== newStage.name && deal.user.name) {
-      sendEmailAsync(
-        sendDealStageChangedEmail({
-          to: deal.user.email,
-          assigneeName: deal.user.name,
-          dealTitle: deal.title,
-          dealValue: Number(deal.value || 0),
-          oldStage: oldStageName,
-          newStage: newStage.name,
-          dealUrl: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?deal=${dealId}`,
-          organizationId: user.organizationId,
-          userId: deal.user.id
+      if (deal) {
+        dispatchWebhookAsync(user.organizationId, WEBHOOK_EVENTS.DEAL_STAGE_CHANGED, {
+          deal: { id: deal.id, title: deal.title, value: Number(deal.value || 0) },
+          oldStage: { name: r.deAnterior.stageName },
+          newStage: { id: deal.stage.id, name: deal.stage.name },
         })
-      )
+      }
     }
 
     revalidatePath('/dashboard')
@@ -183,15 +125,8 @@ export async function createDeal(formData: FormData) {
       }
     })
 
-    // Log activity
-    await prisma.activity.create({
-      data: {
-        type: 'CREATE',
-        description: `Criou o negócio em "${deal.stage.name}"${value ? ` com valor R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : ''}`,
-        dealId: deal.id,
-        userId: user.id,
-      }
-    })
+    // Spec 014: history + DEAL_CREATED automations
+    await aoCriarNegocio({ deal, nomeDaEtapa: deal.stage.name, autor: { userId: user.id, tipo: 'USER' } })
 
     // Dispatch webhook (async, non-blocking)
     dispatchWebhookAsync(user.organizationId, WEBHOOK_EVENTS.DEAL_CREATED, {
@@ -215,22 +150,8 @@ export async function createDeal(formData: FormData) {
       where: { organizationId: user.organizationId }
     })
 
-    // Send deal created email (async, non-blocking)
+    // FR-007: no "deal created" e-mail to the person who just created it
     if (user.name) {
-      sendEmailAsync(
-        sendDealCreatedEmail({
-          to: user.email,
-          userName: user.name,
-          dealTitle: deal.title,
-          dealValue: Number(deal.value || 0),
-          dealStage: deal.stage.name,
-          contactName: deal.contact?.name || 'Sem contato',
-          dealUrl: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?deal=${deal.id}`,
-          organizationId: user.organizationId,
-          userId: user.id
-        })
-      )
-
       // Check if should send upgrade nudge (at 8/10 deals for FREE tier)
       if (shouldSendUpgradeNudge(newDealCount, 10, user.organization.tier || 'FREE')) {
         sendEmailAsync(
@@ -296,15 +217,13 @@ export async function updateDeal(formData: FormData) {
     const oldValue = existingDeal.value !== null ? Number(existingDeal.value) : null
     const stageChanged = existingDeal.stageId !== stageId
     const valueChanged = oldValue !== value
-    const oldStageName = existingDeal.stage.name
 
     // isolamento: stageId, contactId and productId checked by chaveDeNegocioForaDaConta above
-    const updatedDeal = await prisma.deal.update({
+    await prisma.deal.update({
       where: { id: dealId },
       data: {
         title,
         value,
-        stageId,
         contactId,
         productId,
         closeDate,
@@ -312,19 +231,17 @@ export async function updateDeal(formData: FormData) {
         dueDateNote: dueDateNote || null,
         observations: observations || null,
       },
-      include: {
-        stage: true
-      }
     })
+
+    // Spec 014: a stage change in the edit dialog is a move like any other
+    if (stageChanged) {
+      await moverNegocio({ organizationId: user.organizationId, dealId, paraEtapaId: stageId, autor: { userId: user.id, tipo: 'USER' } })
+    }
+    // isolamento: deal checked above (existingDeal.organizationId)
+    const updatedDeal = await prisma.deal.findUniqueOrThrow({ where: { id: dealId }, include: { stage: true } })
 
     // Log activities for tracked changes
     const activitiesToLog: { type: string; description: string }[] = []
-    if (stageChanged) {
-      activitiesToLog.push({
-        type: 'STAGE_CHANGE',
-        description: `Moveu de "${oldStageName}" para "${updatedDeal.stage.name}"`,
-      })
-    }
     if (valueChanged) {
       const oldStr = oldValue !== null ? `R$ ${oldValue.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : 'sem valor'
       const newStr = value !== null ? `R$ ${value.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}` : 'sem valor'
@@ -362,19 +279,17 @@ export async function updateDeal(formData: FormData) {
 export async function updateDealStatus(dealId: string, status: 'ACTIVE' | 'LOST' | 'WON', lostReason?: string) {
   try {
     const user = await getAuthenticatedUser()
-    const deal = await prisma.deal.findUnique({ where: { id: dealId } })
-    if (!deal || deal.organizationId !== user.organizationId) {
+    // Spec 014: won, lost and reopen are moves too (history + DEAL_WON / DEAL_LOST automations)
+    const r = await moverNegocio({
+      organizationId: user.organizationId,
+      dealId,
+      status,
+      motivoPerda: status === 'LOST' ? lostReason : undefined,
+      autor: { userId: user.id, tipo: 'USER' },
+    })
+    if (!r.ok) {
       return { success: false, error: 'Unauthorized' }
     }
-    await prisma.deal.update({
-      where: { id: dealId },
-      data: {
-        status,
-        ...(status === 'LOST' && lostReason ? { lostReason } : {}),
-        ...(status === 'ACTIVE' ? { lostReason: null, wonAt: null } : {}),
-        ...(status === 'WON' ? { wonAt: new Date() } : {}),
-      } as any,
-    })
     revalidatePath('/dashboard')
     return { success: true }
   } catch (error) {
@@ -390,83 +305,17 @@ export async function markDealWon(dealId: string) {
 export async function moveDealToPipeline(dealId: string, newPipelineId: string, newStageId: string) {
   try {
     const user = await getAuthenticatedUser()
-
-    // Security: Ensure deal belongs to user's org
-    const deal = await prisma.deal.findUnique({
-      where: { id: dealId },
-      include: {
-        stage: true,
-        pipeline: true,
-        user: true
-      }
+    // Spec 014: pipeline and stage are checked inside the organization by moverNegocio
+    const r = await moverNegocio({
+      organizationId: user.organizationId,
+      dealId,
+      paraPipelineId: newPipelineId,
+      paraEtapaId: newStageId,
+      autor: { userId: user.id, tipo: 'USER' },
     })
-
-    if (!deal || deal.organizationId !== user.organizationId) {
-      return { success: false, error: 'Unauthorized' }
+    if (!r.ok) {
+      return { success: false, error: r.erro === 'NAO_ENCONTRADO' ? 'Unauthorized' : 'Stage must belong to the selected pipeline' }
     }
-
-    // Validate new pipeline belongs to user's organization
-    const newPipeline = await prisma.pipeline.findUnique({
-      where: { id: newPipelineId }
-    })
-
-    if (!newPipeline || newPipeline.organizationId !== user.organizationId) {
-      return { success: false, error: 'Invalid pipeline' }
-    }
-
-    // Validate new stage belongs to the new pipeline
-    const newStage = await prisma.pipelineStage.findUnique({
-      where: { id: newStageId }
-    })
-
-    if (!newStage || newStage.pipelineId !== newPipelineId) {
-      return { success: false, error: 'Stage must belong to the selected pipeline' }
-    }
-
-    if (newStage.organizationId !== user.organizationId) {
-      return { success: false, error: 'Invalid stage' }
-    }
-
-    // Store old values for email notification
-    const oldPipelineName = deal.pipeline.name
-    const oldStageName = deal.stage.name
-
-    // Update deal with new pipeline and stage
-    await prisma.deal.update({
-      where: { id: dealId },
-      data: {
-        pipelineId: newPipelineId,
-        stageId: newStageId
-      }
-    })
-
-    // Log activity — pipeline + stage move
-    await prisma.activity.create({
-      data: {
-        type: 'PIPELINE_CHANGE',
-        description: `Moveu de "${oldPipelineName} - ${oldStageName}" para "${newPipeline.name} - ${newStage.name}"`,
-        dealId,
-        userId: user.id,
-      }
-    })
-
-    // Send email notification if deal was assigned to someone
-    if (deal.user.name) {
-      sendEmailAsync(
-        sendDealStageChangedEmail({
-          to: deal.user.email,
-          assigneeName: deal.user.name,
-          dealTitle: deal.title,
-          dealValue: Number(deal.value || 0),
-          oldStage: `${oldPipelineName} - ${oldStageName}`,
-          newStage: `${newPipeline.name} - ${newStage.name}`,
-          dealUrl: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?deal=${dealId}`,
-          organizationId: user.organizationId,
-          userId: deal.user.id
-        })
-      )
-    }
-
     revalidatePath('/dashboard')
     return { success: true }
   } catch (error) {
