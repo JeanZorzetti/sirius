@@ -129,7 +129,8 @@ export async function POST(req: NextRequest) {
                 id: insightId,
                 type: 'QUALIFICATION_BANT',
                 title: `Qualificação BANT: ${bantResult.score}/100${bantResult.qualificado ? ' ✅' : ' ⚠️'}`,
-                data: bantResult,
+                content: JSON.stringify(bantResult, null, 2),
+                metadata: bantResult,
             });
         }
 
@@ -180,7 +181,7 @@ Seja específico e prático.`;
                 id: insightId,
                 type: analysisType === 'meddic' ? 'QUALIFICATION_MEDDIC' : 'NEXT_STEP_SUGGESTION',
                 title: analysisType === 'meddic' ? 'Análise MEDDIC' : 'Próximos Passos e Estratégia',
-                data: { content: response.content },
+                content: response.content,
             });
         }
 

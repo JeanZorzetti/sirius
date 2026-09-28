@@ -13,7 +13,8 @@ interface Insight {
     id: string;
     type: string;
     title: string;
-    data: any;
+    content: string;
+    metadata: any;
 }
 
 interface DealInsightsPanelProps {
@@ -111,7 +112,7 @@ export function DealInsightsPanel({ dealId }: DealInsightsPanelProps) {
     };
 
     const renderBANTInsight = (insight: Insight) => {
-        const bant = insight.data;
+        const bant = insight.metadata ?? {};
         const score = bant.score || 0;
         const isQualified = bant.qualificado || score >= 75;
 
@@ -227,7 +228,7 @@ export function DealInsightsPanel({ dealId }: DealInsightsPanelProps) {
         return (
             <div className="prose prose-sm dark:prose-invert max-w-none">
                 <div className="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300">
-                    {insight.data.content}
+                    {insight.content}
                 </div>
             </div>
         );
