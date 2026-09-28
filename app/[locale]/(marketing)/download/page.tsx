@@ -60,7 +60,7 @@ export default function DownloadPage() {
       "price": "0",
       "priceCurrency": "BRL"
     },
-    "description": "Progressive Web App para gestão de vendas com pipeline Kanban, WhatsApp integrado e suporte offline."
+    "description": "Progressive Web App para gestão de vendas com pipeline Kanban, WhatsApp integrado e notificações push."
   }
 
   return (

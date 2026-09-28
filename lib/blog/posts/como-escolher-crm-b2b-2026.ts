@@ -193,7 +193,7 @@ export const post: BlogPost = {
 
       <h3>Qual o melhor CRM para representante comercial em 2026?</h3>
       <p>
-        O melhor CRM para representante comercial em 2026 precisa funcionar offline, ter gestão de carteira de clientes, lembretes de recompra e histórico de pedidos por cliente. O Sirius CRM tem modo offline no celular, plano gratuito e cobra por conta: R$ 67/mês para até 5 usuários e R$ 147/mês para até 15.
+        O melhor CRM para representante comercial em 2026 precisa funcionar offline, ter gestão de carteira de clientes, lembretes de recompra e histórico de pedidos por cliente. O Sirius CRM tem teste de 14 dias do Pro sem cartão e cobra por conta: R$ 67/mês para até 5 usuários e R$ 147/mês para até 15.
       </p>
 
       <h3>Como escolher entre CRM gratuito e pago?</h3>
@@ -327,7 +327,7 @@ export const post: BlogPost = {
           <ul style="margin: 0; padding-left: 1.25rem; line-height: 2; color: var(--foreground);">
             <li><strong>4-6 points:</strong> Free CRM with basic features is sufficient</li>
             <li><strong>7-9 points:</strong> You need a complete CRM with WhatsApp + automation</li>
-            <li><strong>10-12 points:</strong> You need a CRM with AI, offline mode, and native WhatsApp — <a href="/en/register" style="color: var(--foreground);">Sirius CRM was built for this profile</a></li>
+            <li><strong>10-12 points:</strong> You need a CRM with AI and native WhatsApp — <a href="/en/register" style="color: var(--foreground);">Sirius CRM was built for this profile</a></li>
           </ul>
         </div>
       </div>

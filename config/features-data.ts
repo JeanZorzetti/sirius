@@ -21,7 +21,6 @@ import {
   Blocks,
   Shuffle,
   Smartphone,
-  Globe,
   Shield,
   Settings,
 } from 'lucide-react'
@@ -117,14 +116,13 @@ export const FEATURE_CATEGORIES: FeatureCategory[] = [
         features: [
           { slug: 'pwa', sectionKey: 'mobile', featureKey: 'pwa', icon: Smartphone },
           { slug: 'checkin-gps', sectionKey: 'mobile', featureKey: 'gps', icon: MapPin },
-          { slug: 'sync-offline', sectionKey: 'mobile', featureKey: 'offline', icon: Globe },
         ],
       },
       {
         sectionKey: 'seguranca',
         features: [
           { slug: 'criptografia', sectionKey: 'seguranca', featureKey: 'encryption', icon: Shield },
-          { slug: 'sso-audit-log', sectionKey: 'seguranca', featureKey: 'sso', icon: Shield },
+          { slug: 'registro-de-acessos', sectionKey: 'seguranca', featureKey: 'audit', icon: Shield },
           { slug: 'api-keys', sectionKey: 'seguranca', featureKey: 'apiKeys', icon: Settings },
         ],
       },

@@ -80,12 +80,7 @@ export default function VendasAutomaticasPage() {
       "priceValidUntil": "2027-12-31",
       "availability": "https://schema.org/InStock"
     },
-    "description": "CRM self-service para organizar vendas em 5 minutos. Pipeline visual, automações e WhatsApp integrado.",
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "12"
-    }
+    "description": "CRM self-service para organizar vendas em 5 minutos. Pipeline visual, automações e WhatsApp integrado."
   }
 
   return (
@@ -713,7 +708,7 @@ export default function VendasAutomaticasPage() {
                   </p>
                   <ul className="list-disc list-inside mt-2 space-y-1 text-zinc-600">
                     <li>Adicionar à tela inicial do seu celular (como um app nativo)</li>
-                    <li>Usar offline (sincroniza quando voltar a conexão)</li>
+                    <li>Consultar sem internet as telas que você já abriu</li>
                     <li>Receber notificações push de novos leads</li>
                   </ul>
                   <p className="text-zinc-600 mt-2">

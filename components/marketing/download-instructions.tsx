@@ -258,9 +258,9 @@ export function DownloadInstructions() {
           <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mx-auto mb-3">
             <Download className="h-6 w-6 text-muted-foreground" />
           </div>
-          <h3 className="font-semibold text-foreground mb-2">Acesso Offline</h3>
+          <h3 className="font-semibold text-foreground mb-2">Consulta sem sinal</h3>
           <p className="text-sm text-muted-foreground">
-            Use mesmo sem internet
+            Veja sem internet as telas que já abriu
           </p>
         </Card>
 

@@ -48,16 +48,6 @@ export const CITIES: NicheData[] = [
         description: 'Dashboards para gestores e diretores comerciais. Veja CAC, ciclo de venda e taxa de conversão por canal — dados para tomar decisões mais rápidas.'
       }
     ],
-    socialProof: {
-      users: '+1.200 empresas em SP',
-      improvement: '43% mais negócios fechados'
-    },
-    testimonial: {
-      quote: 'São Paulo não perdoa lentidão. Antes do Sirius, nossa média de resposta era 4 horas. Hoje é 8 minutos. Nossa conversão de lead para cliente subiu de 11% para 19% em dois meses. O mercado paulistano exige isso.',
-      author: 'Fernanda Rocha',
-      role: 'Diretora Comercial',
-      company: 'Nexum Soluções B2B — São Paulo, SP'
-    },
     faq: [
       {
         question: 'O Sirius funciona para empresas com times grandes em São Paulo?',
@@ -118,24 +108,14 @@ export const CITIES: NicheData[] = [
         description: 'Acompanhe cada pedido desde o contato inicial até a entrega. Histórico completo de cada cliente para antecipar necessidades e evitar perda para o concorrente.'
       },
       {
-        title: 'Funciona Offline em Campo',
-        description: 'Representantes que visitam clientes na Grande Curitiba e interior do Paraná precisam de um CRM que funcione mesmo sem sinal. Registre visitas e pedidos offline.'
+        title: 'Carteira no Celular em Campo',
+        description: 'Representantes que visitam clientes na Grande Curitiba e no interior do Paraná consultam a ficha do cliente no celular e registram a visita assim que têm sinal.'
       },
       {
         title: 'Relatórios por Região e Canal',
         description: 'Visualize performance por território — Grande Curitiba, litoral paranaense, interior. Identifique onde estão as melhores oportunidades de crescimento.'
       }
     ],
-    socialProof: {
-      users: '+680 empresas no Sul',
-      improvement: '48% mais recompras'
-    },
-    testimonial: {
-      quote: 'Nossa distribuidora atende mais de 200 clientes industriais em Curitiba e região. O Sirius organizou nossa carteira de um jeito que nunca conseguimos com planilha. Em 4 meses, as recompras aumentaram 41% e paramos de perder clientes para o concorrente por falta de contato.',
-      author: 'Marcelo Hoffmann',
-      role: 'Gerente Comercial',
-      company: 'Hoffmann Distribuidora Industrial — Curitiba, PR'
-    },
     faq: [
       {
         question: 'O Sirius funciona para distribuidoras com múltiplos representantes em Curitiba?',
@@ -143,7 +123,7 @@ export const CITIES: NicheData[] = [
       },
       {
         question: 'Consigo usar o CRM durante visitas técnicas no interior do Paraná sem internet?',
-        answer: 'Sim! O modo offline permite registrar visitas, pedidos e observações sem conexão. Os dados sincronizam automaticamente quando você voltar à cobertura.'
+        answer: 'Em parte. Sem internet, o app mostra as telas que você já abriu. Para registrar a visita, o pedido ou a observação, é preciso ter conexão.'
       },
       {
         question: 'Como o Sirius se adapta ao ciclo de vendas mais longo do setor industrial?',
@@ -151,8 +131,8 @@ export const CITIES: NicheData[] = [
       }
     ],
     seo: {
-      title: 'CRM para Empresas em Curitiba 2026: IA e Offline',
-      description: 'CRM com IA para empresas em Curitiba. Gestão de carteira, pedidos offline e pipeline para distribuidoras e representantes do Sul. Teste grátis — sem cartão.',
+      title: 'CRM para Empresas em Curitiba 2026: IA e WhatsApp',
+      description: 'CRM com IA para empresas em Curitiba. Gestão de carteira, pedidos e pipeline para distribuidoras e representantes do Sul. Teste grátis — sem cartão.',
       keywords: [
         'crm curitiba',
         'crm para empresas em curitiba',
@@ -160,7 +140,6 @@ export const CITIES: NicheData[] = [
         'crm representantes parana',
         'software vendas curitiba',
         'gestao comercial curitiba',
-        'crm offline curitiba',
         'crm para industria curitiba'
       ]
     },
@@ -204,16 +183,6 @@ export const CITIES: NicheData[] = [
         description: 'Veja taxa de conversão por setor (construção, mineração, serviços), tempo médio de fechamento e ticket médio. Foque nos segmentos que mais convertem na sua região.'
       }
     ],
-    socialProof: {
-      users: '+540 empresas em MG',
-      improvement: '39% mais propostas fechadas'
-    },
-    testimonial: {
-      quote: 'Trabalho com empresas de construção civil em BH há 12 anos. O ciclo de venda é longo e o cliente mineiro exige persistência. O Sirius me ajudou a organizar o follow-up de cada proposta — passei de 6 fechamentos para 9 por mês sem aumentar o time.',
-      author: 'Roberto Vasquez',
-      role: 'Diretor de Vendas',
-      company: 'Vasquez Soluções Construtivas — Belo Horizonte, MG'
-    },
     faq: [
       {
         question: 'O Sirius funciona para empresas que vendem para construtoras e mineradoras em BH?',
@@ -271,7 +240,7 @@ export const CITIES: NicheData[] = [
       },
       {
         title: 'Roteiro de Visitas para o Interior do RS',
-        description: 'Planeje visitas a clientes espalhados pelo Rio Grande do Sul com roteiros otimizados. Registre tudo no campo — online ou offline — e maximize cada viagem.'
+        description: 'Planeje visitas a clientes espalhados pelo Rio Grande do Sul com roteiros otimizados. Registre tudo pelo celular e aproveite cada viagem.'
       },
       {
         title: 'Automação de Pedidos Recorrentes',
@@ -282,20 +251,10 @@ export const CITIES: NicheData[] = [
         description: 'Todo o histórico de pedidos, conversas e negociações de cada distribuidor gaúcho em um único lugar. Retome qualquer conversa com contexto — mesmo anos depois.'
       }
     ],
-    socialProof: {
-      users: '+760 representantes no Sul',
-      improvement: '52% mais recompras'
-    },
-    testimonial: {
-      quote: 'Represento 4 marcas no Rio Grande do Sul com mais de 180 clientes ativos. Antes do Sirius, eu confiava na memória e numa planilha enorme. Depois de organizar a carteira no CRM, minhas comissões subiram 44% em 5 meses — só de recompras que eu estava perdendo.',
-      author: 'Eduardo Schütz',
-      role: 'Representante Comercial',
-      company: 'Schütz Representações — Porto Alegre, RS'
-    },
     faq: [
       {
         question: 'Funciona para representantes que cobrem todo o Rio Grande do Sul?',
-        answer: 'Sim! Você organiza clientes por região — Grande Porto Alegre, Serra Gaúcha, Litoral, Campanha — e planeja rotas de visita. O modo offline garante registro mesmo em áreas sem cobertura.'
+        answer: 'Sim! Você organiza clientes por região — Grande Porto Alegre, Serra Gaúcha, Litoral, Campanha — e planeja rotas de visita. Para registrar a visita, é preciso ter conexão.'
       },
       {
         question: 'Consigo gerenciar clientes de múltiplas representadas no mesmo CRM?',
@@ -308,7 +267,7 @@ export const CITIES: NicheData[] = [
     ],
     seo: {
       title: 'CRM para Vendedores em Porto Alegre 2026: IA',
-      description: 'CRM com IA para representantes e distribuidores em Porto Alegre. Gestão de carteira, offline e automação de recompras para o mercado gaúcho. Teste grátis — sem cartão.',
+      description: 'CRM com IA para representantes e distribuidores em Porto Alegre. Gestão de carteira e automação de recompras para o mercado gaúcho. Teste grátis — sem cartão.',
       keywords: [
         'crm porto alegre',
         'crm representante comercial rs',
@@ -360,16 +319,6 @@ export const CITIES: NicheData[] = [
         description: 'Dashboards com taxa de conversão por bairro, segmento e canal de origem. Entenda onde estão os melhores negócios no Rio e direcione seu time com dados.'
       }
     ],
-    socialProof: {
-      users: '+890 empresas no RJ',
-      improvement: '41% mais negócios fechados'
-    },
-    testimonial: {
-      quote: 'Nossa consultoria atende empresas de turismo e eventos no Rio. O mercado é aquecido mas o processo comercial era caótico — cada vendedor fazia do seu jeito. Com o Sirius, criamos um processo único e a taxa de fechamento subiu de 14% para 22% em três meses.',
-      author: 'Isabela Monteiro',
-      role: 'Sócia-Diretora',
-      company: 'Monteiro & Associados Consultoria — Rio de Janeiro, RJ'
-    },
     faq: [
       {
         question: 'O Sirius funciona para empresas de turismo e eventos no Rio de Janeiro?',
@@ -438,16 +387,6 @@ export const CITIES: NicheData[] = [
         description: 'Nunca perca uma renovação. O sistema avisa com antecedência quando contratos estão próximos do vencimento — para você agir antes que o cliente procure outro fornecedor.'
       }
     ],
-    socialProof: {
-      users: '+420 empresas no DF',
-      improvement: '46% mais contratos fechados'
-    },
-    testimonial: {
-      quote: 'Atendo empresas privadas e órgãos no DF como consultor independente. O mercado de Brasília é baseado em relacionamento e processo. Com o Sirius, organizei meu pipeline de contratos e criei um processo de proposta que reduziu meu tempo de resposta de 2 dias para 4 horas. Fechei 38% mais contratos no primeiro semestre.',
-      author: 'André Castilho',
-      role: 'Consultor de Gestão',
-      company: 'Castilho Consulting — Brasília, DF'
-    },
     faq: [
       {
         question: 'O Sirius funciona para consultores que atendem tanto setor privado quanto público no DF?',

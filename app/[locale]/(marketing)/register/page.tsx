@@ -63,7 +63,7 @@ export default async function RegisterPage({
                                 Feche mais negócios em menos tempo
                             </h1>
                             <p className="text-xl text-muted-foreground">
-                                Junte-se a 120+ times que já aumentaram suas vendas com o Sirius
+                                Organize o funil, o WhatsApp e a prospecção num só lugar
                             </p>
                         </div>
 
@@ -89,7 +89,7 @@ export default async function RegisterPage({
                                 </div>
                                 <div>
                                     <h3 className="font-semibold text-foreground">Sem cartão de crédito</h3>
-                                    <p className="text-sm text-muted-foreground">Plano gratuito para sempre. Faça upgrade apenas quando precisar.</p>
+                                    <p className="text-sm text-muted-foreground">14 dias com os recursos do Pro. O cartão só é pedido quando você escolhe um plano.</p>
                                 </div>
                             </div>
 
@@ -100,26 +100,10 @@ export default async function RegisterPage({
                                     </svg>
                                 </div>
                                 <div>
-                                    <h3 className="font-semibold text-foreground">Dados 100% seguros</h3>
-                                    <p className="text-sm text-muted-foreground">Criptografia de ponta a ponta. Seus dados nunca serão compartilhados.</p>
+                                    <h3 className="font-semibold text-foreground">Seus dados, só seus</h3>
+                                    <p className="text-sm text-muted-foreground">Cada empresa só acessa os próprios dados, e a conexão é criptografada (HTTPS).</p>
                                 </div>
                             </div>
-                        </div>
-
-                        {/* Mini testimonial */}
-                        <div className="border border-white/10 bg-white/[0.02] rounded-xl p-6 backdrop-blur-sm">
-                            <div className="flex items-center gap-3 mb-3">
-                                <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center text-foreground font-bold text-sm">
-                                    CS
-                                </div>
-                                <div>
-                                    <div className="font-semibold text-foreground text-sm">Carlos Silva</div>
-                                    <div className="text-xs text-muted-foreground">CEO, TechFlow</div>
-                                </div>
-                            </div>
-                            <p className="text-sm text-muted-foreground italic">
-                                "Em 10 minutos já estava usando. <span className="text-muted-foreground font-semibold">+40% de conversão</span> no primeiro mês."
-                            </p>
                         </div>
                     </div>
                 )}

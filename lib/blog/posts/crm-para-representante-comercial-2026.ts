@@ -247,7 +247,7 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        Um CRM próprio resolve isso de forma permanente: seus dados ficam no seu controle, funcionam offline em campo, calculam comissões automaticamente e qualificam leads com IA. O custo para começar é zero — o Sirius CRM tem plano FREE sem cartão.
+        Um CRM próprio resolve isso de forma permanente: seus dados ficam no seu controle, o histórico de cada cliente fica num só lugar e a IA ajuda a qualificar leads. Para começar, o Sirius CRM tem 14 dias do Pro sem cartão.
       </p>
 
       <p>
@@ -311,7 +311,7 @@ export const post: BlogPost = {
 
       <div style="background: var(--muted); border-left: 4px solid var(--fio-forte); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0;">
         <p style="font-weight: 700; color: var(--foreground);">Your portfolio, your data, your CRM — for free</p>
-        <p style="color: var(--foreground); margin: 0.5rem 0 1rem;">Sirius CRM free plan, no credit card. Offline mode on mobile; AI and WhatsApp in the CRM from Starter; the official WhatsApp API on Business. Your data is always yours.</p>
+        <p style="color: var(--foreground); margin: 0.5rem 0 1rem;">Sirius CRM: 14 days of Pro, no credit card. AI and WhatsApp in the CRM from Starter; the official WhatsApp API on Business. Your data is always yours.</p>
         <a href="/en/register" style="background: var(--primary); color: white; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-weight: 600; text-decoration: none; display: inline-block;">Create Free Account →</a>
       </div>
 

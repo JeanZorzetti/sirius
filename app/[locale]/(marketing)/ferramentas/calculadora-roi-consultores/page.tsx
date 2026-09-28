@@ -1,6 +1,6 @@
 ﻿import { Metadata } from 'next'
 import { CalculadoraROI } from '@/components/calculadora-roi'
-import { Briefcase, TrendingUp, Users, CheckCircle2 } from 'lucide-react'
+import { Briefcase, CheckCircle2 } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 import { buildLocaleAlternates, DEFAULT_OG_IMAGES } from '@/lib/seo/canonical'
 
@@ -79,17 +79,6 @@ export default function CalculadoraConsultoresPage() {
             <span className="font-semibold text-foreground"> Consultores perdem em média R$ 156.000/ano</span> por falta de follow-up estruturado.
           </p>
 
-          {/* Social Proof */}
-          <div className="flex items-center justify-center gap-8 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <Users className="h-4 w-4 text-foreground" />
-              <span>+450 consultores usando</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-foreground" />
-              <span>Média de 42% mais projetos fechados</span>
-            </div>
-          </div>
         </div>
 
         {/* Calculadora */}
@@ -160,7 +149,7 @@ export default function CalculadoraConsultoresPage() {
             Começar Grátis Agora
           </a>
           <p className="text-sm text-muted-foreground mt-4">
-            50 prospects grátis para sempre • Cancele quando quiser
+            14 dias do Pro grátis, sem cartão • Cancele quando quiser
           </p>
         </div>
       </section>

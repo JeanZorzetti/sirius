@@ -328,9 +328,9 @@ export default function PlanilhaControleComissaoPage() {
               </div>
 
               <div className="bg-muted border border-border rounded-lg p-6 mt-8">
-                <p className="font-semibold mb-2">🎯 Por que essa calculadora funciona:</p>
+                <p className="font-semibold mb-2">🎯 Como ler o resultado:</p>
                 <p className="text-sm">
-                  Ela usa dados de <strong>+2.500 corretores</strong> que migraram de planilhas para CRM. A taxa média de recuperação é de <strong>34% das comissões perdidas</strong> quando você passa a ter lembretes automáticos de follow-up.
+                  A calculadora é uma estimativa com os números que você informa. Ela mostra quanto de comissão depende de follow-up que hoje fica sem lembrete, não uma promessa de resultado.
                 </p>
               </div>
             </section>

@@ -13,6 +13,7 @@ import { getToken } from 'next-auth/jwt'
 import { prisma } from '@/lib/prisma'
 import { encrypt } from '@/lib/auth'
 import { ipDoPedido } from '@/lib/auditoria'
+import { TRIAL_DAYS } from '@/lib/trial'
 import { COOKIE_ACEITE, VERSAO_TERMOS, VERSAO_PRIVACIDADE } from '@/lib/termos'
 
 function getBaseUrl(req: NextRequest): string {
@@ -60,8 +61,16 @@ export async function GET(req: NextRequest) {
         String(name || email).toLowerCase().replace(/[^a-z0-9]/g, '-').substring(0, 30) +
         '-' + Math.floor(Math.random() * 1000)
 
+      // Same trial as the email signup (spec 013): without trialEndsAt the account was read-only from day one
+      const trialStartedAt = new Date()
       const org = await prisma.organization.create({
-        data: { name: String(name || email), slug },
+        data: {
+          name: String(name || email),
+          slug,
+          trialStartedAt,
+          trialEndsAt: new Date(trialStartedAt.getTime() + TRIAL_DAYS * 24 * 60 * 60 * 1000),
+          trialStatus: 'ACTIVE',
+        },
       })
 
       const pipeline = await prisma.pipeline.create({

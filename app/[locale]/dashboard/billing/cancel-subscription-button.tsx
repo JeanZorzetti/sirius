@@ -19,9 +19,16 @@ import { toast } from 'sonner'
 
 interface Props {
   planName: string
+  /** Spec 013: within 7 days of the first charge, cancelling is a withdrawal with a full refund (CDC art. 49). */
+  emArrependimento: boolean
+  /** End of the paid period (ISO), when known. */
+  fimDoPeriodo: string | null
 }
 
-export function CancelSubscriptionButton({ planName }: Props) {
+const dataBR = (iso: string) => new Date(iso).toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' })
+const reais = (v: number) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+
+export function CancelSubscriptionButton({ planName, emArrependimento, fimDoPeriodo }: Props) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
 
@@ -32,14 +39,20 @@ export function CancelSubscriptionButton({ planName }: Props) {
       const data = await res.json()
 
       if (!res.ok) {
-        toast.error(data.error || 'Erro ao cancelar assinatura')
+        toast.error(data.error || 'Não conseguimos cancelar agora. Tente de novo em instantes.')
         return
       }
 
-      toast.success('Assinatura cancelada. Seu plano foi revertido para Gratuito.')
+      if (data.refunded != null) {
+        toast.success(`Desistência registrada. Estornamos ${reais(data.refunded)} no seu meio de pagamento.`)
+      } else if (data.accessUntil) {
+        toast.success(`Cancelamento agendado. Seu plano ${planName} continua até ${dataBR(data.accessUntil)}.`)
+      } else {
+        toast.success('Assinatura cancelada.')
+      }
       router.refresh()
     } catch {
-      toast.error('Erro ao cancelar assinatura')
+      toast.error('Não conseguimos cancelar agora. Tente de novo em instantes.')
     } finally {
       setLoading(false)
     }
@@ -55,17 +68,28 @@ export function CancelSubscriptionButton({ planName }: Props) {
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Cancelar plano {planName}?</AlertDialogTitle>
+          <AlertDialogTitle>Cancelar o plano {planName}?</AlertDialogTitle>
           <AlertDialogDescription className="space-y-2">
-            <span className="block">
-              Ao confirmar, sua assinatura será cancelada imediatamente e o plano revertido para <strong>Gratuito</strong>.
-            </span>
-            <span className="block text-sm">
-              Você perderá acesso a todos os recursos do plano {planName}: contatos extras, pipelines, automações e agentes IA.
-            </span>
-            <span className="block text-sm font-medium text-destructive">
-              Esta ação não pode ser desfeita.
-            </span>
+            {emArrependimento ? (
+              <>
+                <span className="block">
+                  Você está nos 7 dias de arrependimento. Devolvemos <strong>todo o valor pago</strong> e o plano {planName} termina agora.
+                </span>
+                <span className="block text-sm">
+                  A conta passa para somente leitura: você vê seus dados, mas não cria nem edita. Nada é apagado.
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="block">
+                  Seu plano {planName} continua ativo{fimDoPeriodo ? <> até <strong>{dataBR(fimDoPeriodo)}</strong></> : ' até o fim do período pago'}, e não haverá nova cobrança.
+                </span>
+                <span className="block text-sm">
+                  Depois dessa data, a conta passa para somente leitura: você vê seus dados, mas não cria nem edita. Nada é apagado.
+                </span>
+                <span className="block text-sm">Até lá, você pode manter a assinatura com um clique.</span>
+              </>
+            )}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -76,10 +100,41 @@ export function CancelSubscriptionButton({ planName }: Props) {
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
             {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-            Sim, cancelar
+            {emArrependimento ? 'Desistir e receber o reembolso' : 'Cancelar assinatura'}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
+  )
+}
+
+/** Undoes a cancellation scheduled for the end of the period. */
+export function KeepSubscriptionButton() {
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+
+  const handleKeep = async () => {
+    setLoading(true)
+    try {
+      const res = await fetch('/api/billing/cancel', { method: 'DELETE' })
+      const data = await res.json()
+      if (!res.ok) {
+        toast.error(data.error || 'Não conseguimos manter a assinatura agora. Tente de novo em instantes.')
+        return
+      }
+      toast.success('Assinatura mantida. A renovação continua normalmente.')
+      router.refresh()
+    } catch {
+      toast.error('Não conseguimos manter a assinatura agora. Tente de novo em instantes.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <Button size="sm" onClick={handleKeep} disabled={loading}>
+      {loading ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+      Manter assinatura
+    </Button>
   )
 }

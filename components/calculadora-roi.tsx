@@ -509,7 +509,7 @@ export function CalculadoraROI({
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
             <p className="text-center text-xs text-muted-foreground mt-3">
-              Sem cartão de crédito • Free para sempre até 20 deals • Cancele quando quiser
+              Sem cartão de crédito • 14 dias do Pro grátis • Cancele quando quiser
             </p>
           </div>
         </CardContent>

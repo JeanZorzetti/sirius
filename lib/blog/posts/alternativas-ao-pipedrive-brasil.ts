@@ -57,11 +57,10 @@ export const post: BlogPost = {
       </p>
 
       <ul style="${LIST}">
-        <li>Plano Gratuito para sempre: 2 usuários, 250 contatos, 100 negócios ativos, sem cartão</li>
+        <li>Teste de 14 dias com os recursos do Pro, sem cartão</li>
         <li>Starter R$ 67/mês (até 5 usuários), Pro R$ 147/mês (até 15), Business R$ 397/mês (até 50)</li>
         <li>IA que qualifica o lead por BANT e MEDDIC e agente Sofia a partir do Starter</li>
         <li>Prospecção de empresas pelo Google Maps com créditos mensais a partir do Starter</li>
-        <li>Modo offline no celular</li>
         <li>WhatsApp no CRM a partir do Starter, pelo seu integrador; API oficial da Meta no Business</li>
       </ul>
 
@@ -202,7 +201,7 @@ export const post: BlogPost = {
 
       <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
         <p style="font-weight: 700; color: var(--foreground); font-size: 1.1rem; margin: 0 0 0.75rem;">Teste o Sirius CRM</p>
-        <p style="color: var(--foreground); margin: 0 0 1rem;">Plano gratuito para sempre e 7 dias do Pro, sem cartão. Migração do Pipedrive por CSV.</p>
+        <p style="color: var(--foreground); margin: 0 0 1rem;">14 dias do Pro grátis, sem cartão. Migração do Pipedrive por CSV.</p>
         <p><strong><a href="/register" style="color: var(--foreground); text-decoration: underline;">Criar conta grátis →</a></strong></p>
       </div>
 
@@ -272,11 +271,10 @@ export const post: BlogPost = {
       </p>
 
       <ul style="${LIST}">
-        <li>Free plan forever: 2 users, 250 contacts, 100 active deals, no card</li>
+        <li>14-day trial with Pro features, no card</li>
         <li>Starter R$ 67/month (up to 5 users), Pro R$ 147/month (up to 15), Business R$ 397/month (up to 50)</li>
         <li>AI that qualifies leads with BANT and MEDDIC and the Sofia agent from Starter</li>
         <li>Company prospecting through Google Maps with monthly credits from Starter</li>
-        <li>Offline mode on mobile</li>
         <li>WhatsApp in the CRM from Starter, through your integrator; official Meta API on Business</li>
       </ul>
 
@@ -417,7 +415,7 @@ export const post: BlogPost = {
 
       <div style="background: var(--muted); border: 1px solid var(--border); padding: 1.5rem; border-radius: 0.75rem; margin: 2rem 0; text-align: center;">
         <p style="font-weight: 700; color: var(--foreground); font-size: 1.1rem; margin: 0 0 0.75rem;">Try Sirius CRM</p>
-        <p style="color: var(--foreground); margin: 0 0 1rem;">Free plan forever and 7 days of Pro, no card. Pipedrive migration via CSV.</p>
+        <p style="color: var(--foreground); margin: 0 0 1rem;">14 days of Pro free, no card. Pipedrive migration via CSV.</p>
         <p><strong><a href="/en/register" style="color: var(--foreground); text-decoration: underline;">Create a free account →</a></strong></p>
       </div>
 

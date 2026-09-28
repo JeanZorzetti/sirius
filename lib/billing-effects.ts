@@ -418,7 +418,9 @@ export async function renewSubscription(
   organizationId: string,
   tier: SubscriptionTier,
   pay: PaymentInfo,
-  providerData: ProviderOrgData = {}
+  providerData: ProviderOrgData = {},
+  /** Spec 013: set when a scheduled plan change takes effect on this renewal. */
+  billingPeriod?: 'MONTHLY' | 'ANNUAL'
 ) {
   const renewalAgaasData = getAgaasDataForTier(tier)
 
@@ -427,6 +429,9 @@ export async function renewSubscription(
     data: {
       tier,
       plan: tier,
+      ...(billingPeriod ? { billingPeriod } : {}),
+      pendingPlan: null,
+      currentPeriodEnd: null,
       failedPaymentAttempts: 0,
       ...renewalAgaasData,
       agaasActionsUsed: 0,
@@ -522,6 +527,10 @@ export async function downgradeToFree(
       billingPeriod: 'MONTHLY',
       failedPaymentAttempts: 0,
       ...getAgaasDataForTier('FREE'),
+      // Spec 013: nothing stays scheduled once the paid plan is over
+      cancelAtPeriodEnd: false,
+      currentPeriodEnd: null,
+      pendingPlan: null,
       ...(opts.clearProviderIds
         ? { mercadoPagoSubscriptionId: null, stripeSubscriptionId: null }
         : {}),

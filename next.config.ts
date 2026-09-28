@@ -60,6 +60,22 @@ const nextConfig: NextConfig = {
         destination: '/features',
         permanent: true,
       },
+      // Spec 013: features that do not exist are no longer described
+      {
+        source: '/features/sync-offline',
+        destination: '/features',
+        permanent: true,
+      },
+      {
+        source: '/blog/crm-offline-para-vendedores',
+        destination: '/blog/crm-para-representante-comercial-2026',
+        permanent: true,
+      },
+      {
+        source: '/features/sso-audit-log',
+        destination: '/features/registro-de-acessos',
+        permanent: true,
+      },
       // Blog posts → Main blog page
       {
         source: '/blog/discovery-meeting-template',

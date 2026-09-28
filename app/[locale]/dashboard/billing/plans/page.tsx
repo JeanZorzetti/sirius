@@ -89,8 +89,15 @@ export default function PlansPage() {
 
       if (data.checkoutUrl) {
         window.location.href = data.checkoutUrl
+      } else if (res.ok && data.changed) {
+        // Spec 013: the existing subscription changed in place
+        if (data.changed === 'now') toast.success(`Pronto: você está no plano ${PLAN_NAMES[tier]}.`)
+        else if (data.changed === 'scheduled') toast.success(data.message)
+        else toast.success('Mudança cancelada. Seu plano continua como está.')
+        router.push('/dashboard/billing')
+        router.refresh()
       } else {
-        toast.error(data.error || 'Erro ao iniciar checkout')
+        toast.error(data.error || 'Não conseguimos abrir o pagamento. Tente de novo em instantes.')
       }
     } catch (error) {
       toast.error('Erro ao processar upgrade')
@@ -140,7 +147,7 @@ export default function PlansPage() {
       <div>
         <h1 className="text-2xl font-bold">Planos e Preços</h1>
         <p className="text-muted-foreground">
-          Escolha o plano ideal para o seu negócio. Faça upgrade ou downgrade a qualquer momento.
+          Ao subir de plano, a mudança vale na hora e você paga só a diferença proporcional. Ao descer, a mudança vale na próxima renovação.
         </p>
       </div>
 

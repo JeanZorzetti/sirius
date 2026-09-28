@@ -14,7 +14,6 @@ import {
   MessageSquare,
   Mail,
   Brain,
-  Globe,
   Calendar,
   Bell,
   Settings,
@@ -38,6 +37,7 @@ import {
 // ─── Metadata ──────────────────────────────────────────────────────────────────
 
 import { buildLocaleAlternates } from '@/lib/seo/canonical'
+import { tabelaDePlanos } from '@/lib/plan-table'
 
 export async function generateMetadata({
   params,
@@ -219,12 +219,11 @@ export default async function FeaturesPage() {
   const mobileFeatures = [
     { name: t('sections.mobile.pwa.name'), description: t('sections.mobile.pwa.description'), icon: Smartphone },
     { name: t('sections.mobile.gps.name'), description: t('sections.mobile.gps.description'), icon: MapPin },
-    { name: t('sections.mobile.offline.name'), description: t('sections.mobile.offline.description'), icon: Globe },
   ]
 
   const securityFeatures = [
     { name: t('sections.seguranca.encryption.name'), description: t('sections.seguranca.encryption.description'), icon: Shield },
-    { name: t('sections.seguranca.sso.name'), description: t('sections.seguranca.sso.description'), icon: Shield },
+    { name: t('sections.seguranca.audit.name'), description: t('sections.seguranca.audit.description'), icon: Shield },
     { name: t('sections.seguranca.apiKeys.name'), description: t('sections.seguranca.apiKeys.description'), icon: Settings },
   ]
 
@@ -248,7 +247,7 @@ export default async function FeaturesPage() {
     whatsapp: t('planComparison.rows.whatsapp'),
     prospecting: t('planComparison.rows.prospecting'),
     emailAutomations: t('planComparison.rows.emailAutomations'),
-    dealAutomations: t('planComparison.rows.dealAutomations'),
+    tasks: t('planComparison.rows.tasks'),
     agi: t('planComparison.rows.agi'),
     advancedAnalytics: t('planComparison.rows.advancedAnalytics'),
     customReports: t('planComparison.rows.customReports'),
@@ -257,45 +256,12 @@ export default async function FeaturesPage() {
     ads: t('planComparison.rows.ads'),
     n8n: t('planComparison.rows.n8n'),
     roundRobin: t('planComparison.rows.roundRobin'),
-    sso: t('planComparison.rows.sso'),
     gpsCheckin: t('planComparison.rows.gpsCheckin'),
     pwa: t('planComparison.rows.pwa'),
     support: t('planComparison.rows.support'),
   }
-  const pv = {
-    contacts_free: t('planComparison.values.contacts_free'),
-    contacts_starter: t('planComparison.values.contacts_starter'),
-    contacts_pro: t('planComparison.values.contacts_pro'),
-    contacts_business: t('planComparison.values.contacts_business'),
-    deals_free: t('planComparison.values.deals_free'),
-    deals_starter: t('planComparison.values.deals_starter'),
-    deals_pro: t('planComparison.values.deals_pro'),
-    deals_business: t('planComparison.values.deals_business'),
-    pipelines_free: t('planComparison.values.pipelines_free'),
-    pipelines_starter: t('planComparison.values.pipelines_starter'),
-    pipelines_pro: t('planComparison.values.pipelines_pro'),
-    pipelines_business: t('planComparison.values.pipelines_business'),
-    users_free: t('planComparison.values.users_free'),
-    users_starter: t('planComparison.values.users_starter'),
-    users_pro: t('planComparison.values.users_pro'),
-    users_business: t('planComparison.values.users_business'),
-    whatsapp_starter: t('planComparison.values.whatsapp_starter'),
-    whatsapp_pro: t('planComparison.values.whatsapp_pro'),
-    whatsapp_business: t('planComparison.values.whatsapp_business'),
-    prospecting_starter: t('planComparison.values.prospecting_starter'),
-    prospecting_pro: t('planComparison.values.prospecting_pro'),
-    prospecting_business: t('planComparison.values.prospecting_business'),
-    emailAutomations_starter: t('planComparison.values.emailAutomations_starter'),
-    emailAutomations_pro: t('planComparison.values.emailAutomations_pro'),
-    emailAutomations_business: t('planComparison.values.emailAutomations_business'),
-    dealAutomations_starter: t('planComparison.values.dealAutomations_starter'),
-    dealAutomations_pro: t('planComparison.values.dealAutomations_pro'),
-    dealAutomations_business: t('planComparison.values.dealAutomations_business'),
-    support_free: t('planComparison.values.support_free'),
-    support_starter: t('planComparison.values.support_starter'),
-    support_pro: t('planComparison.values.support_pro'),
-    support_business: t('planComparison.values.support_business'),
-  }
+  // Spec 013: every number and check in the comparison comes from PLAN_LIMITS / PLAN_FEATURES
+  const pv = tabelaDePlanos()
 
   const howToSchema = {
     "@context": "https://schema.org",
@@ -353,11 +319,6 @@ export default async function FeaturesPage() {
       "lowPrice": "0",
       "highPrice": "397",
       "offerCount": "4"
-    },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "ratingCount": "12"
     },
     "description": "CRM visual com pipeline Kanban, WhatsApp pela API oficial ou por integrador, IA comercial, prospecção Google Maps, automações de deals e email, analytics avançado e API pública para vendedores brasileiros.",
     "featureList": [
@@ -444,7 +405,7 @@ export default async function FeaturesPage() {
             <div className="flex items-center gap-3">
               <Zap className="w-7 h-7 text-primary shrink-0" />
               <div>
-                <p className="font-bold text-lg">7 dias grátis com acesso PRO completo</p>
+                <p className="font-bold text-lg">14 dias grátis com os recursos do Pro</p>
                 <p className="text-sm text-muted-foreground">Sem cartão de crédito. Indique e ganhe até 100% de desconto recorrente.</p>
               </div>
             </div>
@@ -569,26 +530,25 @@ export default async function FeaturesPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-border">
-                  <PlanRow label={pr.contacts} free={pv.contacts_free} starter={pv.contacts_starter} pro={pv.contacts_pro} business={pv.contacts_business} />
-                  <PlanRow label={pr.deals} free={pv.deals_free} starter={pv.deals_starter} pro={pv.deals_pro} business={pv.deals_business} />
-                  <PlanRow label={pr.pipelines} free={pv.pipelines_free} starter={pv.pipelines_starter} pro={pv.pipelines_pro} business={pv.pipelines_business} />
-                  <PlanRow label={pr.users} free={pv.users_free} starter={pv.users_starter} pro={pv.users_pro} business={pv.users_business} />
-                  <PlanRow label={pr.whatsapp} free={false} starter={pv.whatsapp_starter} pro={pv.whatsapp_pro} business={pv.whatsapp_business} />
-                  <PlanRow label={pr.prospecting} free={false} starter={pv.prospecting_starter} pro={pv.prospecting_pro} business={pv.prospecting_business} />
-                  <PlanRow label={pr.emailAutomations} free={false} starter={pv.emailAutomations_starter} pro={pv.emailAutomations_pro} business={pv.emailAutomations_business} />
-                  <PlanRow label={pr.dealAutomations} free={false} starter={pv.dealAutomations_starter} pro={pv.dealAutomations_pro} business={pv.dealAutomations_business} />
-                  <PlanRow label={pr.agi} free={false} starter={false} pro={true} business={true} />
-                  <PlanRow label={pr.advancedAnalytics} free={false} starter={false} pro={true} business={true} />
-                  <PlanRow label={pr.customReports} free={false} starter={false} pro={false} business={true} />
-                  <PlanRow label={pr.api} free={false} starter={false} pro={true} business={true} />
-                  <PlanRow label={pr.googleCalendar} free={false} starter={true} pro={true} business={true} />
-                  <PlanRow label={pr.ads} free={false} starter={false} pro={true} business={true} />
-                  <PlanRow label={pr.n8n} free={false} starter={true} pro={true} business={true} />
-                  <PlanRow label={pr.roundRobin} free={false} starter={false} pro={false} business={true} />
-                  <PlanRow label={pr.sso} free={false} starter={false} pro={false} business={true} />
+                  <PlanRow label={pr.contacts} {...pv.contacts} />
+                  <PlanRow label={pr.deals} {...pv.deals} />
+                  <PlanRow label={pr.pipelines} {...pv.pipelines} />
+                  <PlanRow label={pr.users} {...pv.users} />
+                  <PlanRow label={pr.whatsapp} {...pv.whatsapp} />
+                  <PlanRow label={pr.prospecting} {...pv.prospecting} />
+                  <PlanRow label={pr.emailAutomations} {...pv.automations} />
+                  <PlanRow label={pr.tasks} {...pv.tasks} />
+                  <PlanRow label={pr.agi} {...pv.agi} />
+                  <PlanRow label={pr.advancedAnalytics} {...pv.advancedAnalytics} />
+                  <PlanRow label={pr.customReports} {...pv.customReports} />
+                  <PlanRow label={pr.api} {...pv.api} />
+                  <PlanRow label={pr.googleCalendar} {...pv.googleCalendar} />
+                  <PlanRow label={pr.ads} free={true} starter={false} pro={true} business={true} />
+                  <PlanRow label={pr.n8n} {...pv.n8n} />
+                  <PlanRow label={pr.roundRobin} {...pv.roundRobin} />
                   <PlanRow label={pr.gpsCheckin} free={true} starter={true} pro={true} business={true} />
                   <PlanRow label={pr.pwa} free={true} starter={true} pro={true} business={true} />
-                  <PlanRow label={pr.support} free={pv.support_free} starter={pv.support_starter} pro={pv.support_pro} business={pv.support_business} />
+                  <PlanRow label={pr.support} free={t('planComparison.values.support_free')} starter={t('planComparison.values.support_starter')} pro={t('planComparison.values.support_pro')} business={t('planComparison.values.support_business')} />
                 </tbody>
               </table>
             </div>

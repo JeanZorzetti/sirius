@@ -10,7 +10,7 @@ export const post: BlogPost = {
   category: 'Vendas',
   image: 'https://images.unsplash.com/photo-1556761175-4b46a572b786?w=1200&h=630&fit=crop&auto=format&q=80',
   author: 'Equipe Sirius CRM',
-  relatedSlugs: ['crm-para-representante-comercial-2026', 'crm-offline-para-vendedores', 'como-organizar-carteira-clientes-representante'],
+  relatedSlugs: ['crm-para-representante-comercial-2026', 'como-organizar-carteira-clientes-representante'],
   content: `
       <p>
         O representante comercial autônomo de 2026 opera em um ambiente mais competitivo do que nunca. Ele atende múltiplas representadas, gerencia dezenas ou centenas de clientes ativos, trabalha em campo sem suporte de TI e ainda precisa emitir pedidos, calcular comissões e enviar propostas — muitas vezes sem internet disponível.
@@ -204,7 +204,7 @@ export const post: BlogPost = {
       </p>
 
       <p>
-        O <a href="/pricing" style="color: var(--foreground); text-decoration: underline;">plano gratuito do Sirius CRM</a> inclui: até 2 usuários, 250 contatos, 100 negócios ativos, funil de vendas, registro de interações, tarefas e acesso pelo celular com modo offline. Automação de follow-up e IA começam no Starter. Para um representante iniciante ou com carteira pequena, é o suficiente para operar profissionalmente sem custo.
+        O <a href="/pricing" style="color: var(--foreground); text-decoration: underline;">teste do Sirius CRM</a> dá 14 dias com os recursos do Pro, sem cartão: funil de vendas, registro de interações, tarefas e acesso pelo celular. Depois, o Starter custa R$ 67/mês para até 5 usuários, com automação de follow-up e IA.
       </p>
 
       <table style="width: 100%; border-collapse: collapse; margin: 2rem 0;">
@@ -401,7 +401,7 @@ export const post: BlogPost = {
       </ul>
 
       <p>
-        <a href="/" style="color: var(--foreground); text-decoration: underline;">Sirius CRM</a> was built specifically for this profile: Brazilian sales reps who work in the field, manage multiple manufacturers, and need a tool that fits the way they actually work: offline mode on mobile, Google Maps prospecting, AI qualification from the Starter plan and WhatsApp in the CRM from Starter too (the official API on the Business plan).
+        <a href="/" style="color: var(--foreground); text-decoration: underline;">Sirius CRM</a> was built specifically for this profile: Brazilian sales reps who work in the field, manage multiple manufacturers, and need a tool that fits the way they actually work: Google Maps prospecting, AI qualification from the Starter plan and WhatsApp in the CRM from Starter too (the official API on the Business plan).
       </p>
 
       <h2>Tool 2: Commission Spreadsheet / Calculator</h2>

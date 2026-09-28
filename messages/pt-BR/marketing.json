@@ -10,8 +10,7 @@
       "ctaNav": "Começar grátis",
       "risk1": "Sem cartão de crédito",
       "risk2": "Configure em 5 minutos",
-      "risk3": "Cancele quando quiser",
-      "socialProof": "<white>100+</white> empresas vendendo agora"
+      "risk3": "Cancele quando quiser"
     },
     "nav": {
       "features": "Funcionalidades",
@@ -111,7 +110,7 @@
     },
     "plans": {
       "title": "Planos para cada momento",
-      "subtitle": "Comece grátis e escale conforme seu time cresce. Sem surpresas.",
+      "subtitle": "Teste antes e assine o plano do tamanho do seu time.",
       "mostPopular": "Mais Popular",
       "seeDetails": "Ver detalhes",
       "startFree": "Começar grátis",
@@ -125,10 +124,10 @@
     "cta": {
       "badge": "Junte-se a empresas que já organizam suas vendas com o Sirius",
       "title": "Comece a vender mais hoje",
-      "subtitle": "Configure em 5 minutos. Sem cartão de crédito. Sem compromisso. Cancele quando quiser.",
+      "subtitle": "Configure em 5 minutos. 14 dias do Pro sem cartão de crédito. Sem multa para cancelar.",
       "btnPrimary": "Criar conta grátis",
       "btnSecondary": "Ver planos",
-      "freeForever": "Grátis para sempre",
+      "freeForever": "14 dias do Pro grátis",
       "supportPt": "Suporte em português"
     },
     "footer": {
@@ -190,18 +189,18 @@
     },
     "meta": {
       "title": "Sirius CRM: CRM com IA Nativa e WhatsApp Oficial [2026]",
-      "description": "O Assistente de IA para Vendedores Brasileiros: pipeline Kanban, WhatsApp integrado, prospecção Google Maps e IA que qualifica leads automaticamente com BANT e MEDDIC. Grátis para sempre. Sem cartão.",
+      "description": "O Assistente de IA para Vendedores Brasileiros: pipeline Kanban, WhatsApp integrado, prospecção Google Maps e análise de leads por IA com BANT e MEDDIC. 14 dias do Pro grátis, sem cartão.",
       "keywords": ["crm gratuito", "crm com ia", "crm brasil 2026", "crm online 2026", "pipeline kanban", "whatsapp crm", "ia comercial nativa", "automação de vendas", "assistente ia vendas", "crm representante comercial", "crm mobile"],
       "ogTitle": "Sirius CRM 2026 [IA Nativa + WhatsApp] — Pipeline Grátis para Vendedores",
-      "ogDescription": "IA que qualifica leads, WhatsApp integrado, pipeline Kanban e prospecção Google Maps. O assistente de vendas mais completo do Brasil. Grátis para sempre."
+      "ogDescription": "Análise de leads por IA, WhatsApp integrado, pipeline Kanban e prospecção Google Maps. Teste o Pro por 14 dias, sem cartão."
     }
   },
   "features": {
     "meta": {
       "title": "Sirius CRM: Funcionalidades de IA e Pipeline [2026]",
-      "description": "Descubra como a IA Nativa do Sirius qualifica seus leads automaticamente com BANT e MEDDIC, integra o WhatsApp pelo seu integrador ou pela API Oficial Meta, prospecta no Google Maps e automatiza follow-ups. Pipeline Kanban visual. Teste grátis 7 dias.",
+      "description": "Descubra como a IA do Sirius analisa seus leads com BANT e MEDDIC quando você pede, integra o WhatsApp pelo seu integrador ou pela API Oficial Meta, prospecta no Google Maps e automatiza follow-ups. Pipeline Kanban visual. Teste grátis por 14 dias.",
       "ogTitle": "Funcionalidades Sirius CRM 2026 [12+ Ferramentas de IA] — WhatsApp Oficial e Pipeline",
-      "ogDescription": "IA que qualifica leads automaticamente, WhatsApp em todo plano pago (API Oficial Meta no Business), pipeline Kanban, prospecção Google Maps, automações e analytics PRO. Tudo em um só CRM.",
+      "ogDescription": "Análise de leads por IA, WhatsApp em todo plano pago (API Oficial Meta no Business), pipeline Kanban, prospecção Google Maps, automações e analytics PRO. Tudo em um só CRM.",
       "twitterTitle": "Funcionalidades Sirius CRM 2026 [12+ Ferramentas de IA] — WhatsApp Oficial e Pipeline",
       "twitterDescription": "IA que qualifica leads com BANT e MEDDIC, WhatsApp no inbox em todo plano pago, pipeline Kanban, prospecção Google Maps e automações. Teste grátis."
     },
@@ -241,13 +240,13 @@
       },
       "agi": {
         "name": "AGI Sirius — IA Comercial",
-        "description": "Inteligência Artificial que analisa seus deals, gera scripts de venda personalizados, faz diagnóstico de saúde do negócio, enriquece contatos e recomenda próximas ações. Baseada em Knowledge Graph com RAG.",
-        "badge": "Pro+"
+        "description": "Inteligência Artificial que analisa seus deals, gera scripts de venda personalizados, faz diagnóstico de saúde do negócio, enriquece contatos e recomenda próximas ações. Você pede a análise do negócio que escolher.",
+        "badge": "Starter+"
       },
       "maps": {
         "name": "Prospecção Google Maps",
         "description": "Encontre leads automaticamente pelo Google Maps. Busque por segmento e localização, e o Sirius extrai nome, telefone, email, site e endereço. Créditos mensais por plano — de 75 a 1.500 leads/mês.",
-        "badge": "Business"
+        "badge": "Starter+"
       },
       "automations": {
         "name": "Automações de Deals",
@@ -292,7 +291,7 @@
               },
               "6": {
                 "title": "Escale sem limites",
-                "text": "De 100 contatos no plano gratuito até ilimitado no Business. Conforme seu time cresce, o Sirius cresce com você — sem precisar migrar de plataforma."
+                "text": "De 1.000 contatos no Starter até ilimitado no Business. Conforme seu time cresce, você troca de plano sem migrar de plataforma."
               }
             },
             "useCases": {
@@ -302,11 +301,11 @@
               },
               "2": {
                 "persona": "Gerente comercial",
-                "scenario": "Segmenta a base por tag 'Inativo > 60 dias' e cria uma campanha de reativação por email com um clique. Monitora aberturas e respostas no analytics."
+                "scenario": "Filtra a base pela tag 'Inativo > 60 dias' e distribui os contatos entre os vendedores para uma rodada de reativação."
               },
               "3": {
                 "persona": "Equipe em migração",
-                "scenario": "Importa 15.000 contatos do HubSpot via CSV. O Sirius mapeia campos automaticamente, remove duplicatas e preserva o histórico de interações."
+                "scenario": "Exporta os contatos do HubSpot em CSV e importa no Sirius, ligando cada coluna ao campo certo."
               }
             },
             "howItWorks": {
@@ -328,7 +327,6 @@
                 "text": "Use a busca global com filtros combinados. Salve filtros favoritos. Exporte segmentos para campanhas de email ou WhatsApp."
               }
             },
-            "planInfo": "Gratuito: até 100 contatos | Starter: 2.500 | Pro: 15.000 | Business: ilimitado",
             "faq": {
               "1": {
                 "q": "Posso importar contatos de outro CRM?",
@@ -336,7 +334,7 @@
               },
               "2": {
                 "q": "Os contatos são compartilhados com a equipe?",
-                "a": "Sim. Todos os membros da organização veem os contatos. No plano Business, você pode restringir visibilidade por pipeline."
+                "a": "Sim. Todos os membros da organização veem os contatos. Em qualquer plano, você pode restringir quais funis cada vendedor vê."
               },
               "3": {
                 "q": "Tem integração com WhatsApp?",
@@ -406,10 +404,9 @@
               },
               "4": {
                 "title": "Feche ou aprenda",
-                "text": "Marque como Ganho e celebre. Ou marque como Perdido com motivo — a IA analisa padrões de perda e sugere melhorias no processo."
+                "text": "Marque como Ganho e celebre. Ou marque como Perdido com o motivo, para ver no relatório onde os negócios estão escapando."
               }
             },
-            "planInfo": "Gratuito: até 50 deals ativos | Starter: 500 | Pro: 5.000 | Business: ilimitado",
             "faq": {
               "1": {
                 "q": "Posso ter deals em múltiplos pipelines?",
@@ -417,7 +414,7 @@
               },
               "2": {
                 "q": "Os deals arquivados contam no limite?",
-                "a": "Não. Apenas deals ativos (abertos) contam. Deals ganhos, perdidos ou arquivados não afetam seu limite."
+                "a": "Não. O limite conta os negócios não arquivados, então ganhos e perdidos contam até você arquivá-los. Arquivados não contam."
               },
               "3": {
                 "q": "Consigo ver previsão de receita?",
@@ -454,7 +451,7 @@
               },
               "6": {
                 "title": "Permissões granulares",
-                "text": "No plano Business, restrinja quais vendedores veem quais pipelines. Ideal para equipes com processos confidenciais ou regionais."
+                "text": "Em qualquer plano, restrinja quais vendedores veem quais pipelines. Ideal para equipes com processos confidenciais ou regionais."
               }
             },
             "useCases": {
@@ -490,7 +487,6 @@
                 "text": "Novos deals entram automaticamente no pipeline padrão. Mova entre pipelines quando necessário. Acompanhe métricas de cada funil separadamente."
               }
             },
-            "planInfo": "Gratuito: 1 pipeline | Starter: 3 | Pro: 10 | Business: ilimitado",
             "faq": {
               "1": {
                 "q": "Posso mover um deal de um pipeline para outro?",
@@ -571,7 +567,6 @@
                 "text": "Marque como feita, adicione uma nota sobre o resultado e o Sirius registra tudo na timeline do deal. O gestor vê a atividade no relatório."
               }
             },
-            "planInfo": "Disponível em todos os planos | Google Calendar: a partir do Starter",
             "faq": {
               "1": {
                 "q": "Preciso do Google Calendar para usar tarefas?",
@@ -583,7 +578,7 @@
               },
               "3": {
                 "q": "As tarefas contam algum limite?",
-                "a": "Não. Tarefas são ilimitadas em todos os planos. Crie quantas precisar sem se preocupar."
+                "a": "Sim. O teste e o Pro têm 5.000 tarefas, o Starter 500 e o Business é ilimitado."
               }
             }
           }
@@ -602,7 +597,7 @@
         },
         "emailAutomations": {
           "name": "Automações de Email",
-          "description": "Campanhas automáticas de e-mail: boas-vindas, deal criado, troca de estágio, nudge de upgrade. Templates com variáveis dinâmicas (nome, valor, empresa). Analytics de abertura e cliques."
+          "description": "Avisos automáticos por e-mail para o seu time: boas-vindas, negócio criado e troca de etapa. Ligue e desligue cada aviso nas configurações."
         },
         "notifications": {
           "name": "Notificações em Tempo Real",
@@ -611,10 +606,10 @@
       },
       "ia": {
         "title": "Inteligência Artificial (AGI Sirius)",
-        "subtitle": "IA comercial que analisa, sugere e enriquece seus dados automaticamente",
+        "subtitle": "IA comercial que analisa e sugere quando você pede",
         "dealAnalysis": {
           "name": "Análise de Deals com IA",
-          "description": "A AGI Sirius analisa cada negócio e gera um score de probabilidade de fechamento, identifica riscos e sugere ações para aumentar a conversão."
+          "description": "Escolha um negócio e a AGI Sirius gera um score de chance de fechamento, aponta riscos e sugere ações para aumentar a conversão."
         },
         "scripts": {
           "name": "Gerador de Scripts de Venda",
@@ -718,27 +713,23 @@
         "subtitle": "Feche negócios de qualquer lugar com a experiência mobile completa",
         "pwa": {
           "name": "PWA (Progressive Web App)",
-          "description": "Instale o Sirius na tela inicial do celular como um app nativo. Funciona offline para consultas básicas. Push notifications mesmo com o app fechado."
+          "description": "Instale o Sirius na tela inicial do celular como um app nativo. Sem internet, dá para consultar as telas já abertas. Push notifications mesmo com o app fechado."
         },
         "gps": {
           "name": "Check-in com GPS",
           "description": "Para vendedores de campo: faça check-in em visitas com localização GPS. Histórico de visitas com mapa, horários e anotações. Interface otimizada para mobile."
-        },
-        "offline": {
-          "name": "Sync Offline",
-          "description": "Seus dados ficam disponíveis mesmo sem internet. Quando a conexão voltar, tudo sincroniza automaticamente."
         }
       },
       "seguranca": {
         "title": "Segurança e Compliance",
-        "subtitle": "Seus dados protegidos com os mais altos padrões de segurança",
+        "subtitle": "Cada empresa só acessa os próprios dados",
         "encryption": {
           "name": "Criptografia de Dados",
-          "description": "Todos os dados são criptografados em trânsito (TLS) e em repouso. Seus dados ficam isolados por organização."
+          "description": "A conexão com o Sirius é criptografada (HTTPS), e os dados de cada empresa ficam isolados dos das outras."
         },
-        "sso": {
-          "name": "SSO & Audit Log",
-          "description": "Single Sign-On para login corporativo e log de auditoria completo de todas as ações na plataforma. Plano Business."
+        "audit": {
+          "name": "Registro de exportações e acessos",
+          "description": "Registramos quem exportou dados da sua conta e cada acesso da equipe de suporte, com data e hora."
         },
         "apiKeys": {
           "name": "API Keys com Permissões",
@@ -748,9 +739,9 @@
     },
     "planComparison": {
       "title": "Funcionalidades por Plano",
-      "subtitle": "Veja o que cada plano inclui. Comece grátis e escale conforme seu time cresce.",
+      "subtitle": "Veja o que cada plano inclui. Toda conta começa com 14 dias do Pro, sem cartão.",
       "col_feature": "Recurso",
-      "col_free": "Gratuito",
+      "col_free": "Teste grátis (14 dias)",
       "col_starter": "Starter",
       "col_pro": "Pro",
       "col_business": "Business",
@@ -764,8 +755,7 @@
         "users": "Usuários",
         "whatsapp": "WhatsApp",
         "prospecting": "Prospecção mensal",
-        "emailAutomations": "Automações de email",
-        "dealAutomations": "Automações de deals",
+        "emailAutomations": "Automações",
         "agi": "AGI Sirius (IA)",
         "advancedAnalytics": "Analytics avançado",
         "customReports": "Relatórios customizados",
@@ -774,42 +764,12 @@
         "ads": "Google Ads / Meta Ads",
         "n8n": "n8n",
         "roundRobin": "Round-Robin",
-        "sso": "SSO + Audit Log",
+        "tasks": "Tarefas",
         "gpsCheckin": "Check-in GPS",
         "pwa": "PWA + Push",
         "support": "Suporte"
       },
       "values": {
-        "contacts_free": "250",
-        "contacts_starter": "1.000",
-        "contacts_pro": "5.000",
-        "contacts_business": "Ilimitado",
-        "deals_free": "100",
-        "deals_starter": "500",
-        "deals_pro": "2.500",
-        "deals_business": "Ilimitado",
-        "pipelines_free": "1",
-        "pipelines_starter": "5",
-        "pipelines_pro": "15",
-        "pipelines_business": "50",
-        "users_free": "2",
-        "users_starter": "5",
-        "users_pro": "15",
-        "users_business": "50",
-        "whatsapp_starter": "1 número (integrador)",
-        "whatsapp_pro": "2 números (integrador)",
-        "whatsapp_business": "5 números + API Oficial Meta",
-        "prospecting_starter": "75 leads",
-        "prospecting_pro": "300 leads",
-        "prospecting_business": "1.500 leads",
-        "emailAutomations_free": "3",
-        "emailAutomations_starter": "3",
-        "emailAutomations_pro": "10",
-        "emailAutomations_business": "50",
-        "dealAutomations_free": "3",
-        "dealAutomations_starter": "3",
-        "dealAutomations_pro": "10",
-        "dealAutomations_business": "50",
         "support_free": "Comunidade",
         "support_starter": "Email",
         "support_pro": "Prioritário",
@@ -820,28 +780,28 @@
     },
     "cta": {
       "title": "Pronto para transformar suas vendas?",
-      "subtitle": "Comece grátis agora. Sem cartão, sem compromisso. Upgrade quando quiser.",
+      "subtitle": "Teste o Pro por 14 dias, sem cartão. Depois, assine o plano que servir para o seu time.",
       "ctaPrimary": "Criar Conta Grátis",
       "ctaSecondary": "Comparar Planos"
     }
   },
   "pricing": {
-    "badge": "Grátis para sempre",
+    "badge": "14 dias do Pro grátis, sem cartão",
     "tagline": "Preços Transparentes",
     "plansHeading": "Planos",
-    "title": "Pague apenas quando escalar",
-    "subtitle": "Comece grátis hoje e faça upgrade quando seu time crescer. Sem surpresas, sem taxas escondidas.",
+    "title": "Teste antes, assine quando fizer sentido",
+    "subtitle": "Toda conta começa com 14 dias do Pro, sem cartão. Sem taxa de adesão e sem multa para cancelar.",
     "tiers": {
       "free": {
-        "name": "Gratuito",
-        "price_monthly": "Grátis",
-        "price_annual": "Grátis",
-        "description": "Para testar e organizar suas vendas.",
+        "name": "Teste grátis",
+        "price_monthly": "R$ 0",
+        "price_annual": "R$ 0",
+        "description": "14 dias com os recursos do Pro, sem cartão.",
         "features": [
-          "Até 2 Usuários",
-          "250 Contatos",
-          "100 Negócios ativos",
-          "1 Pipeline Kanban",
+          "Recursos e limites do Pro por 14 dias",
+          "Sem cartão de crédito",
+          "Depois do teste: somente leitura até você assinar",
+          "Seus dados ficam guardados",
           "Suporte via Comunidade"
         ]
       },
@@ -897,7 +857,6 @@
           "3.000 ações autônomas/mês",
           "Round-Robin de leads",
           "Relatórios personalizados",
-          "SSO & Audit Log",
           "Gerente de conta dedicado"
         ]
       }
@@ -906,7 +865,7 @@
     "perMonth": "/mês",
     "billedAnnually": "Cobrado anualmente",
     "getStarted": "Começar Agora",
-    "guarantee": "Garantia de 7 dias - 100% do seu dinheiro de volta",
+    "guarantee": "Desistiu em até 7 dias da primeira cobrança? Devolvemos 100% do valor",
     "enterprise": {
       "name": "Enterprise",
       "description": "Precisa de mais? Limites customizados, SLA dedicado, onboarding assistido e suporte white-glove.",
@@ -938,19 +897,19 @@
     "faq": {
       "title": "Perguntas Frequentes",
       "q1": "Posso trocar de plano depois?",
-      "a1": "Sim! Você pode fazer upgrade ou downgrade a qualquer momento. Ajustamos o valor proporcionalmente.",
-      "q2": "Como funciona o plano gratuito?",
-      "a2": "100% funcional, sem prazo de expiração. Perfeito para validar o CRM antes de escalar seu time.",
+      "a1": "Sim, pela tela de cobrança. Ao subir de plano, a mudança vale na hora e você paga só a diferença proporcional aos dias que faltam. Ao descer, a mudança vale na próxima renovação, e até lá nada muda.",
+      "q2": "Como funciona o teste grátis?",
+      "a2": "Toda conta nova tem 14 dias com os recursos e limites do Pro. Se você não assinar até o fim do teste, a conta fica somente leitura: você continua vendo contatos, negócios e histórico, mas não cria nem edita. Seus dados ficam guardados, e assinar libera tudo de novo.",
       "q3": "Preciso de cartão para começar?",
-      "a3": "Não! O plano Gratuito é para sempre, sem cartão. Só pedimos quando você quiser fazer upgrade.",
+      "a3": "Não. O teste de 14 dias não pede cartão e não vira cobrança sozinho. O cartão só é pedido quando você escolhe um plano.",
       "q4": "Posso cancelar quando quiser?",
-      "a4": "Sem multas ou taxas. Cancele a qualquer momento e mantenha acesso até o fim do período pago.",
-      "q5": "Como funciona a garantia de 7 dias?",
-      "a5": "Teste qualquer plano pago sem risco! Se não gostar nos primeiros 7 dias, devolvemos 100% do seu dinheiro, sem perguntas.",
+      "a4": "Sim, pela tela de cobrança, sem multa. O plano continua ativo até o fim do período já pago e não há nova cobrança. Depois, a conta fica somente leitura, com os dados guardados.",
+      "q5": "E se eu desistir logo depois de assinar?",
+      "a5": "Até 7 dias depois da primeira cobrança, o cancelamento pela tela de cobrança devolve 100% do valor pago, sem perguntas. É o seu direito de arrependimento.",
       "q6": "Como funcionam os agentes IA (Sofia)?",
       "a6": "Os agentes Sofia operam seu CRM autonomamente: qualificam leads, fazem follow-up, agendam reuniões e movem deals no pipeline. Você supervisiona e aprova as ações pelo painel /IA. Disponível a partir do plano Starter.",
       "q7": "Meus dados ficam seguros?",
-      "a7": "Totalmente. Usamos criptografia de ponta a ponta e hospedamos em servidores certificados no Brasil.",
+      "a7": "Cada empresa só acessa os próprios dados, e a conexão com o Sirius é criptografada (HTTPS). Onde os dados ficam e com quem são compartilhados está na Política de Privacidade.",
       "q8": "Tem suporte em português?",
       "a8": "Sim! Todo o suporte é em português, com times brasileiros. Planos Pro e Business têm prioridade."
     },
@@ -963,10 +922,10 @@
     "labelMonthly": "Mensal",
     "labelAnnual": "Anual",
     "meta": {
-      "title": "Planos Sirius CRM 2026: Grátis a R$ 397/mês, Sem Cartão",
-      "description": "4 planos para qualquer tamanho de time: Grátis (R$0), Starter (R$67/mês), Pro com IA (R$147/mês), Business (R$397/mês). WhatsApp no inbox em todo plano pago, API Oficial Meta no Business. Agentes IA autônomos e pipeline Kanban. Cancele quando quiser.",
-      "ogTitle": "Planos Sirius CRM 2026 [Grátis a R$397/mês] — IA + WhatsApp em todo plano pago",
-      "ogDescription": "4 planos: Grátis, Starter R$67, Pro R$147, Business R$397/mês. WhatsApp em todo plano pago, API Oficial Meta no Business. Agentes IA autônomos e pipeline Kanban."
+      "title": "Planos Sirius CRM 2026: R$ 67 a R$ 397/mês, 14 dias grátis",
+      "description": "14 dias do Pro grátis, sem cartão, e 3 planos para qualquer tamanho de time: Starter (R$67/mês), Pro com IA (R$147/mês), Business (R$397/mês). WhatsApp no inbox em todo plano pago, API Oficial Meta no Business. Agentes IA autônomos e pipeline Kanban. Cancele quando quiser.",
+      "ogTitle": "Planos Sirius CRM 2026 [14 dias grátis, R$67 a R$397/mês] — IA + WhatsApp em todo plano pago",
+      "ogDescription": "14 dias do Pro grátis. Planos: Starter R$67, Pro R$147, Business R$397/mês. WhatsApp em todo plano pago, API Oficial Meta no Business. Agentes IA autônomos e pipeline Kanban."
     }
   },
   "about": {
@@ -1011,7 +970,7 @@
     },
     "cta": {
       "title": "Pronto para simplificar suas vendas?",
-      "subtitle": "Junte-se a centenas de empreendedores que já estão vendendo mais com o Sirius CRM.",
+      "subtitle": "Teste o Pro por 14 dias, sem cartão de crédito.",
       "button1": "Começar Grátis",
       "button2": "Ver Funcionalidades"
     },
@@ -1072,15 +1031,15 @@
         "items": [
           {
             "title": "Progressive Web App (PWA)",
-            "description": "Instale o Sirius como aplicativo nativo no seu celular ou desktop com suporte offline completo."
+            "description": "Instale o Sirius como aplicativo no seu celular ou desktop. Sem internet, ele mostra as telas que você já abriu."
           },
           {
             "title": "Web Push Notifications",
             "description": "Receba notificações em tempo real sobre novos deals, mensagens WhatsApp e lembretes de calendário."
           },
           {
-            "title": "Background Sync Offline",
-            "description": "Crie deals e contatos mesmo sem internet — tudo será sincronizado automaticamente quando voltar online."
+            "title": "Registro offline (removido)",
+            "description": "Criava deals e contatos sem internet para sincronizar depois. Foi removido em 2026; hoje o registro precisa de conexão."
           },
           {
             "title": "Preferências de Notificação",
@@ -1132,7 +1091,7 @@
           },
           {
             "title": "Histórico de Emails",
-            "description": "Acompanhe todos os emails enviados com status de entrega, abertura e cliques (PRO)."
+            "description": "Acompanhe todos os emails enviados com o status de entrega."
           },
           {
             "title": "Testes de Segurança",
@@ -1463,7 +1422,7 @@
       "ogDescription": "Termos e condições de uso da plataforma Sirius CRM."
     },
     "title": "Termos de Uso",
-    "lastUpdated": "Última atualização: 27 de setembro de 2026",
+    "lastUpdated": "Última atualização: 28 de setembro de 2026",
     "backHome": "Voltar para Home",
     "s1": {
       "title": "1. Aceitação dos Termos",
@@ -1485,14 +1444,14 @@
     "s3": {
       "title": "3. Planos e Pagamento",
       "s31title": "3.1. Planos Disponíveis",
-      "s31intro": "Oferecemos planos com diferentes níveis de uso. Veja nossa página de preços para detalhes.",
+      "s31intro": "Oferecemos planos com diferentes níveis de uso; veja a página de preços. Toda conta nova tem 14 dias com os recursos do Pro, sem cartão. Se nenhum plano for assinado até o fim do teste, a conta fica somente leitura: os dados continuam visíveis e guardados, mas não é possível criar nem editar registros até a assinatura.",
       "s32title": "3.2. Pagamentos",
       "s32text": "Pagamentos são processados pela Stripe ou pelo Mercado Pago e renovam automaticamente até cancelamento. Não armazenamos dados de cartão de crédito.",
       "s33title": "3.3. Cancelamento",
-      "s33text": "Você pode cancelar sua assinatura a qualquer momento através das Configurações da conta. Cancelamentos terão efeito imediato, mas você mantém acesso ao plano contratado até o fim do período pago.",
-      "s33noRefund": "Não há reembolso proporcional.",
+      "s33text": "Você pode cancelar a assinatura a qualquer momento na tela de cobrança, sem multa. O plano continua ativo até o fim do período já pago, não há nova cobrança, e até essa data você pode desfazer o cancelamento. Depois, a conta fica somente leitura, com os dados guardados. Se o cancelamento acontecer até 7 dias depois da primeira cobrança, devolvemos integralmente o valor pago e o plano termina na hora (direito de arrependimento, art. 49 do Código de Defesa do Consumidor). Ao subir de plano, a mudança vale na hora e cobramos só a diferença proporcional aos dias restantes do período; ao descer, a mudança vale na próxima renovação.",
+      "s33noRefund": "Fora do prazo de arrependimento, não há reembolso proporcional.",
       "s34title": "3.4. Inadimplência",
-      "s34text": "Em caso de falha de pagamento, sua conta será automaticamente rebaixada ao Plano FREE. Dados em excesso aos limites do FREE serão arquivados, mas não deletados."
+      "s34text": "Em caso de falha de pagamento, o processador faz novas tentativas e avisamos por e-mail. Se todas falharem, a assinatura é encerrada e a conta fica somente leitura, sem apagar dados."
     },
     "s4": {
       "title": "4. Cadastro e Responsabilidades do Usuário",
@@ -1610,9 +1569,9 @@
   "download": {
     "meta": {
       "title": "Baixar Sirius CRM Grátis | App Mobile",
-      "description": "Baixe o Sirius CRM no seu celular. Progressive Web App com suporte offline, sincronização automática e notificações push. Disponível para iOS e Android.",
+      "description": "Instale o Sirius CRM no seu celular. Progressive Web App com notificações push, para iOS e Android.",
       "ogTitle": "Baixar Sirius CRM Grátis — App Mobile",
-      "ogDescription": "Instale o Sirius CRM no seu celular para acesso rápido e offline."
+      "ogDescription": "Instale o Sirius CRM no seu celular para acesso rápido."
     }
   },
   "followup": {
@@ -1652,7 +1611,7 @@
       "title": "Criar conta — Sirius CRM",
       "description": "Comece a usar o Sirius CRM gratuitamente. Sem cartão de crédito. Configure em 5 minutos.",
       "ogTitle": "Criar conta — Sirius CRM",
-      "ogDescription": "Junte-se a 120+ times que já aumentaram suas vendas com o Sirius CRM."
+      "ogDescription": "Crie sua conta e teste o Pro por 14 dias, sem cartão de crédito."
     }
   },
   "help": {

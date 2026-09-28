@@ -110,8 +110,116 @@ export function purchaseFromSession(
   return { value: session.amount_total / 100, transactionId: session.id }
 }
 
-/** Cancela uma assinatura ativa na Stripe (imediato). */
-export async function cancelStripeSubscription(subscriptionId: string) {
-  await getStripe().subscriptions.cancel(subscriptionId)
-  logger.info({ subscriptionId }, 'Stripe subscription cancelled')
+
+// ─── Spec 013: cancel, withdraw and change plan on the existing subscription ──────────────────────────────
+
+/** CDC art. 49: 7 days to withdraw from an online purchase, with a full refund. */
+export const DIAS_ARREPENDIMENTO = 7
+
+const ORDEM_TIER = ['FREE', 'STARTER', 'PRO', 'BUSINESS'] as const
+
+/**
+ * How a paid org moves from `atual` to `alvo` (CheckoutPlan keys such as 'PRO' or 'PRO_ANNUAL').
+ * - upgrade: higher tier, or monthly → annual. Charged pro rata now.
+ * - downgrade: lower tier on the same cycle. Takes effect at the next renewal.
+ * - same: same plan and cycle.
+ * - blocked: annual → monthly. Changing the interval makes Stripe bill at once, so it is not scheduled.
+ * ponytail: annual → monthly needs Subscription Schedules; add when someone on an annual plan asks for it.
+ */
+export function planChange(atual: string, alvo: string): 'upgrade' | 'downgrade' | 'same' | 'blocked' {
+  const anual = (p: string) => p.endsWith('_ANNUAL')
+  const tier = (p: string) => ORDEM_TIER.indexOf(p.replace('_ANNUAL', '') as (typeof ORDEM_TIER)[number])
+  if (anual(atual) && !anual(alvo)) return 'blocked'
+  if (tier(alvo) > tier(atual)) return 'upgrade'
+  if (tier(alvo) < tier(atual)) return 'downgrade'
+  return anual(alvo) && !anual(atual) ? 'upgrade' : 'same'
+}
+
+/** True while the subscription is within the withdrawal window counted from its start (first charge). */
+export function dentroDoArrependimento(inicioSegundos: number, agora: Date = new Date()): boolean {
+  return agora.getTime() - inicioSegundos * 1000 <= DIAS_ARREPENDIMENTO * 24 * 60 * 60 * 1000
+}
+
+/** End of the paid period (API dahlia: the period lives on the subscription item). */
+function fimDoPeriodo(sub: Stripe.Subscription): Date {
+  return new Date(sub.items.data[0].current_period_end * 1000)
+}
+
+export async function lerAssinatura(subscriptionId: string) {
+  const sub = await getStripe().subscriptions.retrieve(subscriptionId)
+  return { inicio: sub.start_date, fimDoPeriodo: fimDoPeriodo(sub) }
+}
+
+/** Schedules (or undoes) the cancellation at the end of the paid period. Returns that date. */
+export async function agendarCancelamento(subscriptionId: string, cancelar: boolean) {
+  const sub = await getStripe().subscriptions.update(subscriptionId, { cancel_at_period_end: cancelar })
+  logger.info({ subscriptionId, cancelar }, 'Stripe cancel_at_period_end updated')
+  return fimDoPeriodo(sub)
+}
+
+/** Withdrawal: refunds every paid invoice of the subscription and ends it now. Returns the refunded amount in BRL. */
+export async function desistirComReembolso(subscriptionId: string): Promise<number> {
+  const stripe = getStripe()
+  let reembolsadoCents = 0
+  const faturas = await stripe.invoices.list({ subscription: subscriptionId, status: 'paid', limit: 100 })
+  for (const fatura of faturas.data) {
+    const pagamentos = await stripe.invoicePayments.list({ invoice: fatura.id!, status: 'paid' })
+    for (const p of pagamentos.data) {
+      const paymentIntent = p.payment.payment_intent
+      if (!paymentIntent) continue
+      await stripe.refunds.create(
+        { payment_intent: typeof paymentIntent === 'string' ? paymentIntent : paymentIntent.id },
+        // A retried request refunds once
+        { idempotencyKey: `desistencia-${subscriptionId}-${p.id}` },
+      )
+      reembolsadoCents += p.amount_paid ?? 0
+    }
+  }
+  await stripe.subscriptions.cancel(subscriptionId)
+  logger.info({ subscriptionId, reembolsadoCents }, 'Stripe subscription withdrawn and refunded')
+  return reembolsadoCents / 100
+}
+
+/**
+ * Moves the existing subscription to `plan`. `proporcional` bills the difference now (upgrade) and fails if the
+ * payment fails; without it the next invoice already comes at the new price (scheduled downgrade).
+ * Returns the amount charged now (BRL) and the end of the paid period.
+ */
+export async function trocarPreco(params: {
+  subscriptionId: string
+  organizationId: string
+  organizationName: string
+  plan: CheckoutPlan
+  customPrice?: number
+  proporcional: boolean
+}) {
+  const { subscriptionId, organizationId, organizationName, plan, customPrice, proporcional } = params
+  const planDef = STRIPE_PLANS[plan]
+  if (!planDef?.interval) throw new Error(`Plano não recorrente: ${plan}`)
+
+  const stripe = getStripe()
+  const atual = await stripe.subscriptions.retrieve(subscriptionId)
+  // Subscription items take price_data with a product id, not product_data
+  const produto = await stripe.products.create({ name: `${planDef.name} – ${organizationName}` })
+
+  const sub = await stripe.subscriptions.update(subscriptionId, {
+    items: [{
+      id: atual.items.data[0].id,
+      price_data: {
+        currency: 'brl',
+        product: produto.id,
+        unit_amount: customPrice != null ? Math.round(customPrice * 100) : planDef.amountCents,
+        recurring: { interval: planDef.interval },
+      },
+    }],
+    proration_behavior: proporcional ? 'always_invoice' : 'none',
+    ...(proporcional ? { payment_behavior: 'error_if_incomplete' as const, cancel_at_period_end: false } : {}),
+    metadata: { organization_id: organizationId, plan },
+    expand: ['latest_invoice'],
+  })
+
+  const fatura = sub.latest_invoice as Stripe.Invoice | null
+  const cobrado = proporcional && fatura?.billing_reason === 'subscription_update' ? (fatura.amount_paid ?? 0) / 100 : 0
+  logger.info({ subscriptionId, plan, proporcional, cobrado }, 'Stripe subscription price changed')
+  return { cobrado, faturaId: fatura?.id ?? null, fimDoPeriodo: fimDoPeriodo(sub) }
 }

@@ -82,13 +82,6 @@ const benefits = [
   },
 ]
 
-const stats = [
-  { value: '500+', label: 'Usuários Ativos' },
-  { value: '50+', label: 'Empresas Usando' },
-  { value: '1000+', label: 'Negócios Criados' },
-  { value: '95%', label: 'Satisfação' },
-]
-
 export default function CommunityPage() {
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -158,7 +151,7 @@ export default function CommunityPage() {
                 Comunidade Sirius CRM
               </h1>
               <p className="mt-6 text-lg leading-8 text-muted-foreground">
-                Junte-se a centenas de profissionais de vendas que estão transformando seus resultados comerciais.
+                Troque experiências com outros profissionais de vendas que usam o Sirius.
                 Compartilhe conhecimento, aprenda e cresça junto com a comunidade.
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-6">
@@ -169,20 +162,6 @@ export default function CommunityPage() {
                   <Link href="/blog">Ver Conteúdos</Link>
                 </Button>
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Stats Section */}
-        <section className="py-16 bg-muted/50">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
-              {stats.map((stat) => (
-                <div key={stat.label} className="flex flex-col items-center">
-                  <div className="text-4xl font-bold text-primary">{stat.value}</div>
-                  <div className="mt-2 text-sm text-muted-foreground">{stat.label}</div>
-                </div>
-              ))}
             </div>
           </div>
         </section>
@@ -331,7 +310,7 @@ export default function CommunityPage() {
                 <Link href="/register">Começar Grátis Agora</Link>
               </Button>
               <p className="mt-4 text-sm text-muted-foreground">
-                Sem cartão de crédito. Sem compromisso. 100% gratuito para sempre.
+                Sem cartão de crédito. 14 dias com os recursos do Pro.
               </p>
             </div>
           </div>
