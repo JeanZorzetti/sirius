@@ -3,6 +3,7 @@
     "title": "Contatos",
     "subtitle": "Gerencie seus clientes e leads",
     "addContact": "Adicionar Contato",
+    "addContactDesc": "Preencha os dados do contato. Só o nome é obrigatório.",
     "createContact": "Criar Contato",
     "editContact": "Editar Contato",
     "deleteContact": "Excluir Contato",

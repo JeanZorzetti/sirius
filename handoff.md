@@ -1,3 +1,49 @@
+# Leia primeiro: o site promete só o que o produto faz (specs 013–017, 27–28/09/2026)
+
+Cinco specs e um conserto, todos em `main`. Cada spec tem `spec.md` e `tasks.md` em `specs/0NN-*/`.
+
+| Entrega | O que mudou | Merge |
+|---|---|---|
+| 013 promessas honestas | Cancelar vale até o fim do período pago (desfazível); até 7 dias da 1ª cobrança, desistência com reembolso integral; trocar de plano atualiza a assinatura existente (upgrade proporcional, downgrade na renovação); teste de 14 dias (`lib/trial.ts`), inclusive no cadastro pelo Google; tabela da /features gerada de `PLAN_LIMITS` (`lib/plan-table.ts`); texto público sem promessa que o código não cumpre | #15 |
+| fix IA | Os modelos Groq antigos saíram do ar; os nomes agora ficam em `lib/ai-models.ts` (`openai/gpt-oss-120b`, reserva `gpt-oss-20b`), trocáveis por `GROQ_MODEL` / `GROQ_MODEL_FALLBACK` sem deploy | #16 |
+| 014 `moverNegocio` | Criar, mover, ganhar, perder, reabrir e trocar de funil passam por `lib/pipeline/mover-negocio.ts` (tela, API v1, IA). A etapa WON ou LOST define o status. O histórico guarda a etapa de origem e destino e o autor. Automação uma vez por movimento. Ações novas: `SEND_WHATSAPP` (só API Oficial, dentro da janela de 24h) e `UPDATE_FIELD` | #17 |
+| 015 `registrarContato` | `lib/contacts/registrar-contato.ts`: `Contact.phoneKey` (mesma chave da entrada do WhatsApp) e origem de 1º toque; lead novo das portas de lead vai para o round-robin; `User.lastSeenAt` para "pular inativos" | #18 |
+| 016 funil | `PipelineStage.probability` e `color`; chance no cabeçalho da coluna; diálogo "Editar etapa"; temperatura no card; previsão ponderada no analytics (`lib/pipeline/previsao.ts`) | #19 |
+| 017 empresa e campos | `Company` + `ContactCompany` (papel: decisor, influenciador, champion); campos personalizados no contato e no negócio (Configurações → Campos personalizados); trigger no banco apaga os valores ao apagar o registro | #20 |
+
+## Regras novas (não quebre)
+
+- **Texto público:** `__tests__/seo/promessas-publicas.test.ts` falha se voltar "grátis para sempre", "7 dias do Pro",
+  SSO, "ponta a ponta", `aggregateRating`, contagem de clientes, sync offline, abertura/clique ou "padrões de perda".
+  Recurso novo no site só depois de existir no código.
+- **Movimento de negócio:** nunca `prisma.deal.update({ data: { stageId | status } })` direto. Use `moverNegocio`.
+  Negócio criado por pessoa, API ou IA passa por `aoCriarNegocio`. Importação e exemplo não passam, de propósito, para
+  não disparar automação.
+- **Contato novo:** porta de lead usa `registrarContato({ seExistir: 'reusar', distribuir: true })`. Criação por pessoa
+  usa `'criar'` e `false`. Importação preenche `phoneKey: chaveTelefone(phone)`.
+- **Campo personalizado** é para ler na ficha. O que vira filtro, relatório ou gatilho de automação vira coluna tipada.
+
+## Migrations com SQL próprio
+
+As migrations de 015 a 017 trazem backfill, CHECK e trigger. O CI roda `db push`, não as migrations. Por isso elas
+foram testadas antes com `prisma migrate deploy` sobre o schema de produção (`pg_dump --schema-only`) restaurado num
+Postgres 16 descartável. Repita esse teste para qualquer migration com SQL escrito à mão: o boot roda
+`migrate deploy` com `set -e`.
+
+## Pendências (em ordem)
+
+1. **Prospecção Google Maps:** precisa de `GOOGLE_PLACES_API_KEY` no EasyPanel. Sem ela, o crawler direto é bloqueado
+   e a busca devolve 0 leads como sucesso. Dá para mostrar esse caso como erro na tela.
+2. **Agente de follow-up:** propõe texto livre fora da janela de 24h da API Oficial. Precisa de template aprovado, ou
+   só propor dentro da janela.
+3. **Crons:** o repo não agenda nenhum; algo externo chama `check-trial-expiry`. Listar no painel quem chama os demais
+   e registrar a agenda no repo.
+4. **Fluxos Stripe da 013** (agendar cancelamento, desistência com reembolso, troca com proration): cobertos por teste
+   das regras, sem prova ponta a ponta. Testar com uma assinatura de verdade no modo teste da Stripe antes da primeira
+   venda.
+5. **Nunca exercidos em produção:** Google Calendar, push, Ads, tarefas recorrentes e check-in GPS.
+6. Os `T00x` "depois do deploy" das `tasks.md` da 015 e da 017.
+
 # Leia primeiro também: teste do Pro e E2E real (27/09/2026)
 
 - **O teste de 7 dias do Pro agora recebe recursos e limites do Pro (`74c23fe`).** Antes, todo bloqueio lia o plano
