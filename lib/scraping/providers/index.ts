@@ -30,25 +30,32 @@ const providers: ScrapingProvider[] = [
  * Busca com fallback automático
  * Se o primeiro falhar, tenta o próximo
  */
-async function searchLeadsWithFallback(params: ScrapingSearchParams): Promise<ScrapingSearchResult> {
+export async function searchLeadsWithFallback(
+  params: ScrapingSearchParams,
+  lista: ScrapingProvider[] = providers,
+): Promise<ScrapingSearchResult> {
   const errors: string[] = []
-  
-  for (const provider of providers) {
+  let vazio: ScrapingSearchResult | null = null
+
+  for (const provider of lista) {
     if (!provider.isConfigured()) continue
-    
+
     try {
       logger.info({ provider: provider.name }, 'Trying provider')
       const result = await provider.search(params)
       logger.info({ provider: provider.name, found: result.leads.length }, 'Provider succeeded')
-      return result
+      if (result.leads.length > 0) return result
+      // An empty answer may be a block (crawler) or a stub (CNPJ search): try the next one
+      vazio ??= result
     } catch (error: any) {
       logger.warn({ provider: provider.name, error: error.message }, 'Provider failed')
       errors.push(`${provider.name}: ${error.message}`)
-      continue // Tentar próximo
     }
   }
-  
-  // Nenhum funcionou
+
+  // Zero leads is only a real answer when no provider failed; otherwise the failure is the answer
+  // (the route maps GOOGLE_PLACES_API_REQUIRED in this message to a 503 the screen explains)
+  if (vazio && errors.length === 0) return vazio
   throw new Error(`Todos os providers falharam: ${errors.join('; ')}`)
 }
 

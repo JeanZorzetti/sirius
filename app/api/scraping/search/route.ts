@@ -15,6 +15,7 @@ export async function POST(req: NextRequest) {
   const blocked = await scrapingRateLimit(req)
   if (blocked) return blocked
 
+  let jobAberto: { id: string; organizationId: string } | undefined
   try {
     const session = await getSession()
     if (!session?.user) {
@@ -78,6 +79,8 @@ export async function POST(req: NextRequest) {
       },
     })
 
+    jobAberto = { id: job.id, organizationId: job.organizationId }
+
     // Execute search
     const result = await searchLeads({
       query,
@@ -125,6 +128,11 @@ export async function POST(req: NextRequest) {
 
   } catch (error: any) {
     logger.error({ error: error.message, stack: error.stack }, 'Scraping search error')
+    if (jobAberto) {
+      await prisma.scrapingJob
+        .update({ where: { id: jobAberto.id, organizationId: jobAberto.organizationId }, data: { status: 'FAILED', error: error.message, completedAt: new Date() } })
+        .catch(() => {})
+    }
     
     // Erro: Scraper não configurado
     if (error.message?.includes('SIRIUS_SCRAPER_URL not configured')) {

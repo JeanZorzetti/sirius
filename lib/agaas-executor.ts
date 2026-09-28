@@ -16,6 +16,7 @@ import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
 import { callLLM } from '@/lib/agi/providers'
 import { getWhatsAppOfficialClient, normalizePhone } from '@/lib/integrations/whatsapp-official-client'
+import { isWithin24hWindow } from '@/lib/whatsapp/waba-window-check'
 import { getGoogleCalendarClient } from '@/lib/integrations/google-calendar-client'
 import { retrieveContext } from '@/lib/rag/retrieval'
 import { moverNegocio, aoCriarNegocio } from '@/lib/pipeline/mover-negocio'
@@ -56,24 +57,6 @@ type Contexto = {
 
 const ok = (output: Record<string, any>): Resultado => ({ success: true, output })
 const falha = (error: string, extra: Record<string, any> = {}): Resultado => ({ success: false, output: { error, ...extra } })
-
-/**
- * Check if the contact sent a message in the last 24 hours (Meta conversation window).
- * Outside this window only approved templates can be sent — free-form text is blocked.
- */
-async function isWithin24hWindow(contactId: string, organizationId: string): Promise<boolean> {
-  const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000)
-  const lastInbound = await prismaWa.whatsAppMessage.findFirst({
-    where: {
-      contactId,
-      organizationId,
-      direction: 'INBOUND',
-      sentAt: { gte: cutoff },
-    },
-    select: { id: true },
-  })
-  return !!lastInbound
-}
 
 function injectRagContext(basePrompt: string, ragContext: string): string {
   if (!ragContext) return basePrompt

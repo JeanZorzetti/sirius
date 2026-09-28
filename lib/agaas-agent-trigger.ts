@@ -16,6 +16,8 @@ import { prisma } from '@/lib/prisma'
 import { prismaWa } from '@/lib/prisma-wa'
 import { checkAgaasQuota, incrementAgaasUsage } from '@/lib/agaas-quota'
 import { executeAgentAction } from '@/lib/agaas-executor'
+import { getWhatsAppOfficialClient } from '@/lib/integrations/whatsapp-official-client'
+import { isWithin24hWindow } from '@/lib/whatsapp/waba-window-check'
 import type { IAConfig } from '@/lib/agaas-types'
 import logger from '@/lib/logger'
 
@@ -341,7 +343,9 @@ export async function triggerFollowUpForIdleDeals() {
       if (!quota.allowed) continue
 
       const rawConfig = (org.iaConfig || {}) as IAConfig
-      const followUpEnabled = agenteLigado(rawConfig, 'followup-coordinator')
+      // The approved follow-up goes out as free text through the Official API, so it is only proposed when it can be
+      // sent: the account has the Official API and the contact wrote in the last 24h (outside it Meta only takes templates)
+      const followUpEnabled = agenteLigado(rawConfig, 'followup-coordinator') && !!(await getWhatsAppOfficialClient(org.id))
       const proposalFollowUpEnabled = agenteLigado(rawConfig, 'proposal-followup')
       if (!followUpEnabled && !proposalFollowUpEnabled) continue
       if (!isWithinOperatingHours(rawConfig)) continue
@@ -397,6 +401,7 @@ export async function triggerFollowUpForIdleDeals() {
             select: { id: true },
           })
           if (recente) continue
+          if (!(await isWithin24hWindow(contact.id, org.id))) continue
           const criada = await proporAcao({
             organizationId: org.id, agentName: 'FollowUpCoordinator', actionType: 'SEND_FOLLOWUP', entityType: 'Deal', entityId: deal.id,
             reasoning: `Deal "${deal.title}" parado há ${idleDays} dias. Follow-up personalizado para ${contact.name || contact.phone}, aguardando aprovação.`,
