@@ -10,6 +10,7 @@ import { sendWelcomeEmail, sendEmailAsync } from '@/lib/email-automations'
 import { DEFAULT_STAGES } from '@/lib/pipeline-defaults'
 import { ipDoPedido } from '@/lib/auditoria'
 import { VERSAO_TERMOS, VERSAO_PRIVACIDADE } from '@/lib/termos'
+import { chaveTelefone } from '@/lib/whatsapp/telefone'
 import { TRIAL_DAYS } from '@/lib/trial'
 
 function generateReferralCode(): string {
@@ -52,6 +53,7 @@ async function enrollAsLead({ name, email, whatsapp, companyName, jobTitle, segm
         name,
         email: email || null,
         phone: whatsapp || null,
+        phoneKey: chaveTelefone(whatsapp || null), // spec 015
         company: companyName || null,
         organizationId: leadsOrgId,
       }

@@ -46,6 +46,8 @@ const m = vi.hoisted(() => {
   return { state, prisma, prismaWa, agenteMensagem: vi.fn(async () => {}), agenteContato: vi.fn(async () => {}) }
 })
 
+// Spec 015: the contact door hands new leads to round-robin; not under test here
+vi.mock('@/lib/round-robin', () => ({ distributeLead: vi.fn(async () => null) }))
 vi.mock('@/lib/prisma', () => ({ prisma: m.prisma }))
 vi.mock('@/lib/prisma-wa', () => ({ prismaWa: m.prismaWa }))
 vi.mock('@/lib/meta-assinatura', () => ({ assinaturaMetaValida: () => true }))

@@ -45,7 +45,7 @@ export default function RoundRobinSettingsPage() {
   const fetchData = async () => {
     try {
       const [usersRes, configRes, entitlementsRes] = await Promise.all([
-        fetch('/api/users'),
+        fetch('/api/org/members'),
         fetch('/api/round-robin/config'),
         fetch('/api/entitlements'),
       ])
@@ -234,10 +234,11 @@ export default function RoundRobinSettingsPage() {
                 <div>
                   <p className="font-medium">Pular usuários inativos</p>
                   <p className="text-sm text-muted-foreground">
-                    Não atribuir leads a usuários sem atividade recente
+                    Não atribuir leads a quem não abriu o Sirius nas últimas 24 horas. Se ninguém abriu, o rodízio segue com todos.
                   </p>
                 </div>
                 <Switch
+                  aria-label="Pular usuários inativos"
                   checked={config.skipIfOffline}
                   onCheckedChange={(checked) => 
                     setConfig(prev => ({ ...prev, skipIfOffline: checked }))

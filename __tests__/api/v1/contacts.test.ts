@@ -19,6 +19,8 @@ import { NextRequest } from 'next/server'
 import type { Mock } from 'vitest'
 
 // Mock do Prisma
+// Spec 015: the contact door hands new leads to round-robin; not under test here
+vi.mock('@/lib/round-robin', () => ({ distributeLead: vi.fn(async () => null) }))
 vi.mock('@/lib/prisma', () => ({
   prisma: {
     contact: {

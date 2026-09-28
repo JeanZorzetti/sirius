@@ -6,6 +6,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { chaveTelefone } from '@/lib/whatsapp/telefone'
 import logger from '@/lib/logger'
 
 export async function POST(request: NextRequest) {
@@ -43,11 +44,12 @@ export async function POST(request: NextRequest) {
       if (omieId) {
         await prisma.contact.upsert({
           where: { omieClienteId_organizationId: { omieClienteId: omieId, organizationId: org.id } } as any,
-          update: { name: nome, email, phone: telefone },
+          update: { name: nome, email, phone: telefone, phoneKey: chaveTelefone(telefone) },
           create: {
             name:           nome,
             email,
             phone:          telefone,
+            phoneKey: chaveTelefone(telefone), // spec 015
             company:        body.razao_social || null,
             document:       body.cnpj_cpf || null,
             organizationId: org.id,

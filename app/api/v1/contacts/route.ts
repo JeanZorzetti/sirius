@@ -3,6 +3,7 @@ import { withApiMiddleware, apiResponse } from '@/lib/api-middleware'
 import { prisma } from '@/lib/prisma'
 import { getPaginationParams, getPaginationMeta, paginatedResponse, getSortParams } from '@/lib/api-helpers'
 import { validateRequest, createContactSchema } from '@/lib/api-validators'
+import { registrarContato } from '@/lib/contacts/registrar-contato'
 import logger from '@/lib/logger'
 
 /**
@@ -140,15 +141,13 @@ export async function POST(request: NextRequest) {
         }
       }
 
-      // Create contact
-      const contact = await prisma.contact.create({
-        data: {
-          name: data.name,
-          email: data.email,
-          phone: data.phone,
-          company: data.company,
-          organizationId: context.organizationId
-        }
+      // Create contact (spec 015: phone key, first-touch source, round-robin for a lead without owner)
+      const { contato: contact } = await registrarContato({
+        organizationId: context.organizationId,
+        dados: { name: data.name, email: data.email, phone: data.phone, company: data.company },
+        origem: 'api',
+        seExistir: 'criar', // the public contract answers 409 for a repeated e-mail, checked above
+        distribuir: true,
       })
 
       // Format response

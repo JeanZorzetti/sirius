@@ -4,6 +4,7 @@ import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import Papa from 'papaparse'
 import { apiError } from '@/lib/api-error'
+import { chaveTelefone } from '@/lib/whatsapp/telefone'
 import { ERR } from '@/lib/error-messages'
 
 export const dynamic = 'force-dynamic'
@@ -162,6 +163,7 @@ export async function POST(request: NextRequest) {
               name: name || 'Sem nome',
               email: email || null,
               phone: formattedPhone || null,
+              phoneKey: chaveTelefone(formattedPhone || null), // spec 015
               company: company || null,
               city: city || null,
               state: state || null,

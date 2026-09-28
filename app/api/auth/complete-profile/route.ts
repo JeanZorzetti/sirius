@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { apiError } from '@/lib/api-error'
+import { chaveTelefone } from '@/lib/whatsapp/telefone'
 import { ERR } from '@/lib/error-messages'
 
 async function enrollAsLead({ name, email, phone, companyName, jobTitle, segment }: {
@@ -31,6 +32,7 @@ async function enrollAsLead({ name, email, phone, companyName, jobTitle, segment
         name,
         email: email || null,
         phone: phone || null,
+        phoneKey: chaveTelefone(phone || null), // spec 015
         company: companyName || null,
         organizationId: leadsOrgId,
       }

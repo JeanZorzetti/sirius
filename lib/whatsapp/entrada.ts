@@ -4,6 +4,7 @@ import { uploadMedia } from '@/lib/storage'
 import { dispatchWebhookAsync, WEBHOOK_EVENTS } from '@/lib/webhooks'
 import logger from '@/lib/logger'
 import { chaveTelefone, comPais } from '@/lib/whatsapp/telefone'
+import { registrarContato } from '@/lib/contacts/registrar-contato'
 import type { EventoMensagem, Midia } from '@/lib/whatsapp/integradores/tipos'
 
 /**
@@ -44,17 +45,16 @@ async function casarContato(organizationId: string, evento: EventoMensagem): Pro
   }
 
   const telefone = evento.telefone ? `+${comPais(evento.telefone)}` : null
-  const criado = await prisma.contact.create({
-    data: {
-      organizationId,
-      name: evento.nomePerfil || telefone || 'Contato do WhatsApp',
-      phone: telefone,
-      // only the LID: the profile shows "completar cadastro"
-      ...(telefone ? {} : { source: 'whatsapp_lid' }),
-    },
-    select: { id: true, name: true },
+  // Spec 015: the contact door keys the phone and hands a new lead to round-robin (Business)
+  const { contato } = await registrarContato({
+    organizationId,
+    dados: { name: evento.nomePerfil || telefone || 'Contato do WhatsApp', phone: telefone },
+    // only the LID: the profile shows "completar cadastro"
+    origem: telefone ? 'whatsapp' : 'whatsapp_lid',
+    seExistir: 'criar', // already matched above, including rows written before the key existed
+    distribuir: true,
   })
-  return { ...criado, novo: true }
+  return { id: contato.id, name: contato.name, novo: true }
 }
 
 export type EntradaRegistrada = { mensagemId: string; contactId: string; contactName: string; contatoNovo: boolean }

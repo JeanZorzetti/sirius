@@ -20,6 +20,7 @@ import { prisma } from '@/lib/prisma'
 import { fetchLeadData } from '@/lib/ads/facebook-lead-ads'
 import { decrypt } from '@/lib/encryption'
 import { assinaturaMetaValida } from '@/lib/meta-assinatura'
+import { registrarContato } from '@/lib/contacts/registrar-contato'
 import logger from '@/lib/logger'
 
 async function getDefaultPipelineStage(organizationId: string) {
@@ -145,17 +146,18 @@ export async function POST(request: Request) {
           const leadData = await fetchLeadData(leadgenId, pageToken)
 
           if (leadData) {
-            const contact = await prisma.contact.create({
-              data: {
-                name:           leadData.name ?? 'Lead Facebook',
-                email:          leadData.email ?? null,
-                phone:          leadData.phone ?? null,
-                organizationId: org.id,
-              },
+            // Spec 015: same person from another form or from WhatsApp is the same contact; a new one goes to round-robin
+            const { contato: contact } = await registrarContato({
+              organizationId: org.id,
+              dados: { name: leadData.name ?? 'Lead Facebook', email: leadData.email ?? null, phone: leadData.phone ?? null },
+              origem: 'facebook_ads',
+              seExistir: 'reusar',
+              distribuir: true,
             })
 
-            // Cria Deal na primeira stage do pipeline
-            const { pipelineId, stageId, userId } = await getDefaultPipelineStage(org.id)
+            // Cria Deal na primeira stage do pipeline, com o dono que o rodízio escolheu
+            const { pipelineId, stageId, userId: donoPadrao } = await getDefaultPipelineStage(org.id)
+            const userId = contact.assignedToId ?? donoPadrao
             if (pipelineId && stageId && userId) {
               // isolamento: pipeline and stage from getDefaultPipelineStage(org.id); the contact was created just above for this organization
               await prisma.deal.create({
@@ -170,6 +172,7 @@ export async function POST(request: Request) {
               })
             }
 
+            // isolamento: fbLead and contact were both written for org.id in this request (registrarContato is scoped by organizationId)
             await prisma.facebookLead.update({
               where: { id: fbLead.id },
               data: {

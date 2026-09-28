@@ -41,6 +41,8 @@ const m = vi.hoisted(() => {
   return { state, prisma, prismaWa, dispatch: vi.fn(), upload: vi.fn(async ({ orgId, contactId, messageId }: any) => `${orgId}/${contactId}/${messageId}.jpeg`) }
 })
 
+// Spec 015: the contact door hands new leads to round-robin; not under test here
+vi.mock('@/lib/round-robin', () => ({ distributeLead: vi.fn(async () => null) }))
 vi.mock('@/lib/prisma', () => ({ prisma: m.prisma }))
 vi.mock('@/lib/prisma-wa', () => ({ prismaWa: m.prismaWa }))
 vi.mock('@/lib/webhooks', () => ({ dispatchWebhookAsync: m.dispatch, WEBHOOK_EVENTS: { WHATSAPP_MESSAGE_IN: 'whatsapp.message.in' } }))
