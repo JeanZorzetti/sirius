@@ -78,6 +78,8 @@ export interface PipelineStageWithDeals {
   name: string
   order: number
   type: PipelineStageType
+  probability?: number | null
+  color?: string | null
   organizationId: string
   pipelineId: string
   createdAt: string

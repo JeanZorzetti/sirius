@@ -15,12 +15,16 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { DealCard } from './deal-card'
 import { dinheiroCompacto, resumirEtapa } from '@/lib/pipeline/hoje'
+import { corDaEtapa } from '@/lib/pipeline/previsao'
+import { EditarEtapaDialog, type EdicaoDeEtapa } from './editar-etapa-dialog'
 import { LOST_COLUMN_ID, type ContactDisplayMode, type Deal, type Stage } from './types'
 
 export function KanbanColumn({
   stage,
   onDealClick,
   onRename,
+  chance,
+  onEditar,
   onDelete,
   onSwipeMoveDeal,
   hasPrevStage,
@@ -30,6 +34,9 @@ export function KanbanColumn({
   stage: Stage
   onDealClick?: (deal: Deal) => void
   onRename?: (id: string, name: string) => void
+  /** Spec 016: the stage's chance of closing (explicit or default) and the full edit */
+  chance?: number
+  onEditar?: (id: string, edicao: EdicaoDeEtapa) => Promise<string | null>
   onDelete?: (id: string) => void
   onSwipeMoveDeal?: (dealId: string, direction: 'prev' | 'next') => void
   hasPrevStage?: boolean
@@ -39,6 +46,8 @@ export function KanbanColumn({
   const tCommon = useTranslations('common')
   const [isEditing, setIsEditing] = useState(false)
   const [newName, setNewName] = useState(stage.name)
+  const [editandoTudo, setEditandoTudo] = useState(false)
+  const cor = corDaEtapa(stage.color)
 
   const handleRenameSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -49,7 +58,11 @@ export function KanbanColumn({
   return (
     <div data-testid="kanban-column" className="flex h-full w-[260px] flex-none flex-col sm:w-[240px] lg:w-auto lg:min-w-[176px] lg:flex-1 lg:basis-0">
       {/* Column Header (spec 009): count, the filled values' sum and how many have one, how many ask for action */}
-      <div className="mb-2 flex select-none flex-col px-1">
+      <div
+        className="mb-2 flex select-none flex-col px-1"
+        // Spec 016: the stage colour is a stripe over the header; the name stays the identifier
+        style={cor ? { borderTop: `3px solid ${cor}`, paddingTop: 6 } : undefined}
+      >
         <div className="flex items-center justify-between gap-2 group/header">
           {isEditing ? (
             <form onSubmit={handleRenameSubmit} className="flex-1 mr-2">
@@ -62,8 +75,13 @@ export function KanbanColumn({
               />
             </form>
           ) : (
-            <h3 className="truncate text-[13px] font-semibold text-foreground cursor-text" onDoubleClick={() => setIsEditing(true)}>
-              {stage.name}
+            <h3 className="flex min-w-0 items-baseline gap-1.5 text-[13px] font-semibold text-foreground cursor-text" onDoubleClick={() => setIsEditing(true)}>
+              <span className="truncate">{stage.name}</span>
+              {chance != null && (
+                <span className="hoje-mono shrink-0 text-[11px] font-normal tabular-nums text-muted-foreground" title="Chance de fechar nesta etapa (entra na previsão ponderada)">
+                  {chance}%
+                </span>
+              )}
             </h3>
           )}
 
@@ -76,7 +94,7 @@ export function KanbanColumn({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setIsEditing(true)}>
+                <DropdownMenuItem onClick={() => (onEditar ? setEditandoTudo(true) : setIsEditing(true))}>
                   <Pencil className="w-3 h-3 mr-2" /> {tCommon('buttons.edit')}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onDelete?.(stage.id)} className="text-destructive focus:text-destructive">
@@ -88,6 +106,15 @@ export function KanbanColumn({
         </div>
         <ResumoDaEtapa deals={stage.deals} />
       </div>
+      {onEditar && editandoTudo && (
+        <EditarEtapaDialog
+          stage={stage}
+          chancePadrao={chance ?? 0}
+          open={editandoTudo}
+          onOpenChange={setEditandoTudo}
+          onSalvar={edicao => onEditar(stage.id, edicao)}
+        />
+      )}
 
       {/* Column Body - Droppable Area */}
       <Droppable droppableId={stage.id} type="DEAL">

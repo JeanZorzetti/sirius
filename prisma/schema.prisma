@@ -462,6 +462,9 @@ model PipelineStage {
   name      String // "Prospecção", "Qualificação", etc.
   order     Int // To sort the Kanban columns (1, 2, 3...)
   type      PipelineStageType   @default(OPEN)
+  // Spec 016: chance of closing 0–100 (null = default by type and order, lib/pipeline/previsao.ts) and a palette key
+  probability Int?
+  color       String?
   createdAt DateTime            @default(now())
   updatedAt DateTime            @updatedAt
 

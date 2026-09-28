@@ -20,6 +20,8 @@ import { KanbanColumn, LostColumn } from './kanban-column'
 import { LostReasonDialog } from './lost-reason-dialog'
 import { useGrabScroll } from './use-grab-scroll'
 import { useKanbanDrag } from './use-kanban-drag'
+import { probabilidadeDaEtapa } from '@/lib/pipeline/previsao'
+import type { EdicaoDeEtapa } from './editar-etapa-dialog'
 import type { ContactDisplayMode, Deal, KanbanBoardProps } from './types'
 
 export type { KanbanBoardProps } from './types'
@@ -116,6 +118,15 @@ export function KanbanBoard({
     onSuccess?.()
   }
 
+  // Spec 016: name, chance of closing and colour in one save
+  const handleEditarEtapa = async (id: string, edicao: EdicaoDeEtapa): Promise<string | null> => {
+    const r = await updateStage(id, edicao.name, { probability: edicao.probability, color: edicao.color })
+    if (!r.success) return r.error ?? 'Não conseguimos salvar a etapa. Tente de novo.'
+    setStages(prev => prev.map(s => s.id === id ? { ...s, ...edicao } : s))
+    onSuccess?.()
+    return null
+  }
+
   const handleDeleteStage = async (id: string) => {
     const result = await deleteStage(id)
     if (result.success) {
@@ -173,6 +184,8 @@ export function KanbanBoard({
               stage={stage}
               onDealClick={(deal) => setEditingDeal(deal)}
               onRename={handleRenameStage}
+              chance={probabilidadeDaEtapa({ ...stage, type: stage.type ?? 'OPEN' }, filteredStages.map(s => ({ ...s, type: s.type ?? 'OPEN' })))}
+              onEditar={handleEditarEtapa}
               onDelete={(id) => setDeleteStageId(id)}
               onSwipeMoveDeal={handleSwipeMove}
               hasPrevStage={idx > 0}

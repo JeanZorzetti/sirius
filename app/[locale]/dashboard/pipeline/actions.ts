@@ -2,6 +2,7 @@
 
 import { getSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { CORES_DE_ETAPA } from '@/lib/pipeline/previsao'
 import { revalidatePath } from "next/cache"
 
 async function checkPermission() {
@@ -92,12 +93,27 @@ export async function createStage(name: string, pipelineId?: string) {
     return { success: true }
 }
 
-export async function updateStage(stageId: string, name: string) {
+export async function updateStage(
+    stageId: string,
+    name: string,
+    // Spec 016: chance of closing (null = default) and palette colour; left out = unchanged
+    extra: { probability?: number | null; color?: string | null } = {}
+) {
     const user = await checkPermission()
+    if (!name.trim()) return { success: false, error: "Nome obrigatório" }
+    const { probability, color } = extra
+    if (probability != null && (!Number.isInteger(probability) || probability < 0 || probability > 100)) {
+        return { success: false, error: "A chance de fechar vai de 0 a 100." }
+    }
+    if (color != null && !(color in CORES_DE_ETAPA)) return { success: false, error: "Cor inválida" }
 
     await prisma.pipelineStage.update({
         where: { id: stageId, organizationId: user.organizationId },
-        data: { name }
+        data: {
+            name: name.trim(),
+            ...(probability !== undefined ? { probability } : {}),
+            ...(color !== undefined ? { color } : {}),
+        }
     })
 
     revalidatePath("/dashboard")

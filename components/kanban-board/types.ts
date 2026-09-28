@@ -25,6 +25,9 @@ export type Stage = {
   id: string
   name: string
   order: number
+  type?: string
+  probability?: number | null
+  color?: string | null
   deals: Deal[]
 }
 
