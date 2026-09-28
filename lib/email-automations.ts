@@ -53,7 +53,8 @@ async function logEmailSent({
   to: string
   subject: string
   status?: EmailStatus
-  errorMessage?: string | null
+  // Resend returns an error object; callers cast it as string, and an object here made the FAILED row itself fail
+  errorMessage?: unknown
 }) {
   await prisma.emailLog.create({
     data: {
@@ -63,7 +64,11 @@ async function logEmailSent({
       to,
       subject,
       status,
-      errorMessage
+      errorMessage: errorMessage == null
+        ? null
+        : typeof errorMessage === 'string'
+          ? errorMessage
+          : (errorMessage as { message?: string }).message ?? JSON.stringify(errorMessage),
     }
   })
 }

@@ -16,6 +16,7 @@ import type {
   ExtractedEntity,
   ExtractedRelationship,
 } from './types'
+import { GROQ_MODEL } from '@/lib/ai-models'
 import logger from '@/lib/logger'
 
 /**
@@ -54,7 +55,7 @@ export async function processContentNLP(
         textSample: text.slice(0, 500),
         contentHash,
         status: 'processing',
-        modelUsed: 'llama-3.3-70b-versatile',
+        modelUsed: GROQ_MODEL,
       },
     })
 

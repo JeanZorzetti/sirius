@@ -16,6 +16,7 @@ import { tavily } from '@tavily/core';
 import { getSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { agiRateLimit } from '@/lib/ratelimit';
+import { GROQ_MODEL } from '@/lib/ai-models'
 import { canUseAGI, recordUsage } from '@/lib/agi/usage';
 
 export const runtime = 'nodejs';
@@ -196,7 +197,8 @@ IMPORTANTE: Você tem acesso aos dados REAIS do GSC acima. Use-os nas suas respo
 
     // 7. Stream response with tool calling
     const result = streamText({
-      model: groq('llama-3.3-70b-versatile'),
+      model: groq(GROQ_MODEL),
+      providerOptions: { groq: { reasoningEffort: 'low' } },
       system: seoSystemPrompt,
       messages: await convertToModelMessages(messages),
       tools: {
