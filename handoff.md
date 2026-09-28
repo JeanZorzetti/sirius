@@ -32,12 +32,17 @@ Postgres 16 descartável. Repita esse teste para qualquer migration com SQL escr
 
 ## Pendências (em ordem)
 
-1. **Prospecção Google Maps:** precisa de `GOOGLE_PLACES_API_KEY` no EasyPanel. Sem ela, o crawler direto é bloqueado
-   e a busca devolve 0 leads como sucesso. Dá para mostrar esse caso como erro na tela.
-2. **Agente de follow-up:** propõe texto livre fora da janela de 24h da API Oficial. Precisa de template aprovado, ou
-   só propor dentro da janela.
-3. **Crons:** o repo não agenda nenhum; algo externo chama `check-trial-expiry`. Listar no painel quem chama os demais
-   e registrar a agenda no repo.
+1. **Prospecção Google Maps:** precisa de `GOOGLE_PLACES_API_KEY` no EasyPanel. *Código resolvido em 28/09:* provedor
+   vazio passa a vez ao próximo, e zero leads depois de uma falha vira o erro `GOOGLE_PLACES_API_REQUIRED` na tela
+   (`searchLeadsWithFallback`, teste em `lib/scraping/__tests__/fallback.test.ts`). O job que falha fica `FAILED`.
+   Falta só a chave.
+2. ~~**Agente de follow-up** fora da janela~~ *Resolvido em 28/09:* o cron de negócio parado só propõe o follow-up
+   quando a conta tem a API Oficial e o contato escreveu nas últimas 24h. O `ProposalFollowUp` continua sendo só
+   rascunho, nunca enviado.
+3. **Crons:** a agenda está em `docs/crons.md` (28/09). Todas as rotas aceitam GET e respondem 401 sem `CRON_SECRET`
+   (3 rotas aceitavam qualquer chamada quando a variável faltava; `task-recurrence` e `task-due-reminders` só aceitavam
+   POST, o que explica "tarefas recorrentes nunca exercidas" se o agendador chama com GET). **Falta o dono:** abrir o
+   agendador do EasyPanel e preencher a coluna "Chamada hoje?".
 4. **Fluxos Stripe da 013** (agendar cancelamento, desistência com reembolso, troca com proration): cobertos por teste
    das regras, sem prova ponta a ponta. Testar com uma assinatura de verdade no modo teste da Stripe antes da primeira
    venda.

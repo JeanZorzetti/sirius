@@ -137,3 +137,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Internal error' }, { status: 500 })
   }
 }
+
+// The scheduler calls every /api/cron/* with GET (docs/crons.md)
+export const GET = POST

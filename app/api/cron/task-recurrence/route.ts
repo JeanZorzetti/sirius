@@ -137,3 +137,6 @@ function calculateNextRun(
   }
   return next
 }
+
+// The scheduler calls every /api/cron/* with GET (docs/crons.md)
+export const GET = POST
