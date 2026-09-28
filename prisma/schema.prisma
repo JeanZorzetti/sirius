@@ -224,6 +224,8 @@ model User {
   jobTitle  String? // Cargo na empresa (ex: "Sócio", "Diretor de Vendas")
   phone     String? // Telefone principal capturado no signup
   createdAt DateTime @default(now())
+  // Spec 015: last time the person opened the app (throttled to 1 h); round-robin skips who has not been around
+  lastSeenAt DateTime?
   updatedAt DateTime @updatedAt
 
   // ROI Labs staff flag — ADMIN = admin cliente, isRoiLabsStaff = equipe ROI Labs
@@ -430,6 +432,10 @@ model Contact {
   omieFinanceiro OmieFinanceiro[]
 
   // Performance indexes
+  // Spec 015: 55 + DDD + last 8 digits (lib/whatsapp/telefone.ts#chaveTelefone), same with or without the ninth digit
+  phoneKey String?
+
+  @@index([organizationId, phoneKey])
   @@index([organizationId])
   @@index([assignedToId])
   @@index([omieClienteId])

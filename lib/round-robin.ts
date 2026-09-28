@@ -113,14 +113,14 @@ export async function distributeLead(
     let eligibleUsers = config.userIds
 
     if (config.skipIfOffline) {
-      // Filtrar apenas usuários ativos recentemente (últimas 24 horas)
+      // Only who opened the Sirius in the last 24 hours (spec 015: User.lastSeenAt; updatedAt moved on profile edits)
       const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000)
       
       const activeUsers = await prisma.user.findMany({
         where: {
           id: { in: config.userIds },
           organizationId,
-          updatedAt: { gte: oneDayAgo },
+          lastSeenAt: { gte: oneDayAgo },
         },
         select: { id: true },
       })

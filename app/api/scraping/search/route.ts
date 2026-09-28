@@ -5,6 +5,7 @@ import { scrapingRateLimit } from '@/lib/ratelimit'
 import { searchLeads, isAnyProviderConfigured } from '@/lib/scraping/providers'
 import logger from '@/lib/logger'
 import { apiError } from '@/lib/api-error'
+import { chaveTelefone } from '@/lib/whatsapp/telefone'
 import { ERR } from '@/lib/error-messages'
 
 export const dynamic = 'force-dynamic'
@@ -180,7 +181,8 @@ async function processLeads(leads: any[], organizationId: string) {
         const existing = await prisma.contact.findFirst({
           where: {
             organizationId,
-            phone: lead.phone,
+            // spec 015: same number with or without +55 or the ninth digit is the same contact
+            phoneKey: chaveTelefone(lead.phone),
           },
         })
         if (existing) continue
@@ -192,6 +194,8 @@ async function processLeads(leads: any[], organizationId: string) {
           organizationId,
           name: lead.name || 'Sem nome',
           phone: lead.phone,
+          phoneKey: chaveTelefone(lead.phone), // spec 015
+          source: 'prospeccao',
           email: lead.email,
           company: lead.name,
         },

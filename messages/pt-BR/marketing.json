@@ -701,7 +701,7 @@
         },
         "roundRobin": {
           "name": "Round-Robin de Leads",
-          "description": "Distribua novos leads automaticamente entre vendedores em rodízio. Pule usuários offline, notifique sobre novas atribuições e garanta distribuição equilibrada."
+          "description": "Distribua automaticamente os leads que chegam pelo formulário do Facebook, pelo WhatsApp ou pela API entre os vendedores, em rodízio. Pule quem não abriu o Sirius nas últimas 24 horas e avise cada vendedor do lead novo."
         },
         "assignment": {
           "name": "Atribuição de Conversas",

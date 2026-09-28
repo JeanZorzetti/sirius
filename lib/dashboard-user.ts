@@ -36,6 +36,13 @@ const getDashboardUserUncached = async (email: string): Promise<DashboardUser | 
 
   if (!user) return null
 
+  // Spec 015: presence for round-robin's "skip who is away". This body runs at most every 5 min per user (cache
+  // below) and writes at most once an hour.
+  void prisma.user.updateMany({
+    where: { id: user.id, OR: [{ lastSeenAt: null }, { lastSeenAt: { lt: new Date(Date.now() - 60 * 60 * 1000) } }] },
+    data: { lastSeenAt: new Date() },
+  }).catch(() => {})
+
   const features = await getRoleFeatures(user.organizationId, user.orgRole)
 
   return {

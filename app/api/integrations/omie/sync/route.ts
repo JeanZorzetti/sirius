@@ -12,6 +12,7 @@ import { prisma } from '@/lib/prisma'
 import { listarClientes, listarContasReceber } from '@/lib/integrations/omie'
 import logger from '@/lib/logger'
 import { apiError } from '@/lib/api-error'
+import { chaveTelefone } from '@/lib/whatsapp/telefone'
 import { ERR } from '@/lib/error-messages'
 
 export async function POST(request: NextRequest) {
@@ -71,6 +72,7 @@ export async function POST(request: NextRequest) {
               name:           c.nome_fantasia || c.razao_social,
               email:          c.email || null,
               phone:          phone || null,
+              phoneKey: chaveTelefone(phone || null), // spec 015
               company:        c.razao_social || null,
               document:       c.cnpj_cpf || null,
               city:           c.cidade || null,

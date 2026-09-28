@@ -22,6 +22,8 @@ const mocks = vi.hoisted(() => ({
   pendentes: [] as (() => Promise<unknown>)[],
 }))
 
+// Spec 015: the contact door hands new leads to round-robin; not under test here
+vi.mock('@/lib/round-robin', () => ({ distributeLead: vi.fn(async () => null) }))
 vi.mock('@/lib/prisma', () => ({ prisma: mocks.prisma }))
 vi.mock('@/lib/prisma-wa', () => ({ prismaWa: mocks.prismaWa }))
 vi.mock('@/lib/agaas-agent-trigger', () => ({

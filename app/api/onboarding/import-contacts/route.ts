@@ -10,6 +10,7 @@ import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import logger from '@/lib/logger'
 import { apiError } from '@/lib/api-error'
+import { chaveTelefone } from '@/lib/whatsapp/telefone'
 import { ERR } from '@/lib/error-messages'
 
 interface ImportContact {
@@ -72,6 +73,7 @@ export async function POST(request: NextRequest) {
           name: c.name,
           email: c.email || null,
           phone: c.phone || null,
+          phoneKey: chaveTelefone(c.phone || null), // spec 015
           company: c.company || null,
           notes: c.notes || null,
           organizationId: user.organizationId,

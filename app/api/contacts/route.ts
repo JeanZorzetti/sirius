@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { getSession } from '@/lib/auth'
 import { triggerAgentsForContactCreated } from '@/lib/agaas-agent-trigger'
 import { apiError } from '@/lib/api-error'
+import { registrarContato } from '@/lib/contacts/registrar-contato'
 import { ERR } from '@/lib/error-messages'
 
 export async function POST(request: Request) {
@@ -33,13 +34,13 @@ export async function POST(request: Request) {
             return await apiError(ERR.ORG_NOT_FOUND, 404)
         }
 
-        const contact = await prisma.contact.create({
-            data: {
-                name,
-                phone: phone || null,
-                email: email || null,
-                organizationId: user.organizationId
-            }
+        // Spec 015: a person typing the contact creates it (no reuse, no round-robin), with phone key and source
+        const { contato: contact } = await registrarContato({
+            organizationId: user.organizationId,
+            dados: { name, phone: phone || null, email: email || null },
+            origem: 'manual',
+            seExistir: 'criar',
+            distribuir: false,
         })
 
         triggerAgentsForContactCreated({

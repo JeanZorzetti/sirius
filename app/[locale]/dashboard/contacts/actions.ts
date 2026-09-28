@@ -8,6 +8,7 @@ import { dispatchWebhookAsync } from '@/lib/webhooks/dispatcher'
 import { WEBHOOK_EVENTS } from '@/lib/webhooks/events'
 import { canCreateContact } from '@/lib/entitlements'
 import { usuarioForaDaConta } from '@/lib/pipeline/chaves'
+import { registrarContato } from '@/lib/contacts/registrar-contato'
 import { comPais, digitos } from '@/lib/whatsapp/telefone'
 
 function errMessage(error: unknown): string {
@@ -103,9 +104,13 @@ export async function createContact(formData: FormData) {
 
         // isolamento: assignedToId checked by usuarioForaDaConta above
 
-        const contact = await prisma.contact.create({
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            data: {
+        // Spec 015: a person typing the contact creates it (no reuse, no round-robin), with phone key and source
+        const { contato: contact } = await registrarContato({
+            organizationId: user.organizationId,
+            origem: 'manual',
+            seExistir: 'criar',
+            distribuir: false,
+            dados: {
                 name,
                 email: email || null,
                 phone: phone || null,
@@ -121,7 +126,6 @@ export async function createContact(formData: FormData) {
                 assignedToId: (assignedToId && assignedToId !== 'none') ? assignedToId : null,
                 document: document || null,
                 segment: segment?.trim() || null,
-                organizationId: user.organizationId
             }
         })
 
