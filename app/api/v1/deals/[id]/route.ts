@@ -4,8 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { formatDecimal, formatDate } from '@/lib/api-helpers'
 import { validateRequest, updateDealSchema, uuidSchema } from '@/lib/api-validators'
 import logger from '@/lib/logger'
-import { sendDealWonNotification } from '@/lib/push-notifications'
-import { executeDealAutomations } from '@/lib/automations/engine'
+import { moverNegocio } from '@/lib/pipeline/mover-negocio'
 
 /**
  * GET /api/v1/deals/[id]
@@ -288,13 +287,12 @@ export async function PATCH(
         }
       }
 
-      // Update deal
-      const deal = await prisma.deal.update({
+      // Update deal fields; a stage change goes through moverNegocio (spec 014)
+      await prisma.deal.update({
         where: { id: paramsData.id },
         data: {
           ...(data.title && { title: data.title }),
           ...(data.value !== undefined && { value: data.value }),
-          ...(data.stageId && { stageId: data.stageId }),
           ...(data.contactId !== undefined && { contactId: data.contactId }),
           ...(data.closeDate !== undefined && {
             closeDate: data.closeDate ? new Date(data.closeDate) : null
@@ -303,6 +301,29 @@ export async function PATCH(
             dueDate: data.dueDate ? new Date(data.dueDate) : null
           })
         },
+      })
+
+      if (data.stageId && data.stageId !== existingDeal.stageId) {
+        const movimento = await moverNegocio({
+          organizationId: context.organizationId,
+          dealId: paramsData.id,
+          paraEtapaId: data.stageId,
+          autor: { userId: existingDeal.userId, tipo: 'API' },
+        })
+        if (!movimento.ok) {
+          return NextResponse.json(
+            apiResponse(context.requestId, undefined, {
+              code: 'VALIDATION_ERROR',
+              message: "stageId must belong to the deal's pipeline"
+            }),
+            { status: 400 }
+          )
+        }
+      }
+
+      // isolamento: deal checked above (existingDeal, scoped by organizationId)
+      const deal = await prisma.deal.findUniqueOrThrow({
+        where: { id: paramsData.id },
         include: {
           stage: {
             select: {
@@ -335,46 +356,6 @@ export async function PATCH(
           }
         }
       })
-
-      // Check if stage changed to a "won" stage and send notification
-      if (data.stageId && data.stageId !== existingDeal.stageId) {
-        const stageName = deal.stage.name.toLowerCase()
-        if (stageName.includes('ganho') || stageName.includes('won') || stageName.includes('fechado')) {
-          // Send notification to entire organization
-          sendDealWonNotification(
-            context.organizationId,
-            deal.title,
-            deal.value ? deal.value.toNumber() : undefined
-          ).catch(error => {
-            logger.error({ error, dealId: deal.id }, 'Failed to send deal won notification')
-          })
-        }
-      }
-
-      // Fire-and-forget automation triggers
-      const automationContext = {
-        organizationId: deal.organizationId,
-        value: deal.value ? parseFloat(deal.value.toString()) : 0,
-        stageId: deal.stageId,
-        pipelineId: deal.pipelineId,
-        title: deal.title,
-        userId: deal.userId
-      }
-
-      // DEAL_MOVED: stageId changed
-      if (data.stageId && data.stageId !== existingDeal.stageId) {
-        executeDealAutomations(deal.id, 'DEAL_MOVED', automationContext).catch(() => {})
-
-        // Check if the new stage name indicates a WON deal
-        const stageName = deal.stage.name.toLowerCase()
-        if (stageName.includes('ganho') || stageName.includes('won') || stageName.includes('fechado')) {
-          executeDealAutomations(deal.id, 'DEAL_WON', automationContext).catch(() => {})
-        }
-        // Check if the new stage name indicates a LOST deal
-        if (stageName.includes('perdido') || stageName.includes('lost') || stageName.includes('cancelado')) {
-          executeDealAutomations(deal.id, 'DEAL_LOST', automationContext).catch(() => {})
-        }
-      }
 
       // Format response
       const formattedDeal = {

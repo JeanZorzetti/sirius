@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { ACOES_NOVAS, CONFIG_INICIAL_ACOES_NOVAS, CamposAcoesNovas } from '@/components/automations/campos-acoes-novas'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 // ============================================================================
@@ -31,7 +32,7 @@ interface Condition {
   value: string
 }
 
-type ActionType = 'SEND_EMAIL' | 'NOTIFY_USER' | 'CREATE_TASK' | 'ADD_TAG' | 'SEND_WEBHOOK'
+type ActionType = 'SEND_EMAIL' | 'NOTIFY_USER' | 'CREATE_TASK' | 'ADD_TAG' | 'SEND_WEBHOOK' | 'SEND_WHATSAPP' | 'UPDATE_FIELD'
 
 interface Action {
   type: ActionType
@@ -70,7 +71,8 @@ const ACTION_OPTIONS: { value: ActionType; label: string }[] = [
   { value: 'NOTIFY_USER', label: 'Notificar usuário' },
   { value: 'CREATE_TASK', label: 'Criar tarefa' },
   { value: 'ADD_TAG', label: 'Adicionar tag' },
-  { value: 'SEND_WEBHOOK', label: 'Enviar webhook' }
+  { value: 'SEND_WEBHOOK', label: 'Enviar webhook' },
+  ...ACOES_NOVAS,
 ]
 
 // ============================================================================
@@ -133,7 +135,8 @@ export default function NewAutomationPage() {
       NOTIFY_USER: { message: '' },
       CREATE_TASK: { taskTitle: '' },
       ADD_TAG: { tagName: '' },
-      SEND_WEBHOOK: { webhookUrl: '' }
+      SEND_WEBHOOK: { webhookUrl: '' },
+      ...CONFIG_INICIAL_ACOES_NOVAS,
     }
     setActions(prev =>
       prev.map((a, i) => (i === index ? { type, config: defaultConfigs[type] } : a))
@@ -468,6 +471,9 @@ export default function NewAutomationPage() {
                     onChange={e => updateActionConfig(i, 'webhookUrl', e.target.value)}
                   />
                 )}
+
+                {/* SEND_WHATSAPP / UPDATE_FIELD config (spec 014) */}
+                <CamposAcoesNovas type={action.type} config={action.config} onChange={(k, v) => updateActionConfig(i, k, v)} />
               </div>
             ))}
 

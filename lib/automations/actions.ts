@@ -7,15 +7,21 @@
  * - CREATE_TASK: Create a Note on the deal (used as a task)
  * - ADD_TAG: Create or connect a Tag to the deal's contact
  * - SEND_WEBHOOK: POST to a webhook URL with deal context
+ * - SEND_WHATSAPP: text to the deal's contact, only through the official API and inside the 24h window (spec 014)
+ * - UPDATE_FIELD: set value, owner, close date or follow-up date on the deal (spec 014)
  */
 
 import { prisma } from '@/lib/prisma'
 import { sendHtmlEmail } from '@/lib/email'
 import { fetchPublico } from '@/lib/url-publica'
 import logger from '@/lib/logger'
+import { prismaWa } from '@/lib/prisma-wa'
+import { getWhatsAppOfficialClient, normalizePhone } from '@/lib/integrations/whatsapp-official-client'
+import { isWithin24hWindow } from '@/lib/whatsapp/waba-window-check'
+import { pediuParaParar } from '@/lib/whatsapp/integradores/travas'
 
 export interface AutomationAction {
-  type: 'SEND_EMAIL' | 'NOTIFY_USER' | 'CREATE_TASK' | 'ADD_TAG' | 'SEND_WEBHOOK'
+  type: 'SEND_EMAIL' | 'NOTIFY_USER' | 'CREATE_TASK' | 'ADD_TAG' | 'SEND_WEBHOOK' | 'SEND_WHATSAPP' | 'UPDATE_FIELD'
   config: Record<string, unknown>
 }
 
@@ -98,6 +104,16 @@ async function executeSingleAction(
 
     case 'SEND_WEBHOOK': {
       await handleSendWebhook(config, context)
+      break
+    }
+
+    case 'SEND_WHATSAPP': {
+      await handleSendWhatsApp(config, context)
+      break
+    }
+
+    case 'UPDATE_FIELD': {
+      await handleUpdateField(config, context)
       break
     }
 
@@ -357,4 +373,125 @@ async function handleSendWebhook(
   if (!response.ok) {
     throw new Error(`Webhook returned HTTP ${response.status}`)
   }
+}
+
+// ---------------------------------------------------------------------------
+// SEND_WHATSAPP (spec 014)
+// ---------------------------------------------------------------------------
+
+/** Automatic WhatsApp messages per account per 24h. A script-like burst lowers the number's quality and gets it paused. */
+export const LIMITE_WHATSAPP_AUTOMATICO_POR_DIA = 200
+
+/**
+ * Only the official API sends without a person typing (integrators refuse it: terms 6.5, spec 012), and only inside
+ * the 24h window, since a template-less message outside it fails with 131047. Every refusal throws a reason that lands
+ * on the execution, so the manager sees why nothing went out.
+ */
+async function handleSendWhatsApp(
+  config: Record<string, unknown>,
+  context: Record<string, unknown>
+): Promise<void> {
+  const organizationId = context.organizationId as string | undefined
+  const dealId = context.dealId as string | undefined
+  if (!organizationId || !dealId) throw new Error('sem conta ou negócio no contexto')
+
+  const deal = await prisma.deal.findFirst({
+    where: { id: dealId, organizationId },
+    select: { contact: { select: { id: true, name: true, phone: true } } },
+  })
+  const contato = deal?.contact
+  if (!contato?.phone) throw new Error('o negócio não tem contato com telefone')
+
+  const texto = resolveTemplate(String(config.message || ''), context).replace(/\{\{contactName\}\}/g, contato.name || '').trim()
+  if (!texto) throw new Error('a mensagem está vazia')
+
+  const client = await getWhatsAppOfficialClient(organizationId)
+  if (!client) throw new Error('a conta não tem a API Oficial (WABA) conectada; pelo integrador, só sai mensagem digitada por uma pessoa')
+
+  if (!(await isWithin24hWindow(contato.id, organizationId))) {
+    throw new Error('janela de 24 h fechada: o contato não escreveu nas últimas 24 h')
+  }
+
+  const ultimaEntrada = await prismaWa.whatsAppMessage.findFirst({
+    where: { contactId: contato.id, organizationId, direction: 'INBOUND' },
+    orderBy: { sentAt: 'desc' },
+    select: { text: true },
+  })
+  if (pediuParaParar(ultimaEntrada?.text)) throw new Error('o contato pediu para parar (SAIR)')
+
+  const enviadosHoje = await prismaWa.whatsAppMessage.count({
+    where: {
+      organizationId,
+      direction: 'OUTBOUND',
+      id: { startsWith: 'auto_' },
+      sentAt: { gte: new Date(Date.now() - 24 * 60 * 60 * 1000) },
+    },
+  })
+  if (enviadosHoje >= LIMITE_WHATSAPP_AUTOMATICO_POR_DIA) {
+    throw new Error(`limite de ${LIMITE_WHATSAPP_AUTOMATICO_POR_DIA} mensagens automáticas em 24 h atingido`)
+  }
+
+  const phone = normalizePhone(contato.phone)
+  const result = await client.sendTextMessage(phone, texto)
+  const wamid = result.messages?.[0]?.id ?? null
+  // "auto_" marks automatic sends for the daily cap; the webhook's statuses[] later tells whether it was delivered
+  const msgId = `auto_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`
+  await prismaWa.$executeRaw`
+    INSERT INTO "WhatsAppMessage"
+      (id, "contactId", "organizationId", "connectionId", "remoteJid",
+       "messageId", text, direction, status, "sentAt", "isRead")
+    VALUES (${msgId}, ${contato.id}, ${organizationId}, ${null}, ${phone}, ${wamid}, ${texto}, 'OUTBOUND', 'SENT', ${new Date()}, true)
+    ON CONFLICT ("organizationId", "messageId") DO NOTHING
+  `
+  logger.info({ dealId, contactId: contato.id, wamid }, '[AUTOMATION] WhatsApp sent')
+}
+
+// ---------------------------------------------------------------------------
+// UPDATE_FIELD (spec 014)
+// ---------------------------------------------------------------------------
+
+/** Closed list of typed columns (FR-009). Custom fields join when they exist (spec 017). */
+export const CAMPOS_ATUALIZAVEIS = ['value', 'userId', 'closeDate', 'dueDate'] as const
+type CampoAtualizavel = (typeof CAMPOS_ATUALIZAVEIS)[number]
+
+/** Dates take an ISO date or a number of days from now ("7" = in a week). */
+function dataDaConfig(v: unknown): Date | null {
+  if (v === null || v === '' || v === undefined) return null
+  if (typeof v === 'number' || /^\d+$/.test(String(v))) {
+    return new Date(Date.now() + Number(v) * 24 * 60 * 60 * 1000)
+  }
+  const d = new Date(String(v))
+  if (Number.isNaN(d.getTime())) throw new Error(`data inválida: ${String(v)}`)
+  return d
+}
+
+async function handleUpdateField(
+  config: Record<string, unknown>,
+  context: Record<string, unknown>
+): Promise<void> {
+  const organizationId = context.organizationId as string | undefined
+  const dealId = context.dealId as string | undefined
+  if (!organizationId || !dealId) throw new Error('sem conta ou negócio no contexto')
+
+  const campo = String(config.field || '') as CampoAtualizavel
+  if (!CAMPOS_ATUALIZAVEIS.includes(campo)) throw new Error(`campo não permitido: ${campo || '(vazio)'}`)
+
+  let valor: unknown
+  if (campo === 'value') {
+    valor = Number(config.value)
+    if (!Number.isFinite(valor)) throw new Error('valor precisa ser um número')
+  } else if (campo === 'userId') {
+    const dono = await prisma.user.findFirst({
+      where: { id: String(config.value || ''), organizationId },
+      select: { id: true },
+    })
+    if (!dono) throw new Error('o responsável escolhido não é desta conta')
+    valor = dono.id
+  } else {
+    valor = dataDaConfig(config.value)
+  }
+
+  // Direct write, not moverNegocio: updating a field never fires another automation (no loops)
+  const r = await prisma.deal.updateMany({ where: { id: dealId, organizationId }, data: { [campo]: valor } })
+  if (r.count === 0) throw new Error('negócio não encontrado na conta')
 }
