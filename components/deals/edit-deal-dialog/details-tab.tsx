@@ -18,6 +18,7 @@ import { ContactCombobox } from './contact-combobox'
 import { ProductCombobox } from './product-combobox'
 import { QuickAddContactPopover } from './quick-add-contact-popover'
 import { FollowUpBanner } from './follow-up-banner'
+import { CamposPersonalizados } from '@/components/campos/campos-personalizados'
 import type { ContactDisplayMode, ContactOption, ProductOption, SimpleDeal } from './types'
 
 export interface DetailsTabProps {
@@ -202,6 +203,12 @@ export function DetailsTab({
                     />
                 </div>
             )}
+
+            {/* Spec 017: the account's custom fields; each saves on its own */}
+            <div className="space-y-2">
+                <p className="text-sm font-medium">Campos personalizados</p>
+                <CamposPersonalizados entity="DEAL" recordId={deal.id} />
+            </div>
 
             <div className="space-y-2">
                 <Label>Observações do Deal</Label>

@@ -48,6 +48,8 @@ import { useTranslations } from 'next-intl'
 import { addContactClosing, removeContactClosing, updateContactObservations, deleteContact } from '@/app/[locale]/dashboard/contacts/actions'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
+import { EmpresaDoContato } from '@/components/campos/empresa-do-contato'
+import { CamposPersonalizados } from '@/components/campos/campos-personalizados'
 import { CompletarTelefone } from './completar-telefone'
 
 const STATUS_BADGE: Record<string, { bg: string; text: string; dot: string }> = {
@@ -528,6 +530,16 @@ export function ContactProfileModal({ contact, open, onOpenChange, onEdit, onDel
                                 <p className="text-xs text-zinc-400 dark:text-zinc-500 italic">Nenhum fechamento registrado.</p>
                             )
                         )}
+                    </div>
+
+                    {/* Spec 017: companies with the contact's role, and the account's custom fields */}
+                    <div>
+                        <SectionTitle>Empresa</SectionTitle>
+                        <EmpresaDoContato contactId={contact.id} nomeDoContato={contact.name} />
+                    </div>
+                    <div>
+                        <SectionTitle>Campos personalizados</SectionTitle>
+                        <CamposPersonalizados entity="CONTACT" recordId={contact.id} />
                     </div>
 
                     {/* Observações — sempre visível, editável inline */}

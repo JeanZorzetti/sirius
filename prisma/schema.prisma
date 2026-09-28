@@ -214,6 +214,10 @@ model Organization {
 
   // Proof of terms/privacy acceptance at signup
   termsAcceptances TermsAcceptance[]
+
+  // Spec 017
+  companies              Company[]
+  customFieldDefinitions CustomFieldDefinition[]
 }
 
 model User {
@@ -432,10 +436,14 @@ model Contact {
   omieFinanceiro OmieFinanceiro[]
 
   // Performance indexes
+  // Spec 017: companies the contact belongs to, with the contact's role in each
+  empresas ContactCompany[]
+
   // Spec 015: 55 + DDD + last 8 digits (lib/whatsapp/telefone.ts#chaveTelefone), same with or without the ninth digit
   phoneKey String?
 
   @@index([organizationId, phoneKey])
+
   @@index([organizationId])
   @@index([assignedToId])
   @@index([omieClienteId])
@@ -2606,4 +2614,90 @@ model TermsAcceptance {
   createdAt DateTime @default(now())
 
   @@index([userId])
+}
+
+// ─── Spec 017: company as an entity, the contact's role in it, and custom fields ─────────────────────────────
+
+enum PapelNaEmpresa {
+  DECISOR
+  INFLUENCIADOR
+  CHAMPION
+  OUTRO
+}
+
+model Company {
+  id             String           @id @default(uuid())
+  organizationId String
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  name           String
+  /// lower(trim(name)): one company per name in the account
+  nameKey        String
+  domain         String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  contatos       ContactCompany[]
+
+  @@unique([organizationId, nameKey])
+}
+
+model ContactCompany {
+  id             String         @id @default(uuid())
+  organizationId String
+  contactId      String
+  contact        Contact        @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  companyId      String
+  company        Company        @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  role           PapelNaEmpresa @default(OUTRO)
+  createdAt      DateTime       @default(now())
+
+  @@unique([contactId, companyId])
+  @@index([organizationId, companyId])
+}
+
+enum TipoCampo {
+  TEXTO
+  NUMERO
+  DATA
+  SELECAO
+  CHECKBOX
+}
+
+enum EntidadeCampo {
+  CONTACT
+  DEAL
+}
+
+/// A custom field is read on the record; anything that becomes a filter, report or automation trigger is a typed column.
+model CustomFieldDefinition {
+  id             String             @id @default(uuid())
+  organizationId String
+  organization   Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  entity         EntidadeCampo
+  label          String
+  type           TipoCampo
+  /// options of a SELECAO field
+  options        String[]           @default([])
+  order          Int                @default(0)
+  createdAt      DateTime           @default(now())
+  values         CustomFieldValue[]
+
+  @@unique([organizationId, entity, label])
+  @@index([organizationId, entity, order])
+}
+
+model CustomFieldValue {
+  id             String                @id @default(uuid())
+  organizationId String
+  definitionId   String
+  definition     CustomFieldDefinition @relation(fields: [definitionId], references: [id], onDelete: Cascade)
+  /// Contact.id or Deal.id, by definition.entity
+  recordId       String
+  valueText      String?
+  valueNumber    Float?
+  valueDate      DateTime?
+  valueBool      Boolean?
+  updatedAt      DateTime              @updatedAt
+
+  @@unique([definitionId, recordId])
+  @@index([organizationId, recordId])
 }

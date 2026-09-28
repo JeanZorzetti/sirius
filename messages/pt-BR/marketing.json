@@ -283,11 +283,11 @@
               },
               "4": {
                 "title": "Hierarquia de contatos e empresas",
-                "text": "Vincule múltiplos contatos a uma empresa. Defina quem é decisor, influenciador e champion. Visualize o organograma do deal direto na ficha."
+                "text": "Ligue o contato a uma ou mais empresas e marque quem é decisor, influenciador ou champion. O papel aparece na ficha do contato."
               },
               "5": {
                 "title": "Busca e filtros combinados",
-                "text": "Encontre qualquer contato em segundos. Combine filtros por tag, responsável, data de criação, empresa, pipeline e campos customizados. Salve filtros favoritos para acesso rápido."
+                "text": "Encontre qualquer contato em segundos. Combine filtros por tag, responsável, data de criação, empresa e pipeline. Salve filtros favoritos para acesso rápido."
               },
               "6": {
                 "title": "Escale sem limites",
@@ -312,7 +312,7 @@
               "title": "Como funciona na prática",
               "1": {
                 "title": "Importe ou crie",
-                "text": "Suba seu CSV ou crie contatos manualmente. O mapeamento inteligente reconhece nome, email, telefone e campos customizados automaticamente."
+                "text": "Suba seu CSV ou crie contatos manualmente. O mapeamento reconhece nome, e-mail e telefone."
               },
               "2": {
                 "title": "Enriqueça com IA",
@@ -362,8 +362,8 @@
                 "text": "Notas, atividades, comentários e mensagens WhatsApp vinculados ao deal em uma timeline cronológica. Toda a equipe vê o contexto completo."
               },
               "4": {
-                "title": "Campos customizados ilimitados",
-                "text": "Adapte o deal ao seu modelo de negócio. Crie campos de texto, número, data, seleção e checkbox. Configure quais campos aparecem no card do Kanban."
+                "title": "Campos personalizados",
+                "text": "Adapte o negócio e o contato ao seu processo. Crie até 30 campos por ficha, de texto, número, data, seleção ou sim/não, e preencha direto na ficha."
               },
               "5": {
                 "title": "Filtros poderosos e views salvas",

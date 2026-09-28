@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { ProfileForm } from '@/components/settings/profile-form'
 import { QuickActions } from '@/components/settings/quick-actions'
 import { ViewModeToggle, ViewMode } from '@/components/settings/view-mode-toggle'
-import { User, Users, Key, Webhook, Zap, Bell, BookOpen, CreditCard, ChevronRight } from 'lucide-react'
+import { User, Users, Key, Webhook, Zap, Bell, BookOpen, CreditCard, ChevronRight, ListPlus } from 'lucide-react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
@@ -167,6 +167,28 @@ export function SettingsClient({ user }: SettingsClientProps) {
                   {!isCompact && (
                     <CardDescription className="text-zinc-500 text-xs">
                       Gerencie membros e convites
+                    </CardDescription>
+                  )}
+                </div>
+                <ChevronRight className="h-5 w-5 text-zinc-400 group-hover:text-emerald-500 group-hover:translate-x-1 transition-all duration-200" />
+              </CardHeader>
+            </Card>
+          </Link>
+
+          {/* Spec 017 */}
+          <Link href="/dashboard/settings/campos">
+            <Card className="bg-white dark:bg-white/[0.02] border-zinc-200 dark:border-white/5 backdrop-blur-xl shadow-sm hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-500/30 hover:bg-zinc-50 dark:hover:bg-white/[0.04] transition-all duration-200 cursor-pointer group">
+              <CardHeader className="flex flex-row items-center gap-4 relative overflow-hidden">
+                <div className="h-10 w-10 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-500 ring-1 ring-white/5">
+                  <ListPlus className="h-5 w-5" />
+                </div>
+                <div className="flex flex-col gap-1 flex-1">
+                  <CardTitle className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
+                    Campos personalizados
+                  </CardTitle>
+                  {!isCompact && (
+                    <CardDescription className="text-zinc-500 text-xs">
+                      Campos próprios na ficha do contato e do negócio
                     </CardDescription>
                   )}
                 </div>
