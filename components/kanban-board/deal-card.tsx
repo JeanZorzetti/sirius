@@ -11,6 +11,7 @@ import { SwipeableRow } from '@/components/ui/swipeable-row'
 import { cn } from '@/lib/utils'
 import { markDealWon } from '@/app/[locale]/dashboard/actions'
 import { dinheiro, fatoDeTempo, pedeAcao, temValor } from '@/lib/pipeline/hoje'
+import { temperatura } from '@/lib/pipeline/previsao'
 import type { ContactDisplayMode, Deal } from './types'
 
 export function DealCard({
@@ -64,6 +65,8 @@ export function DealCard({
   const agora = new Date()
   const fato = fatoDeTempo(deal, agora)
   const acao = pedeAcao(deal, agora)
+  // Spec 016: temperature is the same day count as the time fact, said in one word before it (never colour alone)
+  const temp = temperatura(deal, agora)
   const contato = deal.contact
     ? contactDisplayMode === 'company'
       ? deal.contact.company || deal.contact.name
@@ -99,6 +102,7 @@ export function DealCard({
         {deal.title}
       </p>
       <p className={cn('hoje-mono mt-1 flex flex-wrap items-center gap-x-1.5 text-[11px] tabular-nums', acao ? 'font-medium text-foreground' : 'text-muted-foreground')}>
+        {temp && fato.tipo !== 'retorno' ? <span data-temperatura={temp}>{temp} ·</span> : null}
         {fato.frase}
         {deal.exemplo && (
           <span className="rounded-sm border border-border px-1 font-normal text-muted-foreground">exemplo</span>

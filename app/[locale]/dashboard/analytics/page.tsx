@@ -17,6 +17,7 @@ import { ValueSearch } from './value-search';
 import { ContactSearch } from './contact-search';
 import { StageChartFilter } from './stage-chart-filter';
 import { getTranslations } from 'next-intl/server';
+import { previsaoPonderada, probabilidadeDaEtapa } from '@/lib/pipeline/previsao'
 import { carregarAcesso, escopoPipeline } from '@/lib/visibilidade';
 
 export const metadata = { title: "Analytics | Sirius CRM" }
@@ -118,15 +119,24 @@ export default async function AnalyticsPage({
   const closedDealsCount = wonDeals.length + lostDeals.length;
   const conversionRate = closedDealsCount > 0 ? (wonDeals.length / closedDealsCount) * 100 : 0;
 
-  // Previsão de fechamento: apenas deals ACTIVE com closeDate futuro
-  const forecastDeals = isFiltered
-    ? activeDeals
-    : activeDeals.filter(d => {
-        if (!d.closeDate) return false;
-        const closeD = new Date(d.closeDate);
-        return closeD >= now && closeD.getMonth() === now.getMonth() && closeD.getFullYear() === now.getFullYear();
-      });
-  const forecastValue = forecastDeals.reduce((s, d) => s + Number(d.value || 0), 0);
+  // Previsão (spec 016): Σ valor × chance da etapa dos negócios abertos com data de fechamento na janela
+  const etapasDaConta = await prisma.pipelineStage.findMany({
+    where: { organizationId: user.organizationId },
+    select: { id: true, order: true, type: true, probability: true, pipelineId: true },
+  });
+  const etapaPorId = new Map(etapasDaConta.map(e => [e.id, e]));
+  const chanceDoNegocio = (stageId: string) => {
+    const etapa = etapaPorId.get(stageId);
+    return etapa ? probabilidadeDaEtapa(etapa, etapasDaConta.filter(e => e.pipelineId === etapa.pipelineId)) : 0;
+  };
+  const fimDoMes = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+  const janelaDaPrevisao = isFiltered
+    ? { de: from ? new Date(from) : new Date(0), ate: closeDateFilter.lte ?? new Date(8.64e15) }
+    : { de: now, ate: fimDoMes };
+  const previsao = previsaoPonderada(
+    activeDeals.map(d => ({ value: d.value != null ? Number(d.value) : null, closeDate: d.closeDate, chance: chanceDoNegocio(d.stageId) })),
+    janelaDaPrevisao,
+  );
 
   // Ticket Médio: média dos valores reais recebidos (DealClosing) — calculado após kpiClosings
 
@@ -432,12 +442,15 @@ export default async function AnalyticsPage({
             </div>
           </CardHeader>
           <CardContent className="relative z-10">
-            <div className="text-2xl font-bold text-zinc-900 dark:text-white font-mono">
-              {forecastValue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+            <div className="text-2xl font-bold text-zinc-900 dark:text-white font-mono tabular-nums" title="Soma de valor × chance de fechar da etapa">
+              {previsao.ponderada.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 })}
             </div>
-            <p className="text-xs text-zinc-500 mt-1" title="Negócios ATIVOS com data de fechamento no período selecionado">
-              {forecastDeals.length} negócio(s) {isFiltered ? 'no período' : 'este mês'}
+            <p className="text-xs text-zinc-500 mt-1 tabular-nums" title="Negócios abertos com valor e data de fechamento no período; ponderado pela chance de cada etapa">
+              ponderada · de {previsao.bruta.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 })} em {previsao.contados} negócio(s) {isFiltered ? 'no período' : 'até o fim do mês'}
             </p>
+            {previsao.semValorOuData > 0 && (
+              <p className="text-xs text-zinc-500 tabular-nums">{previsao.semValorOuData} aberto(s) sem valor ou sem data de fechamento ficam de fora</p>
+            )}
           </CardContent>
         </Card>
 
