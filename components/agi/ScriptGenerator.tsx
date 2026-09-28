@@ -7,6 +7,7 @@
 'use client';
 
 import { useState } from 'react';
+import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { X, Wand2, Loader2, Copy, Check } from 'lucide-react';
 
 type ScriptType = 'cold_call' | 'cold_email' | 'follow_up' | 'demo_pitch' | 'objection_handling';
@@ -116,19 +117,15 @@ export function ScriptGenerator({ isOpen, onClose, dealId }: ScriptGeneratorProp
         onClose();
     };
 
-    if (!isOpen) return null;
-
+    // Radix dialog so it stacks above the deal dialog that opens it (portal + nested focus trap)
     return (
-        <div className="fixed inset-0 z-50 overflow-y-auto">
-            {/* Backdrop */}
-            <div
-                className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
-                onClick={handleClose}
-            />
-
-            {/* Modal */}
-            <div className="flex min-h-full items-center justify-center p-4">
-                <div className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+        <DialogPrimitive.Root open={isOpen} onOpenChange={(open) => !open && handleClose()}>
+            <DialogPrimitive.Portal>
+                <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" />
+                <DialogPrimitive.Content
+                    aria-describedby={undefined}
+                    className="fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-[calc(100%-2rem)] max-w-4xl max-h-[90vh] overflow-hidden flex flex-col outline-none"
+                >
                     {/* Header */}
                     <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-4 flex items-center justify-between">
                         <div className="flex items-center gap-3">
@@ -136,12 +133,13 @@ export function ScriptGenerator({ isOpen, onClose, dealId }: ScriptGeneratorProp
                                 <Wand2 className="h-5 w-5" />
                             </div>
                             <div>
-                                <h2 className="text-xl font-bold">Gerador de Scripts</h2>
+                                <DialogPrimitive.Title className="text-xl font-bold">Gerador de Scripts</DialogPrimitive.Title>
                                 <p className="text-sm text-purple-100">Crie scripts de vendas com IA</p>
                             </div>
                         </div>
                         <button
                             onClick={handleClose}
+                            aria-label="Fechar"
                             className="hover:bg-white/20 rounded-lg p-2 transition-colors"
                         >
                             <X className="h-5 w-5" />
@@ -312,8 +310,8 @@ export function ScriptGenerator({ isOpen, onClose, dealId }: ScriptGeneratorProp
                             )}
                         </button>
                     </div>
-                </div>
-            </div>
-        </div>
+                </DialogPrimitive.Content>
+            </DialogPrimitive.Portal>
+        </DialogPrimitive.Root>
     );
 }
